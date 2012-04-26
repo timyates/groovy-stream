@@ -127,7 +127,14 @@ public class Stream implements Iterator {
 
   public Object next() {
     if( exception ) throw exception
-    def ret = current instanceof Map ? current.clone() : current
+    def ret
+    if( current instanceof Map ) {
+      ret = current.clone()
+      transform.delegate = using << current
+    }
+    else {
+      ret = current
+    }
     loadNext()
     this.streamIndex++
     transform.call( ret )
