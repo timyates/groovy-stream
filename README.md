@@ -1,4 +1,4 @@
-### GStream, a Groovy class for lazy list comprehension and generation.
+### A Groovy class for lazy list comprehension and generation.
 
 >Under construction...  The code needs stabilising, and this is just a proof of concept to keep me busy in my spare time ;-)
 
