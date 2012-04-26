@@ -1,7 +1,5 @@
 package groovy.stream
 
-import groovy.stream.Stream
-
 public class ReadmeTests extends spock.lang.Specification {
   def "first example"() {
     setup:

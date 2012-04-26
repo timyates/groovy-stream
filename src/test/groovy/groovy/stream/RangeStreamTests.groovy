@@ -1,7 +1,5 @@
 package groovy.stream
 
-import groovy.stream.Stream
-
 public class RangeStreamTests extends spock.lang.Specification {
   def "Simple Range usage"() {
     setup:
