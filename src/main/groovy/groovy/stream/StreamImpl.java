@@ -8,8 +8,9 @@ import java.util.LinkedHashMap ;
 import java.util.List ;
 import java.util.Map ;
 import java.util.Set ;
+import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation ;
 
-public class StreamImpl<T> extends AbstractStream<T,T> {
+public class StreamImpl<T,D> extends AbstractStream<T,D> {
   private class HeadedIterator<T> implements Iterator {
     T next ;
     Closure<T> nextCall ;
@@ -34,14 +35,16 @@ public class StreamImpl<T> extends AbstractStream<T,T> {
 
   private Iterator<T> iterator ;
 
-  public StreamImpl( Closure<T> definition, Closure<Boolean> condition, Closure<T> transform, LinkedHashMap<String,Object> using ) {
+  public StreamImpl( Closure<D> definition, Closure<Boolean> condition, Closure<T> transform, LinkedHashMap<String,Object> using ) {
     super( definition, condition, transform, using ) ;
   }
 
   @SuppressWarnings("unchecked")
   protected void initialise() {
+    initial = this.definition.call() ;
+
     if( initial instanceof Iterator ) {
-      iterator = (Iterator<T>)initial ;
+      iterator = (Iterator)initial ;
     }
     else if( initial instanceof Iterable ) {
       iterator = ((Iterable)initial).iterator() ;
@@ -72,7 +75,7 @@ public class StreamImpl<T> extends AbstractStream<T,T> {
           exhausted = true ;
         }
       }
-      if( condition.call( current ) ) break ;
+      if( DefaultTypeTransformation.castToBoolean( condition.call( current ) ) ) break ;
     }
   }
 }

@@ -31,8 +31,6 @@ public abstract class AbstractStream<T,D> implements StreamInterface<T> {
     this.transform = transform ;
     this.transform.setDelegate( this.using ) ;
     this.transform.setResolveStrategy( Closure.DELEGATE_FIRST ) ;
-
-    initialise() ;
   }
 
   protected Closure<D> getDefinition() { return definition ; }
@@ -58,6 +56,7 @@ public abstract class AbstractStream<T,D> implements StreamInterface<T> {
       throw initialisationException ;
     } 
     if( !initialised ) {
+      initialise() ;
       loadNext() ;
       initialised = true ;
     }

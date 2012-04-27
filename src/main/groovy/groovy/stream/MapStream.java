@@ -20,7 +20,7 @@ public class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends Abstr
 
   protected void initialise() {
     try { 
-      initial = definition.call() ;
+      initial = this.definition.call() ;
 
       iterators = new HashMap<String,Iterator>() ;
 
