@@ -6,18 +6,21 @@ import java.util.Map ;
 import java.util.HashMap ;
 
 public abstract class AbstractStream<T,D> implements StreamInterface<T> {
+  protected static final Map<String,StreamStopper> stopDelegate = new HashMap<String,StreamStopper>() {{
+    put( "STOP", StreamStopper.getInstance() ) ;
+  }} ;
   protected int streamIndex = -1 ;
   protected boolean exhausted = false ;
   protected RuntimeException initialisationException = null ;
   Closure<D> definition ;
-  Closure<Boolean> condition ;
+  Closure condition ;
   Closure<T> transform ;
-  Map using ;
+  Map<String,Object> using ;
   D initial ;
   T current ;
   private boolean initialised ;
 
-  public AbstractStream( Closure<D> definition, Closure<Boolean> condition, Closure<T> transform, Map using ) {
+  public AbstractStream( Closure<D> definition, Closure condition, Closure<T> transform, Map<String,Object> using ) {
     this.using = using ;
 
     this.definition = definition ;
@@ -34,7 +37,7 @@ public abstract class AbstractStream<T,D> implements StreamInterface<T> {
   }
 
   protected Closure<D> getDefinition() { return definition ; }
-  protected Closure<Boolean> getCondition() { return condition ; }
+  protected Closure getCondition() { return condition ; }
   protected Closure<T> getTransform() { return transform ; }
   protected Map getUsing() { return using ; }
 
@@ -49,6 +52,15 @@ public abstract class AbstractStream<T,D> implements StreamInterface<T> {
   }
 
   protected abstract void loadNext() ;
+
+  @SuppressWarnings("unchecked")
+  protected Map generateMapDelegate( Map... subMaps ) {
+    Map ret = new HashMap() ;
+    for( Map m : subMaps ) {
+      ret.putAll( m ) ;
+    }
+    return ret ;
+  }
 
   @Override
   public boolean hasNext() {

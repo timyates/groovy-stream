@@ -35,10 +35,11 @@ public class StreamImpl<T,D> extends AbstractStream<T,D> {
 
   private Iterator<T> iterator ;
 
-  public StreamImpl( Closure<D> definition, Closure<Boolean> condition, Closure<T> transform, LinkedHashMap<String,Object> using ) {
+  public StreamImpl( Closure<D> definition, Closure condition, Closure<T> transform, LinkedHashMap<String,Object> using ) {
     super( definition, condition, transform, using ) ;
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   protected void initialise() {
     initial = this.definition.call() ;
@@ -62,6 +63,7 @@ public class StreamImpl<T,D> extends AbstractStream<T,D> {
     return transform.call( ret ) ;
   }
 
+  @Override
   protected void loadNext() {
     while( !exhausted ) {
       if( current == null ) {
@@ -75,7 +77,14 @@ public class StreamImpl<T,D> extends AbstractStream<T,D> {
           exhausted = true ;
         }
       }
-      if( DefaultTypeTransformation.castToBoolean( condition.call( current ) ) ) break ;
+      condition.setDelegate( generateMapDelegate( using, stopDelegate ) ) ;
+      Object cond = condition.call( current ) ;
+      if( cond == StreamStopper.getInstance() ) {
+        exhausted = true ;
+      }
+      else if( DefaultTypeTransformation.castToBoolean( cond ) ) {
+        break ;
+      }
     }
   }
 }

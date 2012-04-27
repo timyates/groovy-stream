@@ -14,10 +14,11 @@ public class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends Abstr
   private Map<String,Iterator> iterators ;
   private List<String> keys ;
 
-  public MapStream( Closure<D> definition, Closure<Boolean> condition, Closure<T> transform, LinkedHashMap<String,Object> using ) {
+  public MapStream( Closure<D> definition, Closure condition, Closure<T> transform, LinkedHashMap<String,Object> using ) {
     super( definition, condition, transform, using ) ;
   }
 
+  @Override
   protected void initialise() {
     try { 
       initial = this.definition.call() ;
@@ -38,15 +39,6 @@ public class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends Abstr
   @SuppressWarnings("unchecked")
   private T cloneMap( Map m ) {
     return (T)new LinkedHashMap( m ) ;
-  }
-
-  @SuppressWarnings("unchecked")
-  private Map generateMapDelegate( Map... subMaps ) {
-    Map ret = new HashMap() ;
-    for( Map m : subMaps ) {
-      ret.putAll( m ) ;
-    }
-    return ret ;
   }
 
   @Override
@@ -70,6 +62,7 @@ public class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends Abstr
     return (T)newMap ;
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   protected void loadNext() {
     while( !exhausted ) {
@@ -92,8 +85,14 @@ public class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends Abstr
           }
         }
       }
-      condition.setDelegate( current ) ;
-      if( DefaultTypeTransformation.castToBoolean( condition.call() ) ) break ;
+      condition.setDelegate( generateMapDelegate( using, stopDelegate, (Map)current ) ) ;
+      Object cond = condition.call() ;
+      if( cond == StreamStopper.getInstance() ) {
+        exhausted = true ;
+      }
+      else if( DefaultTypeTransformation.castToBoolean( cond ) ) {
+        break ;
+      }
     }
   }
 }
