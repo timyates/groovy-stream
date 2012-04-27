@@ -77,13 +77,13 @@ public class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends Abstr
         current = getFirst() ;
       }
       else {
-        for( int i = 0 ; i < keys.size() ; i++ ) {
+        for( int i = keys.size() - 1 ; i >= 0 ; i-- ) {
           String key = keys.get( i ) ;
           if( iterators.get( key ).hasNext() ) {
             ((Map)current).put( key, iterators.get( key ).next() ) ;
             break ;
           }
-          else if( i < keys.size() - 1 ) {
+          else if( i > 0 ) {
             iterators.put( key, initial.get( key ).iterator() ) ;
             ((Map)current).put( key, iterators.get( key ).next() ) ;
           }

@@ -9,7 +9,7 @@ public class MapTests extends spock.lang.Specification {
     def result = stream.collect()
 
     then:
-    result == [ [ x:1, y:1 ], [ x:2, y:1 ], [ x:1, y:2 ], [ x:2, y:2 ] ]
+    result == [[x:1, y:1], [x:1, y:2], [x:2, y:1], [x:2, y:2]]
   }
 
   def "Map with limits"() {

@@ -9,7 +9,7 @@ examples:
 ```groovy
 Stream s = Stream.from x:1..2, y:1..4 where { x + y == 4 }
 
-assert s.collect() == [ [ x:2, y:2 ], [ x:1, y:3 ] ]
+assert s.collect() == [ [ x:1, y:3 ], [ x:2, y:2 ] ]
 ```
 
 or
