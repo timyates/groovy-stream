@@ -33,4 +33,15 @@ public class MapTests extends spock.lang.Specification {
     then:
     result == [ 2, 3, 3, 4 ]
   }
+
+  def "Map with transformation and limits"() {
+    setup:
+    def stream = Stream.from x:1..3, y:1..3 where { x == y } transform { x + y }
+
+    when:
+    def result = stream.collect()
+
+    then:
+    result == [ 2, 4, 6 ]
+  }
 }
