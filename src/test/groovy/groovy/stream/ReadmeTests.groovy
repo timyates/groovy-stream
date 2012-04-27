@@ -1,6 +1,7 @@
 package groovy.stream
 
 public class ReadmeTests extends spock.lang.Specification {
+/*
   def "first example"() {
     setup:
     def s = Stream.from x:1..2, y:1..4 where { x + y == 4 }
@@ -22,4 +23,5 @@ public class ReadmeTests extends spock.lang.Specification {
     then:
     result == [ 1, 4, 7, 10, 13 ]
   }
+*/
 }
