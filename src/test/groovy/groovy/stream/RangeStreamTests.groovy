@@ -60,7 +60,6 @@ public class RangeStreamTests extends spock.lang.Specification {
     stream.exhausted
     stream.streamIndex == expected.size() - 1
   }
-
   def "Range with local variables"() {
     setup:
     def upper  = 5
