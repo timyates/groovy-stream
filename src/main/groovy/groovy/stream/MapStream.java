@@ -41,15 +41,6 @@ public class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends Abstr
     return (T)new LinkedHashMap( m ) ;
   }
 
-  @SuppressWarnings("unchecked")
-  private Map generateMapDelegate( Map... subMaps ) {
-    Map ret = new HashMap() ;
-    for( Map m : subMaps ) {
-      ret.putAll( m ) ;
-    }
-    return ret ;
-  }
-
   @Override
   public T next() {
     if( initialisationException != null ) {
@@ -94,8 +85,14 @@ public class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends Abstr
           }
         }
       }
-      condition.setDelegate( current ) ;
-      if( DefaultTypeTransformation.castToBoolean( condition.call() ) ) break ;
+      condition.setDelegate( generateMapDelegate( using, stopDelegate, (Map)current ) ) ;
+      Object cond = condition.call() ;
+      if( cond == StreamStopper.getInstance() ) {
+        exhausted = true ;
+      }
+      else if( DefaultTypeTransformation.castToBoolean( cond ) ) {
+        break ;
+      }
     }
   }
 }

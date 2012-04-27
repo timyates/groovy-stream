@@ -6,6 +6,9 @@ import java.util.Map ;
 import java.util.HashMap ;
 
 public abstract class AbstractStream<T,D> implements StreamInterface<T> {
+  protected static final Map<String,StreamStopper> stopDelegate = new HashMap<String,StreamStopper>() {{
+    put( "HALT", StreamStopper.getInstance() ) ;
+  }} ;
   protected int streamIndex = -1 ;
   protected boolean exhausted = false ;
   protected RuntimeException initialisationException = null ;
@@ -49,6 +52,16 @@ public abstract class AbstractStream<T,D> implements StreamInterface<T> {
   }
 
   protected abstract void loadNext() ;
+
+  @SuppressWarnings("unchecked")
+  protected Map generateMapDelegate( Map... subMaps ) {
+    Map ret = new HashMap() ;
+    for( Map m : subMaps ) {
+      ret.putAll( m ) ;
+    }
+    return ret ;
+  }
+
 
   @Override
   public boolean hasNext() {

@@ -77,7 +77,14 @@ public class StreamImpl<T,D> extends AbstractStream<T,D> {
           exhausted = true ;
         }
       }
-      if( DefaultTypeTransformation.castToBoolean( condition.call( current ) ) ) break ;
+      condition.setDelegate( generateMapDelegate( using, stopDelegate ) ) ;
+      Object cond = condition.call( current ) ;
+      if( cond == StreamStopper.getInstance() ) {
+        exhausted = true ;
+      }
+      else if( DefaultTypeTransformation.castToBoolean( cond ) ) {
+        break ;
+      }
     }
   }
 }
