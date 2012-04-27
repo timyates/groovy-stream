@@ -10,14 +10,14 @@ public abstract class AbstractStream<T,D> implements StreamInterface<T> {
   protected boolean exhausted = false ;
   protected RuntimeException initialisationException = null ;
   Closure<D> definition ;
-  Closure<Boolean> condition ;
+  Closure condition ;
   Closure<T> transform ;
   Map using ;
   D initial ;
   T current ;
   private boolean initialised ;
 
-  public AbstractStream( Closure<D> definition, Closure<Boolean> condition, Closure<T> transform, Map using ) {
+  public AbstractStream( Closure<D> definition, Closure condition, Closure<T> transform, Map using ) {
     this.using = using ;
 
     this.definition = definition ;
@@ -34,7 +34,7 @@ public abstract class AbstractStream<T,D> implements StreamInterface<T> {
   }
 
   protected Closure<D> getDefinition() { return definition ; }
-  protected Closure<Boolean> getCondition() { return condition ; }
+  protected Closure getCondition() { return condition ; }
   protected Closure<T> getTransform() { return transform ; }
   protected Map getUsing() { return using ; }
 

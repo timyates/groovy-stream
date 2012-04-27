@@ -14,10 +14,11 @@ public class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends Abstr
   private Map<String,Iterator> iterators ;
   private List<String> keys ;
 
-  public MapStream( Closure<D> definition, Closure<Boolean> condition, Closure<T> transform, LinkedHashMap<String,Object> using ) {
+  public MapStream( Closure<D> definition, Closure condition, Closure<T> transform, LinkedHashMap<String,Object> using ) {
     super( definition, condition, transform, using ) ;
   }
 
+  @Override
   protected void initialise() {
     try { 
       initial = this.definition.call() ;
@@ -70,6 +71,7 @@ public class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends Abstr
     return (T)newMap ;
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   protected void loadNext() {
     while( !exhausted ) {
