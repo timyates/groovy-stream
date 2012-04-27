@@ -7,7 +7,7 @@ import java.util.HashMap ;
 
 public abstract class AbstractStream<T,D> implements StreamInterface<T> {
   protected static final Map<String,StreamStopper> stopDelegate = new HashMap<String,StreamStopper>() {{
-    put( "HALT", StreamStopper.getInstance() ) ;
+    put( "STOP", StreamStopper.getInstance() ) ;
   }} ;
   protected int streamIndex = -1 ;
   protected boolean exhausted = false ;
@@ -15,12 +15,12 @@ public abstract class AbstractStream<T,D> implements StreamInterface<T> {
   Closure<D> definition ;
   Closure condition ;
   Closure<T> transform ;
-  Map using ;
+  Map<String,Object> using ;
   D initial ;
   T current ;
   private boolean initialised ;
 
-  public AbstractStream( Closure<D> definition, Closure condition, Closure<T> transform, Map using ) {
+  public AbstractStream( Closure<D> definition, Closure condition, Closure<T> transform, Map<String,Object> using ) {
     this.using = using ;
 
     this.definition = definition ;
@@ -61,7 +61,6 @@ public abstract class AbstractStream<T,D> implements StreamInterface<T> {
     }
     return ret ;
   }
-
 
   @Override
   public boolean hasNext() {
