@@ -11,7 +11,6 @@ public abstract class AbstractStream<T,D> implements StreamInterface<T> {
   }} ;
   protected int streamIndex = -1 ;
   protected boolean exhausted = false ;
-  protected RuntimeException initialisationException = null ;
   Closure<D> definition ;
   Closure condition ;
   Closure<T> transform ;
@@ -64,9 +63,6 @@ public abstract class AbstractStream<T,D> implements StreamInterface<T> {
 
   @Override
   public boolean hasNext() {
-    if( initialisationException != null ) {
-      throw initialisationException ;
-    } 
     if( !initialised ) {
       initialise() ;
       loadNext() ;

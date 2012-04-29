@@ -20,20 +20,14 @@ public class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends Abstr
 
   @Override
   protected void initialise() {
-    try { 
-      initial = this.definition.call() ;
+    initial = this.definition.call() ;
 
-      iterators = new HashMap<String,Iterator>() ;
+    iterators = new HashMap<String,Iterator>() ;
 
-      for( Map.Entry<String,Iterable> e : initial.entrySet() ) {
-        iterators.put( e.getKey(), e.getValue().iterator() ) ;
-      }
-      keys = new ArrayList<String>( initial.keySet() ) ;
+    for( Map.Entry<String,Iterable> e : initial.entrySet() ) {
+      iterators.put( e.getKey(), e.getValue().iterator() ) ;
     }
-    catch( Exception e ) {
-      initialisationException = new RuntimeException( e.getMessage() ) ;
-      exhausted = true ;
-    }
+    keys = new ArrayList<String>( initial.keySet() ) ;
   }
 
   @SuppressWarnings("unchecked")
@@ -43,9 +37,6 @@ public class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends Abstr
 
   @Override
   public T next() {
-    if( initialisationException != null ) {
-      throw initialisationException ;
-    }
     T ret = cloneMap( (Map)current ) ;
     transform.setDelegate( generateMapDelegate( using, (Map)current ) ) ;
     loadNext() ;
