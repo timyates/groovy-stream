@@ -44,4 +44,18 @@ public class MapTests extends spock.lang.Specification {
     then:
     result == [ 2, 4, 6 ]
   }
+
+  def "Issue #3 - Where with static bindings..."() {
+    setup:
+    def x = 0
+    // Map is now passed in as parameter to where closure so we can get at it
+    // { x == 1 } will always resolve to false as x is 0 in static binding
+    def stream = Stream.from x:1..3, y:1..3 where { it.x == 1 } 
+
+    when:
+    def result = stream.collect()
+
+    then:
+    result == [ [ x:1,y:1 ], [x:1,y:2], [x:1,y:3 ] ]
+  }
 }

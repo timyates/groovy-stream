@@ -77,7 +77,7 @@ public class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends Abstr
         }
       }
       condition.setDelegate( generateMapDelegate( using, stopDelegate, (Map)current ) ) ;
-      Object cond = condition.call() ;
+      Object cond = condition.call( current ) ;
       if( cond == StreamStopper.getInstance() ) {
         exhausted = true ;
       }
