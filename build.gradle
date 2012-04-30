@@ -10,4 +10,4 @@ dependencies {
 }
 
 compileGroovy.options.compilerArgs << "-Xlint:unchecked" << "-Werror"
-version = '0.1'
+version = '0.2'
