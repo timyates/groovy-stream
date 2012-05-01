@@ -2,7 +2,9 @@
 
 >Under construction...  The code needs stabilising, and this is just a proof of concept to keep me busy in my spare time ;-)
 
-To see usage, have a look in the [`src/test/groovy/groovy/stream` folder](https://github.com/timyates/groovy-stream/tree/master/src/test/groovy/groovy/stream), but in a nutshell, this class lets you do stuff like:
+NEW: There is a [blog post here](blog.bloidonia.com/post/22117894718/groovy-stream-a-lazy-generator-and-list-comprehension) explaining the state of groovy-stream v0.1 and it's usage
+
+To see examples, have a look in the [`src/test/groovy/groovy/stream` folder](https://github.com/timyates/groovy-stream/tree/master/src/test/groovy/groovy/stream), but in a nutshell, this class lets you do stuff like:
 
 examples:
 
