@@ -92,10 +92,29 @@ public class Stream<T> implements StreamInterface<T> {
 
   private StreamType type
 
+  /**
+   * @see java.util.Iterator#hasNext()
+   */
   public  boolean    hasNext()        { wrapped.hasNext()   }
+  /**
+   * @see java.util.Iterator#next()
+   */
   public  T          next()           { wrapped.next()      }
+  /**
+   * Unavailable, this will throw a <code>UnsupportedOperationException</code>
+   * @see java.util.Iterator#remove()
+   */
   public  void       remove()         { wrapped.remove()    }
+
+  /**
+   * Has the Stream been completely exhausted?
+   * @return true if the Stream is at an end
+   */
   public  boolean    isExhausted()    { wrapped.exhausted   }
+  /**
+   * Get the current index of the Stream (starting from 0 for the first element)
+   * @retyrb the current index
+   */
   public  int        getStreamIndex() { wrapped.streamIndex }
 
   public static Stream from( Map a ) {
