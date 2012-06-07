@@ -1,4 +1,5 @@
 apply plugin: 'groovy'
+apply plugin: 'maven'
 
 repositories {
   mavenCentral()
@@ -10,6 +11,7 @@ dependencies {
 }
 
 compileGroovy.options.compilerArgs << "-Xlint:unchecked" << "-Werror"
+group = 'com.bloidonia'
 version = '0.2'
 
 groovydoc {
@@ -20,4 +22,17 @@ groovydoc {
   use = true
   link( 'http://download.oracle.com/javase/6/docs/api/', 'java.' )
   link('http://groovy.codehaus.org/api/',  'groovy.', 'org.codehaus.groovy.')
+}
+
+uploadArchives {
+  if( hasProperty( 'localrepo' ) ) {
+    repositories {
+      mavenDeployer {
+        repository( url: "file:${localrepo}" )
+      }
+    }
+  }
+  else {
+    println "Need to set 'localrepo' in gradle.properties if you wish to run the uploadArchives task"
+  }
 }
