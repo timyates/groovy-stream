@@ -121,23 +121,22 @@ public class Stream<T> implements StreamInterface<T> {
     new Stream( type:StreamType.MAP, wrapped:new MapStream( { a }, { true }, { it }, [:] ) )
   }
 
-  public static Stream from( a ) {
-    if( a instanceof Closure ) {
-      new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( a, { true }, { it }, [:] ) )
-    }
-    else {
-      new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( { a }, { true }, { it }, [:] ) )
-    }
+  public static Stream from( Closure a ) {
+    new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( a, { true }, { it }, [:] ) )
   }
 
-  public Stream where( where ) {
+  public static Stream from( a ) {
+    new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( { a }, { true }, { it }, [:] ) )
+  }
+
+  public Stream where( Closure where ) {
     wrapped = type == StreamType.MAP ?
               new MapStream( wrapped.definition, where, wrapped.transform, wrapped.using ) :
               new StreamImpl( wrapped.definition, where, wrapped.transform, wrapped.using )
     this
   }
   
-  public Stream transform( transform ) {
+  public Stream transform( Closure transform ) {
     wrapped = type == StreamType.MAP ?
               new MapStream( wrapped.definition, wrapped.condition, transform, wrapped.using ) :
               new StreamImpl( wrapped.definition, wrapped.condition, transform, wrapped.using )
