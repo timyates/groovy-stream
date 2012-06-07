@@ -94,6 +94,10 @@ package groovy.stream
  *   assert s.collect() == [ [0,'a'], [1,'b'], [2,'c'] ]
  * </pre>
  *
+ * Streams may only have one <code>using</code>, <code>transform</code>, or
+ * <code>where</code> block.  Calling these methods multiple times with result
+ * in the original blocks getting overwritten by the new ones.
+ *
  * @author Tim Yates
  */
 public class Stream<T> implements StreamInterface<T> {
@@ -135,7 +139,10 @@ public class Stream<T> implements StreamInterface<T> {
    * exhausted)
    *
    * @param iterables The Map of Iterables
-   * @return A Stream that will iterate over the iterables
+   * @return A Stream that will iterate over the iterables, with
+   *         <code>where</code> set to <code>{true}</code>,
+   *         <code>transform</code> set to <code>{it}</code> and
+   *         <code>using</code> set to the empty Map.
    */
   public static Stream from( Map iterables ) {
     new Stream( type:StreamType.MAP, wrapped:new MapStream( { iterables }, { true }, { it }, [:] ) )
@@ -148,7 +155,10 @@ public class Stream<T> implements StreamInterface<T> {
    * a additional where clause (see example in main documentation for Stream)
    *
    * @param closure The Closure to call for each returned element
-   * @return A Stream that will iterate and return the result of Closure.call() each step
+   * @return A Stream that will iterate and return the result of Closure.call()
+   *         each step, with <code>where</code> set to <code>{true}</code>,
+   *         <code>transform</code> set to <code>{it}</code> and
+   *         <code>using</code> set to the empty Map.
    */
   public static Stream from( Closure closure ) {
     new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( closure, { true }, { it }, [:] ) )
@@ -158,12 +168,27 @@ public class Stream<T> implements StreamInterface<T> {
    * The starting point for a Stream taking an Iterator or Iterable object.
    *
    * @param other The Iterable or Iterator to use for the Stream
-   * @return A Stream that will iterate over the passed object
+   * @return A Stream that will iterate over the passed object, with
+   *         <code>where</code> set to <code>{true}</code>,
+   *         <code>transform</code> set to <code>{it}</code> and
+   *         <code>using</code> set to the empty Map.
    */
   public static Stream from( other ) {
     new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( { other }, { true }, { it }, [:] ) )
   }
 
+  /**
+   * A basic filter for the Stream.  Elements in the Stream are passed to this
+   * Closure, and only those that cause this closure to return something
+   * passing Groovy Truth will be returned from the Stream. For Map based
+   * Streams, the current map is set as the Delegate for the closure, so the
+   * keys may be accessed directly, but (as with non-map based streams), it is
+   * also passed as a parameter to the closure so the map values may be
+   * accessed where they are hidden by variables in the static scope.
+   *
+   * @param where The closure to filter the Stream
+   * @return A new Stream with this filter assigned.
+   */
   public Stream where( Closure where ) {
     wrapped = type == StreamType.MAP ?
               new MapStream( wrapped.definition, where, wrapped.transform, wrapped.using ) :
@@ -171,6 +196,19 @@ public class Stream<T> implements StreamInterface<T> {
     this
   }
   
+  /**
+   * Set the default transformation for this Stream. Values are passed
+   * through this closure before being returned. It is also possible to
+   * alter the values in the <code>using</code> Map from within the closure.
+   * For Map based Streams, the current map is set as the Delegate for the
+   * closure, so the keys may be accessed directly, but (as with non-map based
+   * streams), it is also passed as a parameter to the closure so the map
+   * values may be accessed where they are hidden by variables in the static
+   * scope.
+   *
+   * @param transform The closure to manipulate the current stream value.
+   * @return A new Stream with this transform assigned.
+   */
   public Stream transform( Closure transform ) {
     wrapped = type == StreamType.MAP ?
               new MapStream( wrapped.definition, wrapped.condition, transform, wrapped.using ) :
@@ -178,6 +216,16 @@ public class Stream<T> implements StreamInterface<T> {
     this
   }
   
+  /**
+   * Set the map of values that is accessible to the component parts of the
+   * Stream. This map is passed to all of the other Closures used by the Stream
+   * and may be modified by any transform Closure that has been set.  When
+   * using a Stream over a Map of values, these values will overwrite any
+   * values of the initial map with the same key.
+   *
+   * @param using The map of values.
+   * @return A new Stream with this using Map assigned.
+   */
   public Stream using( Map using ) {
     wrapped = type == StreamType.MAP ?
               new MapStream( wrapped.definition, wrapped.condition, wrapped.transform, using ) :
