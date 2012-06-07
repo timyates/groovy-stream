@@ -57,7 +57,7 @@ package groovy.stream
  *            [x:3,y:'a'], [x:3,y:'b'] ] == stream.collect()
  * </pre>
  *
- * Streams may be filtered using the where method which takes a Closure
+ * Streams may be filtered using the <code>where</code> method which takes a Closure
  * returning Groovy Truth:
  *
  * <pre>
@@ -65,7 +65,18 @@ package groovy.stream
  *   assert [ [x:2,y:'a'], [x:2,y:'b'] ] == stream.collect()
  * </pre>
  *
- * And the returned values may be transformed by using a Transform Closure:
+ * It is possible to use the where block to stop a Stream by returning the
+ * magic variable <code>STOP</code>:
+ *
+ * <pre>
+ *   Stream s = Stream.from { 1 } where { idx < 5 ?: STOP } transform { idx++ ; it } using idx:0
+ *   // The length of this is 1 greater than expected as transform is executed
+ *   // (and so idx is updated) AFTER the where condition has already passed the
+ *   // last element.
+ *   assert s.collect().size() == 6
+ * </pre>
+ *
+ * It is also possible to transform the returned values by using a <code>transform</code> Closure:
  *
  * <pre>
  *   def stream = Stream.from x:1..3, y:'a'..'b' transform { [ x:x*2, y:"letter $y" ] }
@@ -74,9 +85,9 @@ package groovy.stream
  *            [x:6,y:'letter a'], [x:6,y:'letter b'] ] == stream.collect()
  * </pre>
  *
- * Finally, it is possible to supply a map of variables to the having Closure
+ * Finally, it is possible to supply a map of variables to the <code>using</code> Closure
  * which may then be used in any of the components of the Stream setup (though
- * may only be modified in the transform closure above):
+ * may only be modified in the <code>transform</code> closure above):
  *
  * <pre>
  *   Stream s = Stream.from 'a'..'c' transform { [ idx++, it ] } using idx:0
@@ -86,10 +97,8 @@ package groovy.stream
  * @author Tim Yates
  */
 public class Stream<T> implements StreamInterface<T> {
-  StreamInterface wrapped
-
   private static enum StreamType { MAP, OTHER }
-
+  private StreamInterface wrapped
   private StreamType type
 
   /**
@@ -101,8 +110,9 @@ public class Stream<T> implements StreamInterface<T> {
    */
   public  T          next()           { wrapped.next()      }
   /**
-   * Unavailable, this will throw a <code>UnsupportedOperationException</code>
+   * Unavailable, this will throw an <code>UnsupportedOperationException</code>
    * @see java.util.Iterator#remove()
+   * @see java.lang.UnsupportedOperationException
    */
   public  void       remove()         { wrapped.remove()    }
 
@@ -113,20 +123,45 @@ public class Stream<T> implements StreamInterface<T> {
   public  boolean    isExhausted()    { wrapped.exhausted   }
   /**
    * Get the current index of the Stream (starting from 0 for the first element)
-   * @retyrb the current index
+   * @return the current index
    */
   public  int        getStreamIndex() { wrapped.streamIndex }
 
-  public static Stream from( Map a ) {
-    new Stream( type:StreamType.MAP, wrapped:new MapStream( { a }, { true }, { it }, [:] ) )
+  /**
+   * The starting point for a Stream taking a Map of Iterables to
+   * lazily return.  The Stream will return all combinations of this map,
+   * incrementing the right-hand Map entry first (until exhausted) then
+   * advancing the next entry and starting again (until all Iterables are
+   * exhausted)
+   *
+   * @param iterables The Map of Iterables
+   * @return A Stream that will iterate over the iterables
+   */
+  public static Stream from( Map iterables ) {
+    new Stream( type:StreamType.MAP, wrapped:new MapStream( { iterables }, { true }, { it }, [:] ) )
   }
 
-  public static Stream from( Closure a ) {
-    new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( a, { true }, { it }, [:] ) )
+  /**
+   * The starting point for a Stream taking a Closure.  The result of
+   * calling the Closure will be returned for each iteration.  This may
+   * result in an Infinite Stream which can be stopped by returning STOP from
+   * a additional where clause (see example in main documentation for Stream)
+   *
+   * @param closure The Closure to call for each returned element
+   * @return A Stream that will iterate and return the result of Closure.call() each step
+   */
+  public static Stream from( Closure closure ) {
+    new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( closure, { true }, { it }, [:] ) )
   }
 
-  public static Stream from( a ) {
-    new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( { a }, { true }, { it }, [:] ) )
+  /**
+   * The starting point for a Stream taking an Iterator or Iterable object.
+   *
+   * @param other The Iterable or Iterator to use for the Stream
+   * @return A Stream that will iterate over the passed object
+   */
+  public static Stream from( other ) {
+    new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( { other }, { true }, { it }, [:] ) )
   }
 
   public Stream where( Closure where ) {
