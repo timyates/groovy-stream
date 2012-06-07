@@ -15,7 +15,9 @@ version = '0.2'
 groovydoc {
   docTitle = "Groovy Stream: A Lazy Generator"
   header = docTitle
+  footer = ''
   windowTitle = docTitle
   use = true
   link( 'http://download.oracle.com/javase/6/docs/api/', 'java.' )
+  link('http://groovy.codehaus.org/api/',  'groovy.', 'org.codehaus.groovy.')
 }
