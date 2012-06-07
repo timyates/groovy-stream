@@ -15,6 +15,76 @@
  */
 package groovy.stream
 
+/**
+ * The Stream class is the entry point for Lazy sequence generation.
+ *
+ * A Stream may be constructed with either an Iterator:
+ *
+ * <pre>
+ *   List a = [ 1, 2, 3 ]
+ *   Stream.from a.iterator()
+ * </pre>
+ *
+ * or an Iterable:
+ *
+ * <pre>
+ *   def a = 1..4
+ *   Stream.from a
+ * </pre>
+ *
+ * or a closure
+ *
+ * <pre>
+ *   Stream.from { 1 } // Infinite Stream!
+ * </pre>
+ *
+ * or finally, a Map of Iterables:
+ *
+ * <pre>
+ *   Stream.from x:1..4, y:'a'..'z'
+ * </pre>
+ *
+ * Any of these return a Stream which is a implementation of Iterator, and so
+ * may be treated as such:
+ *
+ * <pre>
+ *   def stream = Stream.from 1..3
+ *   assert [ 1, 2, 3 ] == stream.collect()
+ *
+ *   stream = Stream.from x:1..3, y:'a'..'b'
+ *   assert [ [x:1,y:'a'], [x:1,y:'b'],
+ *            [x:2,y:'a'], [x:2,y:'b'],
+ *            [x:3,y:'a'], [x:3,y:'b'] ] == stream.collect()
+ * </pre>
+ *
+ * Streams may be filtered using the where method which takes a Closure
+ * returning Groovy Truth:
+ *
+ * <pre>
+ *   def stream = Stream.from x:1..3, y:'a'..'b' where { x % 2 == 0 }
+ *   assert [ [x:2,y:'a'], [x:2,y:'b'] ] == stream.collect()
+ * </pre>
+ *
+ * And the returned values may be transformed by using a Transform Closure:
+ *
+ * <pre>
+ *   def stream = Stream.from x:1..3, y:'a'..'b' transform { [ x:x*2, y:"letter $y" ] }
+ *   assert [ [x:2,y:'letter a'], [x:2,y:'letter b'],
+ *            [x:4,y:'letter a'], [x:4,y:'letter b'],
+ *            [x:6,y:'letter a'], [x:6,y:'letter b'] ] == stream.collect()
+ * </pre>
+ *
+ * Finally, it is possible to supply a map of variables to the having Closure
+ * which may then be used in any of the components of the Stream setup (though
+ * may only be modified in the transform closure above):
+ *
+ * <pre>
+ *   Stream s = Stream.from 'a'..'c' transform { [ idx++, it ] } using idx:0
+ *   assert s.collect() == [ [0,'a'], [1,'b'], [2,'c'] ]
+ * </pre>
+ *
+ * @author Tim Yates
+ */
 public class Stream<T> implements StreamInterface<T> {
   StreamInterface wrapped
 
