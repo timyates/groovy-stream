@@ -11,3 +11,11 @@ dependencies {
 
 compileGroovy.options.compilerArgs << "-Xlint:unchecked" << "-Werror"
 version = '0.2'
+
+groovydoc {
+  docTitle = "Groovy Stream: A Lazy Generator"
+  header = docTitle
+  windowTitle = docTitle
+  use = true
+  link( 'http://download.oracle.com/javase/6/docs/api/', 'java.' )
+}
