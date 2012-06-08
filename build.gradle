@@ -25,7 +25,7 @@ groovydoc {
 }
 
 uploadArchives {
-  if( hasProperty( 'localrepo' ) ) {
+  if( project.hasProperty( 'localrepo' ) ) {
     repositories {
       mavenDeployer {
         repository( url: "file:${localrepo}" )
