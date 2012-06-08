@@ -25,11 +25,11 @@ import java.util.Map ;
 import java.util.Set ;
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation ;
 
-public class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends AbstractStream<T,D> {
+class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends AbstractStream<T,D> {
   private Map<String,Iterator> iterators ;
   private List<String> keys ;
 
-  public MapStream( Closure<D> definition, Closure condition, Closure<T> transform, LinkedHashMap<String,Object> using ) {
+  protected MapStream( Closure<D> definition, Closure condition, Closure<T> transform, LinkedHashMap<String,Object> using ) {
     super( definition, condition, transform, using ) ;
   }
 

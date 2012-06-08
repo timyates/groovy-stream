@@ -25,7 +25,7 @@ import java.util.Map ;
 import java.util.Set ;
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation ;
 
-public class StreamImpl<T,D> extends AbstractStream<T,D> {
+class StreamImpl<T,D> extends AbstractStream<T,D> {
   private class HeadedIterator<T> implements Iterator {
     T next ;
     Closure<T> nextCall ;
@@ -50,7 +50,7 @@ public class StreamImpl<T,D> extends AbstractStream<T,D> {
 
   private Iterator<T> iterator ;
 
-  public StreamImpl( Closure<D> definition, Closure condition, Closure<T> transform, LinkedHashMap<String,Object> using ) {
+  protected StreamImpl( Closure<D> definition, Closure condition, Closure<T> transform, LinkedHashMap<String,Object> using ) {
     super( definition, condition, transform, using ) ;
   }
 
