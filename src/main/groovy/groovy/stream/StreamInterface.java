@@ -18,6 +18,12 @@ package groovy.stream ;
 import java.util.Iterator ;
 
 public interface StreamInterface<T> extends Iterator<T> {
+  /**
+   * @return true if the Stream is exhausted, false otherwise
+   */
   public boolean isExhausted() ;
+  /**
+   * @return the current index in the Stream
+   */
   public int getStreamIndex() ;
 }
