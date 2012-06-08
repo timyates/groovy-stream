@@ -22,6 +22,8 @@ import java.util.HashMap ;
 
 /**
  * Base class for all Stream implementations.
+ *
+ * @author Tim Yates
  */
 abstract class AbstractStream<T,D> implements StreamInterface<T> {
   protected static final Map<String,StreamStopper> stopDelegate = new HashMap<String,StreamStopper>() {{

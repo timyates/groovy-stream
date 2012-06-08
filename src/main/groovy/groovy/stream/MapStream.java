@@ -25,6 +25,9 @@ import java.util.Map ;
 import java.util.Set ;
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation ;
 
+/**
+ * @author Tim Yates
+ */
 class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends AbstractStream<T,D> {
   private Map<String,Iterator> iterators ;
   private List<String> keys ;

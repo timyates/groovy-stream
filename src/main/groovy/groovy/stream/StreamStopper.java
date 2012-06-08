@@ -15,6 +15,12 @@
  */
 package groovy.stream ;
 
+/**
+ * This is a singleton object that can be returned from the <code>where</code> Closure
+ * of a Stream to cause the Stream to finish iteration.
+ *
+ * @author Tim Yates
+ */
 public class StreamStopper {
   private static StreamStopper instance = new StreamStopper() ;
   private StreamStopper() {}

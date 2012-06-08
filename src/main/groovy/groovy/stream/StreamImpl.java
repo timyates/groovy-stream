@@ -25,6 +25,9 @@ import java.util.Map ;
 import java.util.Set ;
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation ;
 
+/**
+ * @author Tim Yates
+ */
 class StreamImpl<T,D> extends AbstractStream<T,D> {
   private class HeadedIterator<T> implements Iterator {
     T next ;

@@ -17,6 +17,9 @@ package groovy.stream ;
 
 import java.util.Iterator ;
 
+/**
+ * @author Tim Yates
+ */
 public interface StreamInterface<T> extends Iterator<T> {
   /**
    * @return true if the Stream is exhausted, false otherwise
