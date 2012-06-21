@@ -12,7 +12,7 @@ dependencies {
 
 compileGroovy.options.compilerArgs << "-Xlint:unchecked" << "-Werror"
 group = 'com.bloidonia'
-version = '0.2'
+version = '0.3'
 
 groovydoc {
   docTitle = "Groovy Stream: A Lazy Generator"
