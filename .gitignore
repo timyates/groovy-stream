@@ -1,3 +1,4 @@
 .gradle
 build
 gradle.properties
+src/main/groovy/META-INF

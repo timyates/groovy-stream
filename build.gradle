@@ -12,7 +12,7 @@ dependencies {
 
 compileGroovy.options.compilerArgs << "-Xlint:unchecked" << "-Werror"
 group = 'com.bloidonia'
-version = '0.2'
+version = '0.3'
 
 groovydoc {
   docTitle = "Groovy Stream: A Lazy Generator"
@@ -22,6 +22,26 @@ groovydoc {
   use = true
   link( 'http://download.oracle.com/javase/6/docs/api/', 'java.' )
   link('http://groovy.codehaus.org/api/',  'groovy.', 'org.codehaus.groovy.')
+}
+
+def metaServices = new File( 'src/main/groovy/META-INF/services' )
+
+task generateModule << {
+  metaServices.mkdirs()
+  new File( metaServices, 'org.codehaus.groovy.runtime.ExtensionModule' ).withWriter { w ->
+    w.writeLine 'moduleName=groovy-stream'
+    w.writeLine "moduleVersion=$version"
+    w.writeLine 'extensionClasses=groovy.stream.StreamExtension'
+    w.writeLine 'staticExtensionClasses='
+  }
+}
+
+compileGroovy.dependsOn( generateModule )
+
+jar {
+  from( metaServices ) {
+    include 'org.codehaus.groovy.runtime.ExtensionModule' into( 'META-INF/services' )
+  }
 }
 
 uploadArchives {
@@ -38,5 +58,5 @@ uploadArchives {
 }
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '1.0-rc-3'
+  gradleVersion = '1.0'
 }
