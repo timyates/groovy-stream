@@ -23,7 +23,11 @@ def s = (1..4).toStream()
 assert [1,2,3,4] == s.collect()
 ```
 
-Currently (as of Groovy 2.0RC4) this won't work in the Groovy Console due to a classpath issue, but hopefully it will soon :-)
+See [groovy.stream.StreamExtension](https://github.com/timyates/groovy-stream/blob/master/src/main/groovy/groovy/stream/StreamExtension.java) for the 4 classes that are decorated.
+
+>Currently (as of Groovy 2.0RC4) this won't work in the Groovy Console due to a classpath issue, but hopefully it will soon :-)
+
+---
 
 **NEW**: There is a [blog post here](http://blog.bloidonia.com/post/22117894718/groovy-stream-a-lazy-generator-and-list-comprehension) explaining the state of groovy-stream v0.1 and it's usage
 
