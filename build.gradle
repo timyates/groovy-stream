@@ -24,6 +24,26 @@ groovydoc {
   link('http://groovy.codehaus.org/api/',  'groovy.', 'org.codehaus.groovy.')
 }
 
+def metaServices = new File( 'src/main/groovy/META-INF/services' )
+
+task generateModule << {
+  metaServices.mkdirs()
+  new File( metaServices, 'org.codehaus.groovy.runtime.ExtensionModule' ).withWriter { w ->
+    w.writeLine 'moduleName=groovy-stream'
+    w.writeLine "moduleVersion=$version"
+    w.writeLine 'extensionClasses=groovy.stream.StreamExtension'
+    w.writeLine 'staticExtensionClasses='
+  }
+}
+
+compileGroovy.dependsOn( generateModule )
+
+jar {
+  from( metaServices ) {
+    include 'org.codehaus.groovy.runtime.ExtensionModule' into( 'META-INF/services' )
+  }
+}
+
 uploadArchives {
   if( project.hasProperty( 'localrepo' ) ) {
     repositories {
