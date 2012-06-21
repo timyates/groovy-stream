@@ -1,4 +1,4 @@
-### A Groovy class for lazy list comprehension and generation.
+### A Lazy Groovy Generator.
 
 >Under construction...  The code needs stabilising, and this is just a proof of concept to keep me busy in my spare time ;-)
 
