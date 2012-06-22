@@ -1,8 +1,7 @@
 package groovy.stream ;
 
 import groovy.lang.Closure ;
-import java.util.Iterator ;
-import java.util.Map ;
+import java.util.* ;
 
 public class StreamExtension {
   public static Stream toStream( Closure delegate ) {
