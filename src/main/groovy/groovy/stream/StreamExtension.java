@@ -19,4 +19,8 @@ public class StreamExtension {
   public static Stream toStream( LinkedHashMap delegate ) {
     return Stream.from( delegate ) ;
   }
+
+  public static Stream toStream( ArrayList delegate ) {
+    return Stream.from( delegate ) ;
+  }
 }
