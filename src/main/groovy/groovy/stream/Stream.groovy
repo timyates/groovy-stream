@@ -178,6 +178,29 @@ public class Stream<T> implements StreamInterface<T> {
   }
 
   /**
+   * The starting point for a Stream taking an array.
+   *
+   * @param array The The array to use for the stream
+   * @return A Stream that will iterate over the passed array, with
+   *         <code>where</code> set to <code>{true}</code>,
+   *         <code>transform</code> set to <code>{it}</code> and
+   *         <code>using</code> set to the empty Map.
+   */
+  public static <T> Stream from( T[] array       ) { fromArray( array ) }
+  public static     Stream from( byte[] array    ) { fromArray( array ) }
+  public static     Stream from( char[] array    ) { fromArray( array ) }
+  public static     Stream from( short[] array   ) { fromArray( array ) }
+  public static     Stream from( int[] array     ) { fromArray( array ) }
+  public static     Stream from( long[] array    ) { fromArray( array ) }
+  public static     Stream from( float[] array   ) { fromArray( array ) }
+  public static     Stream from( double[] array  ) { fromArray( array ) }
+  public static     Stream from( boolean[] array ) { fromArray( array ) }
+
+  private static Stream fromArray( array ) {
+    new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( { array.toList() }, { true }, { it }, [:] ) )
+  }
+
+  /**
    * A basic filter for the Stream.  Elements in the Stream are passed to this
    * Closure, and only those that cause this closure to return something
    * passing Groovy Truth will be returned from the Stream. For Map based

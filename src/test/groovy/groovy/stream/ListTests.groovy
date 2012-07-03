@@ -12,4 +12,16 @@ public class ListTests extends spock.lang.Specification {
     then:
     result == [ [ 1, 0 ], [ 2, 1 ], [ 3, 2 ] ]
   }
+
+  def "test arrays"() {
+    setup:
+    int[] array = 1..3
+    def stream = Stream.from array transform { [ it, idx++ ] } using idx:0
+
+    when:
+    def result = stream.collect()
+
+    then:
+    result == [ [ 1, 0 ], [ 2, 1 ], [ 3, 2 ] ]
+  }
 }
