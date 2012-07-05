@@ -178,7 +178,8 @@ public class Stream<T> implements StreamInterface<T> {
   }
 
   /**
-   * The starting point for a Stream taking an array.
+   * The starting point for a Stream taking an array.  This will make a copy of the array
+   * (into a new List instance), and then generate the Stream from this new List.
    *
    * @param array The The array to use for the stream
    * @return A Stream that will iterate over the passed array, with
