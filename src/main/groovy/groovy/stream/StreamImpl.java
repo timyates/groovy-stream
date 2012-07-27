@@ -84,7 +84,7 @@ class StreamImpl<T,D> extends AbstractStream<T,D> {
   @Override
   protected void loadNext() {
     while( !exhausted ) {
-      if( current == null ) {
+      if( current == null && iterator.hasNext() ) {
         current = iterator.next() ;
       }
       else {
