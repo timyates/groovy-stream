@@ -38,12 +38,12 @@
 
 <p><code>groovy-stream</code> is a collection of classes which allow you to create a lazy-generator in Groovy.</p>
 
-<p>You can declare the input from which the Stream will generate its values, and then declare a filter and transformation for each element returned if required.</p>
+<p>You can declare the input from which the Stream will generate its values, and then declare a filter and mapping transformation for each element returned if required.</p>
 
 <p>To see examples, have a look in the <a href="https://github.com/timyates/groovy-stream/tree/master/src/test/groovy/groovy/stream"><code>src/test/groovy/groovy/stream</code> folder</a>, but in a nutshell, this class lets you do stuff like:</p>
 
 <div class="highlight">
-<pre><span class="n">Stream</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">from</span> <span class="nl">x:</span><span class="mi">1</span><span class="o">..</span><span class="mi">2</span><span class="o">,</span> <span class="nl">y:</span><span class="mi">1</span><span class="o">..</span><span class="mi">4</span> <span class="n">where</span> <span class="o">{</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">4</span> <span class="o">}</span>
+<pre><span class="n">Stream</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">from</span> <span class="nl">x:</span><span class="mi">1</span><span class="o">..</span><span class="mi">2</span><span class="o">,</span> <span class="nl">y:</span><span class="mi">1</span><span class="o">..</span><span class="mi">4</span> <span class="n">filter</span> <span class="o">{</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">4</span> <span class="o">}</span>
 
 <span class="k">assert</span> <span class="n">s</span><span class="o">.</span><span class="na">collect</span><span class="o">()</span> <span class="o">==</span> <span class="o">[</span> <span class="o">[</span> <span class="nl">x:</span><span class="mi">1</span><span class="o">,</span> <span class="nl">y:</span><span class="mi">3</span> <span class="o">],</span> <span class="o">[</span> <span class="nl">x:</span><span class="mi">2</span><span class="o">,</span> <span class="nl">y:</span><span class="mi">2</span> <span class="o">]</span> <span class="o">]</span>
 </pre>
@@ -53,7 +53,7 @@
 <p>or</p>
 
 <div class="highlight">
-<pre><span class="n">Stream</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">from</span> <span class="mi">1</span><span class="o">..</span><span class="mi">10</span> <span class="n">transform</span> <span class="o">{</span> <span class="n">it</span> <span class="o">+</span> <span class="n">x</span><span class="o">++</span> <span class="o">}</span> <span class="n">where</span> <span class="o">{</span> <span class="n">it</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">}</span> <span class="n">using</span> <span class="nl">x:</span><span class="mi">0</span>
+<pre><span class="n">Stream</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">from</span> <span class="mi">1</span><span class="o">..</span><span class="mi">10</span> <span class="n">map</span> <span class="o">{</span> <span class="n">it</span> <span class="o">+</span> <span class="n">x</span><span class="o">++</span> <span class="o">}</span> <span class="n">filter</span> <span class="o">{</span> <span class="n">it</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">}</span> <span class="n">using</span> <span class="nl">x:</span><span class="mi">0</span>
 
 <span class="k">assert</span> <span class="n">s</span><span class="o">.</span><span class="na">collect</span><span class="o">()</span> <span class="o">==</span> <span class="o">[</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">7</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">13</span> <span class="o">]</span>
 </pre>
@@ -63,7 +63,7 @@
 <div class="highlight">
 <pre><span class="c1">// Odd example but showing all of the features</span>
 
-<span class="n">Stream</span><span class="o">.</span><span class="na">from</span> <span class="o">{</span> <span class="mi">1</span><span class="o">..</span><span class="na">max</span> <span class="o">}</span> <span class="n">transform</span> <span class="o">{</span> <span class="o">-</span><span class="n">it</span> <span class="o">}</span> <span class="n">where</span> <span class="o">{</span> <span class="n">it</span> <span class="o">&gt;=</span> <span class="n">min</span> <span class="o">}</span> <span class="n">using</span> <span class="nl">min:</span><span class="mi">3</span><span class="o">,</span> <span class="nl">max:</span><span class="mi">5</span>
+<span class="n">Stream</span><span class="o">.</span><span class="na">from</span> <span class="o">{</span> <span class="mi">1</span><span class="o">..</span><span class="na">max</span> <span class="o">}</span> <span class="n">map</span> <span class="o">{</span> <span class="o">-</span><span class="n">it</span> <span class="o">}</span> <span class="n">filter</span> <span class="o">{</span> <span class="n">it</span> <span class="o">&gt;=</span> <span class="n">min</span> <span class="o">}</span> <span class="n">using</span> <span class="nl">min:</span><span class="mi">3</span><span class="o">,</span> <span class="nl">max:</span><span class="mi">5</span>
 
 <span class="k">assert</span> <span class="n">s</span><span class="o">.</span><span class="na">collect</span><span class="o">()</span> <span class="o">==</span> <span class="o">[</span> <span class="o">-</span><span class="mi">3</span><span class="o">,</span> <span class="o">-</span><span class="mi">4</span><span class="o">,</span> <span class="o">-</span><span class="mi">5</span> <span class="o">]</span>
 </pre>
@@ -73,6 +73,12 @@
 <p>There is a <a href="http://blog.bloidonia.com/post/22117894718/groovy-stream-a-lazy-generator-and-list-comprehension">blog post here</a> explaining the state of groovy-stream v0.1 and it's usage</p>
 
 <hr><h2>What's new</h2>
+
+<h3>v0.5</h3>
+
+<p>The functions <span class="n">where</span> and <span class="n">transform</span> have been renamed to <span class="n">filter</span> and <span class="n">map</span> respectively.</p>
+
+<p>It's better to use existing, known function names for existing functionality rather than inventing your own terms.</p>
 
 <h3>v0.4</h3>
 
@@ -146,7 +152,7 @@
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
-		          <script type="text/javascript">
+              <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
