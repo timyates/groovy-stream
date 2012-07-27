@@ -21,7 +21,7 @@ public class DocumentedTests extends spock.lang.Specification {
 
   def "test 3"() {
     setup:
-      def stream = Stream.from x:1..3, y:'a'..'b' where { x % 2 == 0 }
+      def stream = Stream.from x:1..3, y:'a'..'b' filter { x % 2 == 0 }
     when:
       def result = stream.collect()
     then:
@@ -30,7 +30,7 @@ public class DocumentedTests extends spock.lang.Specification {
 
   def "test 4"() {
     setup:
-      def stream = Stream.from x:1..3, y:'a'..'b' transform { [ x:x*2, y:"letter $y" ] }
+      def stream = Stream.from x:1..3, y:'a'..'b' map { [ x:x*2, y:"letter $y" ] }
     when:
       def result = stream.collect()
     then:
@@ -41,7 +41,7 @@ public class DocumentedTests extends spock.lang.Specification {
 
   def "test 5"() {
     setup:
-      def stream = Stream.from 'a'..'c' transform { [ idx++, it ] } using idx:0
+      def stream = Stream.from 'a'..'c' map { [ idx++, it ] } using idx:0
     when:
       def result = stream.collect()
     then:
