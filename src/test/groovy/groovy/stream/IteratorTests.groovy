@@ -17,7 +17,7 @@ public class IteratorTests extends spock.lang.Specification {
     setup:
     def x = 0
     def eternal = [ hasNext:{ true }, next:{ x++ } ] as Iterator
-    def stream = Stream.from eternal where { it < 5 ?: STOP }
+    def stream = Stream.from eternal filter { it < 5 ?: STOP }
 
     when:
     def result = stream.collect()
@@ -34,7 +34,7 @@ public class IteratorTests extends spock.lang.Specification {
     // Ranges as of Groovy 1.8.6 can't be > Integer.MAX_VALUE
     // in length else iterator() fails
     def eternal = (1..2147483647).iterator()
-    def stream = Stream.from eternal where { it < 5 ?: STOP }
+    def stream = Stream.from eternal filter { it < 5 ?: STOP }
 
     when:
     def result = stream.collect()

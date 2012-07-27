@@ -57,11 +57,11 @@ package groovy.stream
  *            [x:3,y:'a'], [x:3,y:'b'] ] == stream.collect()
  * </pre>
  *
- * Streams may be filtered using the <code>where</code> method which takes a Closure
+ * Streams may be filtered using the <code>filter</code> method which takes a Closure
  * returning Groovy Truth:
  *
  * <pre>
- *   def stream = Stream.from x:1..3, y:'a'..'b' where { x % 2 == 0 }
+ *   def stream = Stream.from x:1..3, y:'a'..'b' filter { x % 2 == 0 }
  *   assert [ [x:2,y:'a'], [x:2,y:'b'] ] == stream.collect()
  * </pre>
  *
@@ -69,17 +69,17 @@ package groovy.stream
  * magic variable <code>STOP</code>:
  *
  * <pre>
- *   Stream s = Stream.from { 1 } where { idx < 5 ?: STOP } transform { idx++ ; it } using idx:0
+ *   Stream s = Stream.from { 1 } filter { idx < 5 ?: STOP } map { idx++ ; it } using idx:0
  *   // The length of this is 1 greater than expected as transform is executed
  *   // (and so idx is updated) AFTER the where condition has already passed the
  *   // last element.
  *   assert s.collect().size() == 6
  * </pre>
  *
- * It is also possible to transform the returned values by using a <code>transform</code> Closure:
+ * It is also possible to transform the returned values by using a <code>map</code> Closure:
  *
  * <pre>
- *   def stream = Stream.from x:1..3, y:'a'..'b' transform { [ x:x*2, y:"letter $y" ] }
+ *   def stream = Stream.from x:1..3, y:'a'..'b' map { [ x:x*2, y:"letter $y" ] }
  *   assert [ [x:2,y:'letter a'], [x:2,y:'letter b'],
  *            [x:4,y:'letter a'], [x:4,y:'letter b'],
  *            [x:6,y:'letter a'], [x:6,y:'letter b'] ] == stream.collect()
@@ -87,14 +87,14 @@ package groovy.stream
  *
  * Finally, it is possible to supply a map of variables to the <code>using</code> Closure
  * which may then be used in any of the components of the Stream setup (though
- * may only be modified in the <code>transform</code> closure above):
+ * may only be modified in the <code>map</code> closure above):
  *
  * <pre>
- *   Stream s = Stream.from 'a'..'c' transform { [ idx++, it ] } using idx:0
+ *   Stream s = Stream.from 'a'..'c' map { [ idx++, it ] } using idx:0
  *   assert s.collect() == [ [0,'a'], [1,'b'], [2,'c'] ]
  * </pre>
  *
- * Streams may only have one <code>using</code>, <code>transform</code>, or
+ * Streams may only have one <code>using</code>, <code>map</code>, or
  * <code>where</code> block.  Calling these methods multiple times with result
  * in the original blocks getting overwritten by the new ones.
  *
@@ -140,8 +140,8 @@ public class Stream<T> implements StreamInterface<T> {
    *
    * @param iterables The Map of Iterables
    * @return A Stream that will iterate over the iterables, with
-   *         <code>where</code> set to <code>{true}</code>,
-   *         <code>transform</code> set to <code>{it}</code> and
+   *         <code>filter</code> set to <code>{true}</code>,
+   *         <code>map</code> set to <code>{it}</code> and
    *         <code>using</code> set to the empty Map.
    */
   public static Stream from( Map iterables ) {
@@ -156,8 +156,8 @@ public class Stream<T> implements StreamInterface<T> {
    *
    * @param closure The Closure to call for each returned element
    * @return A Stream that will iterate and return the result of Closure.call()
-   *         each step, with <code>where</code> set to <code>{true}</code>,
-   *         <code>transform</code> set to <code>{it}</code> and
+   *         each step, with <code>filter</code> set to <code>{true}</code>,
+   *         <code>map</code> set to <code>{it}</code> and
    *         <code>using</code> set to the empty Map.
    */
   public static Stream from( Closure closure ) {
@@ -169,8 +169,8 @@ public class Stream<T> implements StreamInterface<T> {
    *
    * @param other The Iterable or Iterator to use for the Stream
    * @return A Stream that will iterate over the passed object, with
-   *         <code>where</code> set to <code>{true}</code>,
-   *         <code>transform</code> set to <code>{it}</code> and
+   *         <code>filter</code> set to <code>{true}</code>,
+   *         <code>map</code> set to <code>{it}</code> and
    *         <code>using</code> set to the empty Map.
    */
   public static Stream from( other ) {
@@ -183,10 +183,11 @@ public class Stream<T> implements StreamInterface<T> {
    *
    * @param array The The array to use for the stream
    * @return A Stream that will iterate over the passed array, with
-   *         <code>where</code> set to <code>{true}</code>,
-   *         <code>transform</code> set to <code>{it}</code> and
+   *         <code>filter</code> set to <code>{true}</code>,
+   *         <code>map</code> set to <code>{it}</code> and
    *         <code>using</code> set to the empty Map.
    */
+  @SuppressWarnings(["unchecked", "varargs"])
   public static <T> Stream from( T[] array       ) { fromArray( array ) }
   public static     Stream from( byte[] array    ) { fromArray( array ) }
   public static     Stream from( char[] array    ) { fromArray( array ) }
@@ -210,13 +211,13 @@ public class Stream<T> implements StreamInterface<T> {
    * also passed as a parameter to the closure so the map values may be
    * accessed where they are hidden by variables in the static scope.
    *
-   * @param where The closure to filter the Stream
+   * @param predicate The closure to filter the Stream
    * @return A new Stream with this filter assigned.
    */
-  public Stream where( Closure where ) {
+  public Stream filter( Closure predicate ) {
     wrapped = type == StreamType.MAP ?
-              new MapStream( wrapped.definition, where, wrapped.transform, wrapped.using ) :
-              new StreamImpl( wrapped.definition, where, wrapped.transform, wrapped.using )
+              new MapStream( wrapped.definition, predicate, wrapped.transform, wrapped.using ) :
+              new StreamImpl( wrapped.definition, predicate, wrapped.transform, wrapped.using )
     this
   }
   
@@ -233,7 +234,7 @@ public class Stream<T> implements StreamInterface<T> {
    * @param transform The closure to manipulate the current stream value.
    * @return A new Stream with this transform assigned.
    */
-  public Stream transform( Closure transform ) {
+  public Stream map( Closure transform ) {
     wrapped = type == StreamType.MAP ?
               new MapStream( wrapped.definition, wrapped.condition, transform, wrapped.using ) :
               new StreamImpl( wrapped.definition, wrapped.condition, transform, wrapped.using )

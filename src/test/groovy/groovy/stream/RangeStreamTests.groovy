@@ -19,7 +19,7 @@ public class RangeStreamTests extends spock.lang.Specification {
     setup:
     def range  = 1..10
     def limit  = 4..6
-    def stream = Stream.from range where { it in limit }
+    def stream = Stream.from range filter { it in limit }
 
     when:
     def result = stream.collect()
@@ -34,7 +34,7 @@ public class RangeStreamTests extends spock.lang.Specification {
   def "Transformed Range usage"() {
     setup:
     def range  = 1..3
-    def stream = Stream.from range transform { it * 2 }
+    def stream = Stream.from range map { it * 2 }
 
     when:
     def result = stream.collect()
@@ -50,7 +50,7 @@ public class RangeStreamTests extends spock.lang.Specification {
     setup:
     def range    = 1..10
     def expected = [ 4, 8, 12, 16, 20 ]
-    def stream   = Stream.from range where { it % 2 == 0 } transform { it * 2 }
+    def stream   = Stream.from range filter { it % 2 == 0 } map { it * 2 }
 
     when:
     def result = stream.collect()
@@ -79,7 +79,7 @@ public class RangeStreamTests extends spock.lang.Specification {
     def lower    = 3
     def upper    = 5
     def expected = (lower..upper)*.multiply( -1 )
-    def stream = Stream.from { 1..max } transform { -it } where { it >= min } using min:lower, max:upper
+    def stream = Stream.from { 1..max } map { -it } filter { it >= min } using min:lower, max:upper
 
     when:
     def result = stream.collect()
@@ -94,7 +94,7 @@ public class RangeStreamTests extends spock.lang.Specification {
     setup:
     def expected = [ 0, 2, 6, 12 ]
     def stream
-    stream = Stream.from 1..4 transform { stream.streamIndex * it }
+    stream = Stream.from 1..4 map { stream.streamIndex * it }
 
     when:
     def result = stream.collect()
