@@ -187,6 +187,7 @@ public class Stream<T> implements StreamInterface<T> {
    *         <code>map</code> set to <code>{it}</code> and
    *         <code>using</code> set to the empty Map.
    */
+  @SuppressWarnings(["unchecked", "varargs"])
   public static <T> Stream from( T[] array       ) { fromArray( array ) }
   public static     Stream from( byte[] array    ) { fromArray( array ) }
   public static     Stream from( char[] array    ) { fromArray( array ) }
