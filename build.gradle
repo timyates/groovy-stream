@@ -53,6 +53,7 @@ task generateModule << {
 
 compileGroovy.dependsOn( generateModule )
 test.dependsOn( jar )
+uploadArchives.dependsOn( test )
 
 jar {
   from( metaServices ) {
