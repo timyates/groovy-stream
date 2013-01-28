@@ -11,6 +11,9 @@ buildscript {
 apply plugin: 'groovy'
 apply plugin: 'nexus'
 
+group = 'com.bloidonia'
+version = '0.5.1'
+
 repositories {
   mavenCentral()
 }
@@ -18,11 +21,10 @@ repositories {
 dependencies {
   groovy      'org.codehaus.groovy:groovy-all:2.1.0'
   testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+  testRuntime fileTree( dir:'build/libs/', includes:[ "groovy-stream-${version}.jar".toString() ] )
 }
 
 compileGroovy.options.compilerArgs << "-Xlint:unchecked" << "-Werror"
-group = 'com.bloidonia'
-version = '0.5.1'
 
 groovydoc {
   docTitle = "Groovy Stream: A Lazy Generator"
@@ -47,6 +49,7 @@ task generateModule << {
 }
 
 compileGroovy.dependsOn( generateModule )
+test.dependsOn( jar )
 
 jar {
   from( metaServices ) {
