@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-  groovy      'org.codehaus.groovy:groovy-all:2.1.0'
+  compile     'org.codehaus.groovy:groovy-all:2.1.0'
   testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
   testRuntime fileTree( dir:'build/libs/', includes:[ "groovy-stream-${version}.jar".toString() ] )
 }
