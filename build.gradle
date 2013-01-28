@@ -1,5 +1,15 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.2'
+  }
+}
+
 apply plugin: 'groovy'
-apply plugin: 'maven'
+apply plugin: 'nexus'
 
 repositories {
   mavenCentral()
@@ -44,16 +54,55 @@ jar {
   }
 }
 
-uploadArchives {
-  if( project.hasProperty( 'localrepo' ) ) {
-    repositories {
-      mavenDeployer {
-        repository( url: "file:${localrepo}" )
+groovydoc {
+  use             = true
+  destinationDir  = new File( "${project.buildDir.path}/groovydoc", project.version )
+  header = '<a href="https://github.com/timyates/groovy-common-extensions">groovy-common-extensions</a>'
+  footer = null
+
+  link 'http://download.oracle.com/javase/6/docs/api/',                 'java.'
+  link 'http://groovy.codehaus.org/api/',                               'groovy.', 'org.codehaus.groovy.'
+}
+
+task groovydocJar(type: Jar, dependsOn: groovydoc) {
+  classifier 'javadoc'
+  from groovydoc.destinationDir
+}
+
+artifacts {
+  archives jar
+  archives sourcesJar
+  archives groovydocJar
+}
+
+modifyPom {
+  project {
+    name 'Groovy Stream'
+    description 'A collection of classes to give a fluent builder for Streams (Lazy Groovy Generators).'
+    url 'http://timyates.github.com/groovy-stream/'
+    inceptionYear '2012'
+
+    scm {
+      url 'https://github.com/timyates/groovy-stream'
+      connection 'scm:https://github.com/timyates/groovy-stream.git'
+      developerConnection 'scm:git://github.com/timyates/groovy-stream.git'
+    }
+
+    licenses {
+      license {
+        name 'The Apache Software License, Version 2.0'
+        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+        distribution 'repo'
       }
     }
-  }
-  else {
-    println "Need to set 'localrepo' in gradle.properties if you wish to run the uploadArchives task"
+
+    developers {
+      developer {
+        id 'tim_yates'
+        name 'Tim Yates'
+        email 'tim.yates@gmail.com'
+      }
+    }
   }
 }
 
