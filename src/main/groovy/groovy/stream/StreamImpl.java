@@ -75,6 +75,9 @@ class StreamImpl<T,D> extends AbstractStream<T,D> {
 
   @Override
   public T next() {
+    if( !initialised ) {
+      hasNext() ;
+    }
     T ret = current ;
     loadNext() ;
     this.streamIndex++ ;

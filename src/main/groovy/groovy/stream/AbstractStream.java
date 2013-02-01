@@ -37,7 +37,7 @@ abstract class AbstractStream<T,D> implements StreamInterface<T> {
   Map<String,Object> using ;
   D initial ;
   T current ;
-  private boolean initialised ;
+  protected boolean initialised ;
 
   protected AbstractStream( Closure<D> definition, Closure condition, Closure<T> transform, Map<String,Object> using ) {
     this.using = using ;

@@ -45,4 +45,29 @@ public class IteratorTests extends spock.lang.Specification {
     stream.exhausted
     stream.streamIndex == 3
   }
+
+  def "Stream of randoms"() {
+    setup:
+      def rnd = new Random( 10 )
+      def rndIterator = [ hasNext:{ true }, next:{ rnd.nextDouble() } ] as Iterator
+      def stream = Stream.from rndIterator filter { it < 0.5 } map { ( it * 100 ) as Integer }
+
+    when:
+      def result = stream.take( 2 ).collect()
+
+    then:
+      result == [ 25, 5 ]
+  }
+
+  def "Github issue #11: Just calling next() causes NPE"() {
+    setup:
+      def iter = [ hasNext:{ true }, next:{ 1 } ] as Iterator
+      def stream = Stream.from iter
+
+    when:
+      def result = stream.next()
+
+    then:
+      result == 1
+  }
 }
