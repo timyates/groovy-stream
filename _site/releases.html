@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Releases</title>
+    
+    <meta name="author" content="Tim Yates">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">The Groovy-stream library</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li class="active"><a href="/releases.html" class="active">Releases</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>Releases </h1>
+</div>
+
+<div class="row">
+  <div class="span12">
+    <h3>v0.5.3</h3>
+
+<p>Fixed a <a href="https://github.com/timyates/groovy-stream/issues/11">slight issue</a> where calling <code>next()</code> on a Stream before calling <code>hasNext()</code> would cause a <code>NullPointerException</code></p>
+
+<p>Although calling <code>next()</code> before calling <code>hasNext()</code> feels a bit free and loose as programming goes, it was probably wrong ;-)</p>
+
+<h3>v0.5.2</h3>
+
+<p>The library now works with Java 6 (thanks to <a href="https://twitter.com/aalmiray">Andres Almiray</a> for <a href="https://github.com/timyates/groovy-stream/issues/8">spotting this one</a>)</p>
+
+<h3>v0.5.1</h3>
+
+<p>Fixed a bug whereby Streams couldn't iterate another Stream.</p>
+
+<h3>v0.5</h3>
+
+<p>The functions where and transform have been renamed to <code>filter</code> and <code>map</code> respectively.</p>
+
+<p>It's better to use existing, known function names for existing functionality rather than inventing your own terms.</p>
+
+<h3>v0.4</h3>
+
+<p>You can now use arrays as a source for groovy-streams. Previously, running:</p>
+
+<div class="highlight"><pre><code class="groovy"><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span> <span class="o">=</span> <span class="o">[</span> <span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span> <span class="o">]</span>
+<span class="n">Stream</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">from</span> <span class="n">arr</span>
+<span class="n">s</span><span class="o">.</span><span class="na">each</span> <span class="o">{</span> <span class="n">println</span> <span class="n">it</span> <span class="o">}</span>
+</code></pre></div>
+
+
+<p>Would be an infinite loop, returning <code>[1,2,3]</code> every time.</p>
+
+<p>This will now behave as expected.</p>
+
+<h3>v0.3</h3>
+
+<p>groovy-stream can now be used as a Module Extension with Groovy 2.0</p>
+
+<p>This means you can do:</p>
+
+<div class="highlight"><pre><code class="groovy"><span class="n">Stream</span> <span class="n">s</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">].</span><span class="na">toStream</span><span class="o">()</span>
+</code></pre></div>
+
+
+<p>Just by including the built jar on your classpath. It works with <code>@Grab</code> too:</p>
+
+<div class="highlight"><pre><code class="groovy"><span class="nd">@GrabResolver</span><span class="o">(</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;bloidonia&#39;</span><span class="o">,</span> <span class="n">root</span><span class="o">=</span><span class="s1">&#39;https://raw.github.com/timyates/bloidonia-repo/master&#39;</span> <span class="o">)</span>
+<span class="nd">@Grab</span><span class="o">(</span><span class="s1">&#39;com.bloidonia:groovy-stream:0.3&#39;</span><span class="o">)</span>
+<span class="kn">import</span> <span class="nn">groovy.stream.Stream</span> 
+
+<span class="kt">def</span> <span class="n">s</span> <span class="o">=</span> <span class="o">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">4</span><span class="o">).</span><span class="na">toStream</span><span class="o">()</span>
+<span class="k">assert</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">]</span> <span class="o">==</span> <span class="n">s</span><span class="o">.</span><span class="na">collect</span><span class="o">()</span>
+</code></pre></div>
+
+
+<p>See <code>groovy.stream.StreamExtension</code> for the decorated classes.</p>
+
+<p>Currently (as of Groovy 2.0RC4) there are issues with using @Grab -- (see GROOVY-5543 but this should work fine where the jar is added to the classpath by hand.</p>
+
+<h3>v0.2</h3>
+
+<p>When Streaming over a Map, it is now passed as a parameter to the where block so you can deal with shadowed variables, ie:</p>
+
+<div class="highlight"><pre><code class="groovy"><span class="kt">def</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="kt">def</span> <span class="n">bad</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">from</span> <span class="nl">x:</span><span class="mi">1</span><span class="o">..</span><span class="mi">3</span><span class="o">,</span> <span class="nl">y:</span><span class="mi">1</span><span class="o">..</span><span class="mi">3</span> <span class="n">where</span> <span class="o">{</span> <span class="n">x</span> <span class="o">==</span> <span class="n">y</span> <span class="o">}</span>
+<span class="k">assert</span> <span class="n">bad</span><span class="o">.</span><span class="na">collect</span><span class="o">()</span> <span class="o">==</span> <span class="o">[]</span> <span class="c1">// as &#39;x&#39; in the where block == 10</span>
+
+<span class="kt">def</span> <span class="n">good</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">from</span> <span class="nl">x:</span><span class="mi">1</span><span class="o">..</span><span class="mi">3</span><span class="o">,</span> <span class="nl">y:</span><span class="mi">1</span><span class="o">..</span><span class="mi">3</span> <span class="n">where</span> <span class="o">{</span> <span class="n">it</span><span class="o">.</span><span class="na">x</span> <span class="o">==</span> <span class="n">it</span><span class="o">.</span><span class="na">y</span> <span class="o">}</span>
+<span class="k">assert</span> <span class="n">good</span><span class="o">.</span><span class="na">collect</span><span class="o">()</span> <span class="o">==</span> <span class="o">[</span> <span class="o">[</span><span class="nl">x:</span><span class="mi">1</span><span class="o">,</span><span class="nl">y:</span><span class="mi">1</span><span class="o">],[</span><span class="nl">x:</span><span class="mi">2</span><span class="o">,</span><span class="nl">y:</span><span class="mi">2</span><span class="o">],[</span><span class="nl">x:</span><span class="mi">3</span><span class="o">,</span><span class="nl">y:</span><span class="mi">3</span><span class="o">]</span> <span class="o">]</span>
+</code></pre></div>
+
+
+<h3>v0.1</h3>
+
+<p>Initial release.</p>
+
+  </div>
+</div>
+
+
+      </div>
+
+      <footer>
+        <p>&copy; Tim Yates 2013
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+  </body>
+</html>
+
