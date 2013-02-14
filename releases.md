@@ -10,9 +10,14 @@ group: navigation
 
 `Stream` now implements `Iterable<T>`
 
-This lets you use streams as observables with [RxJava](https://github.com/Netflix/RxJava), ie:
+This lets you (once 0.5.4 hits maven) use streams as observables with [RxJava](https://github.com/Netflix/RxJava), ie:
 
-    def integers = Stream.from { x++ } using x:1
+    @Grab('com.bloidonia:groovy-stream:0.5.4')
+    import groovy.stream.*
+    @Grab('com.netflix.rxjava:rxjava-groovy:0.5.2')
+    import rx.*
+
+    def integers = Stream.from 1..50
     Observable.toObservable( integers )
               .skip( 10 )
               .take( 5 )
