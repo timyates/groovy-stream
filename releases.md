@@ -6,6 +6,27 @@ group: navigation
 ---
 {% include JB/setup %}
 
+### v0.5.4
+
+`Stream` now implements `Iterable<T>`
+
+This lets you use streams as observables with [RxJava](https://github.com/Netflix/RxJava), ie:
+
+    def integers = Stream.from { x++ } using x:1
+    Observable.toObservable( integers )
+              .skip( 10 )
+              .take( 5 )
+              .map { "Number $it" }
+              .subscribe { println "onNext => " + it }
+
+Which should print:
+
+    onNext => Number 11
+    onNext => Number 12
+    onNext => Number 13
+    onNext => Number 14
+    onNext => Number 15
+          
 ### v0.5.3
 
 Fixed a [slight issue](https://github.com/timyates/groovy-stream/issues/11) where calling `next()` on a Stream before calling `hasNext()` would cause a `NullPointerException`
