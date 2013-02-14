@@ -100,7 +100,7 @@ package groovy.stream
  *
  * @author Tim Yates
  */
-public class Stream<T> implements StreamInterface<T> {
+public class Stream<T> implements StreamInterface<T>, Iterable<T> {
   private static enum StreamType { MAP, OTHER }
   private StreamInterface wrapped
   private StreamType type
@@ -131,6 +131,7 @@ public class Stream<T> implements StreamInterface<T> {
    */
   public  int        getStreamIndex() { wrapped.streamIndex }
 
+  public Iterator<T> iterator() { wrapped }
   /**
    * The starting point for a Stream taking a Map of Iterables to
    * lazily return.  The Stream will return all combinations of this map,
