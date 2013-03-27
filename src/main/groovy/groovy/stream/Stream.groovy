@@ -130,6 +130,7 @@ public class Stream<T> implements StreamInterface<T>, Iterable<T> {
    * @return the current index
    */
   public  int        getStreamIndex() { wrapped.streamIndex }
+  public  int        getUnfilteredIndex() { wrapped.unfilteredIndex }
 
   public Iterator<T> iterator() { wrapped }
   /**

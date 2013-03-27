@@ -10,9 +10,10 @@ public class RangeStreamTests extends spock.lang.Specification {
     def result = stream.collect()
 
     then:
-    result.size()      == range.size()
+    result.size()          == range.size()
     stream.exhausted
-    stream.streamIndex == range.size() - 1
+    stream.streamIndex     == range.size() - 1
+    stream.unfilteredIndex == range.size() - 1
   }
 
   def "Limited Range usage"() {
@@ -25,10 +26,11 @@ public class RangeStreamTests extends spock.lang.Specification {
     def result = stream.collect()
 
     then:
-    result.size()      == limit.size()
-    result             == limit
+    result.size()          == limit.size()
+    result                 == limit
     stream.exhausted
-    stream.streamIndex == limit.size() - 1
+    stream.streamIndex     == limit.size() - 1
+    stream.unfilteredIndex == range.size() - 1
   }
 
   def "Transformed Range usage"() {
@@ -40,10 +42,11 @@ public class RangeStreamTests extends spock.lang.Specification {
     def result = stream.collect()
 
     then:
-    result.size()      == range.size()
-    result             == range*.multiply( 2 )
+    result.size()          == range.size()
+    result                 == range*.multiply( 2 )
     stream.exhausted
-    stream.streamIndex == range.size() - 1
+    stream.streamIndex     == range.size() - 1
+    stream.unfilteredIndex == range.size() - 1
   }
 
   def "Transformed, Even Range usage"() {
@@ -56,10 +59,12 @@ public class RangeStreamTests extends spock.lang.Specification {
     def result = stream.collect()
 
     then:
-    result             == expected
+    result                 == expected
     stream.exhausted
-    stream.streamIndex == expected.size() - 1
+    stream.streamIndex     == expected.size() - 1
+    stream.unfilteredIndex == range.size() - 1
   }
+
   def "Range with local variables"() {
     setup:
     def upper  = 5
@@ -69,9 +74,10 @@ public class RangeStreamTests extends spock.lang.Specification {
     def result = stream.collect()
 
     then:
-    result             == 1..upper
+    result                 == 1..upper
     stream.exhausted
-    stream.streamIndex == upper - 1
+    stream.streamIndex     == upper - 1
+    stream.unfilteredIndex == upper - 1
   }
 
   def "The kitchen sink"() {
@@ -85,9 +91,10 @@ public class RangeStreamTests extends spock.lang.Specification {
     def result = stream.collect()
 
     then:
-    result             == expected
+    result                 == expected
     stream.exhausted
-    stream.streamIndex == expected.size() - 1
+    stream.streamIndex     == expected.size() - 1
+    stream.unfilteredIndex == upper - 1
   }
 
   def "Ranged index access"() {

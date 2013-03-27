@@ -30,6 +30,7 @@ abstract class AbstractStream<T,D> implements StreamInterface<T> {
     put( "STOP", StreamStopper.getInstance() ) ;
   }} ;
   protected int streamIndex = -1 ;
+  protected int unfilteredIndex = -1 ;
   protected boolean exhausted = false ;
   Closure<D> definition ;
   Closure condition ;
@@ -64,6 +65,10 @@ abstract class AbstractStream<T,D> implements StreamInterface<T> {
 
   public int getStreamIndex() {
     return streamIndex ;
+  }
+
+  public int getUnfilteredIndex() {
+    return unfilteredIndex ;
   }
 
   public boolean isExhausted() {

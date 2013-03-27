@@ -77,17 +77,20 @@ class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends AbstractStre
     while( !exhausted ) {
       if( current == null ) {
         current = getFirst() ;
+        this.unfilteredIndex++ ;
       }
       else {
         for( int i = keys.size() - 1 ; i >= 0 ; i-- ) {
           String key = keys.get( i ) ;
           if( iterators.get( key ).hasNext() ) {
             ((Map)current).put( key, iterators.get( key ).next() ) ;
+            this.unfilteredIndex++ ;
             break ;
           }
           else if( i > 0 ) {
             iterators.put( key, initial.get( key ).iterator() ) ;
             ((Map)current).put( key, iterators.get( key ).next() ) ;
+            this.unfilteredIndex++ ;
           }
           else {
             exhausted = true ;

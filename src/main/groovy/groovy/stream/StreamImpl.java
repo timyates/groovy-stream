@@ -89,10 +89,12 @@ class StreamImpl<T,D> extends AbstractStream<T,D> {
     while( !exhausted ) {
       if( current == null && iterator.hasNext() ) {
         current = iterator.next() ;
+        this.unfilteredIndex++ ;
       }
       else {
         if( iterator.hasNext() ) {
           current = iterator.next() ;
+          this.unfilteredIndex++ ;
         }
         else {
           exhausted = true ;
