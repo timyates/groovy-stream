@@ -147,7 +147,7 @@ public class Stream<T> implements StreamInterface<T>, Iterable<T> {
    *         <code>using</code> set to the empty Map.
    */
   public static Stream from( Map iterables ) {
-    new Stream( type:StreamType.MAP, wrapped:new MapStream( { iterables }, { true }, { it }, [:] ) )
+    new Stream( type:StreamType.MAP, wrapped:new MapStream( { iterables }, { true }, { it }, [:], { false } ) )
   }
 
   /**
@@ -163,7 +163,7 @@ public class Stream<T> implements StreamInterface<T>, Iterable<T> {
    *         <code>using</code> set to the empty Map.
    */
   public static Stream from( Closure closure ) {
-    new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( closure, { true }, { it }, [:] ) )
+    new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( closure, { true }, { it }, [:], { false } ) )
   }
 
   /**
@@ -176,7 +176,7 @@ public class Stream<T> implements StreamInterface<T>, Iterable<T> {
    *         <code>using</code> set to the empty Map.
    */
   public static Stream from( other ) {
-    new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( { other }, { true }, { it }, [:] ) )
+    new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( { other }, { true }, { it }, [:], { false } ) )
   }
 
   /**
@@ -201,7 +201,7 @@ public class Stream<T> implements StreamInterface<T>, Iterable<T> {
   public static     Stream from( boolean[] array ) { fromArray( array ) }
 
   private static Stream fromArray( array ) {
-    new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( { array.toList() }, { true }, { it }, [:] ) )
+    new Stream( type:StreamType.OTHER, wrapped:new StreamImpl( { array.toList() }, { true }, { it }, [:], { false } ) )
   }
 
   /**
@@ -218,8 +218,8 @@ public class Stream<T> implements StreamInterface<T>, Iterable<T> {
    */
   public Stream filter( Closure predicate ) {
     wrapped = type == StreamType.MAP ?
-              new MapStream( wrapped.definition, predicate, wrapped.transform, wrapped.using ) :
-              new StreamImpl( wrapped.definition, predicate, wrapped.transform, wrapped.using )
+              new MapStream( wrapped.definition, predicate, wrapped.transform, wrapped.using, wrapped.until ) :
+              new StreamImpl( wrapped.definition, predicate, wrapped.transform, wrapped.using, wrapped.until )
     this
   }
   
@@ -238,8 +238,8 @@ public class Stream<T> implements StreamInterface<T>, Iterable<T> {
    */
   public Stream map( Closure transform ) {
     wrapped = type == StreamType.MAP ?
-              new MapStream( wrapped.definition, wrapped.condition, transform, wrapped.using ) :
-              new StreamImpl( wrapped.definition, wrapped.condition, transform, wrapped.using )
+              new MapStream( wrapped.definition, wrapped.condition, transform, wrapped.using, wrapped.until ) :
+              new StreamImpl( wrapped.definition, wrapped.condition, transform, wrapped.using, wrapped.until )
     this
   }
   
@@ -255,8 +255,15 @@ public class Stream<T> implements StreamInterface<T>, Iterable<T> {
    */
   public Stream using( Map using ) {
     wrapped = type == StreamType.MAP ?
-              new MapStream( wrapped.definition, wrapped.condition, wrapped.transform, using ) :
-              new StreamImpl( wrapped.definition, wrapped.condition, wrapped.transform, using )
+              new MapStream( wrapped.definition, wrapped.condition, wrapped.transform, using, wrapped.until ) :
+              new StreamImpl( wrapped.definition, wrapped.condition, wrapped.transform, using, wrapped.until )
+    this
+  }
+
+  public Stream until( Closure<Boolean> until ) {
+    wrapped = type == StreamType.MAP ?
+              new MapStream( wrapped.definition, wrapped.condition, wrapped.transform, wrapped.using, until ) :
+              new StreamImpl( wrapped.definition, wrapped.condition, wrapped.transform, wrapped.using, until )
     this
   }
 }

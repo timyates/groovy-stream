@@ -32,8 +32,8 @@ class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends AbstractStre
   private Map<String,Iterator> iterators ;
   private List<String> keys ;
 
-  protected MapStream( Closure<D> definition, Closure condition, Closure<T> transform, LinkedHashMap<String,Object> using ) {
-    super( definition, condition, transform, using ) ;
+  protected MapStream( Closure<D> definition, Closure condition, Closure<T> transform, LinkedHashMap<String,Object> using, Closure<Boolean> until ) {
+    super( definition, condition, transform, using, until ) ;
   }
 
   @Override
@@ -96,6 +96,10 @@ class MapStream<T,D extends LinkedHashMap<String,Iterable>> extends AbstractStre
             exhausted = true ;
           }
         }
+      }
+      if( until.call( current ) ) {
+        exhausted = true ;
+        break ;
       }
       condition.setDelegate( generateMapDelegate( using, stopDelegate, (Map)current ) ) ;
       Object cond = condition.call( current ) ;

@@ -36,11 +36,12 @@ abstract class AbstractStream<T,D> implements StreamInterface<T> {
   Closure condition ;
   Closure<T> transform ;
   Map<String,Object> using ;
+  Closure<Boolean> until ;
   D initial ;
   T current ;
   protected boolean initialised ;
 
-  protected AbstractStream( Closure<D> definition, Closure condition, Closure<T> transform, Map<String,Object> using ) {
+  protected AbstractStream( Closure<D> definition, Closure condition, Closure<T> transform, Map<String,Object> using, Closure<Boolean> until ) {
     this.using = using ;
 
     this.definition = definition ;
@@ -54,12 +55,17 @@ abstract class AbstractStream<T,D> implements StreamInterface<T> {
     this.transform = transform ;
     this.transform.setDelegate( this.using ) ;
     this.transform.setResolveStrategy( Closure.DELEGATE_FIRST ) ;
+
+    this.until = until ;
+    this.until.setDelegate( this.using ) ;
+    this.until.setResolveStrategy( Closure.DELEGATE_FIRST ) ;
   }
 
   protected Closure<D> getDefinition() { return definition ; }
   protected Closure getCondition() { return condition ; }
   protected Closure<T> getTransform() { return transform ; }
   protected Map getUsing() { return using ; }
+  protected Closure<Boolean> getUntil() { return until ; }
 
   protected abstract void initialise() ;
 

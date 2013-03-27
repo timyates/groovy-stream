@@ -53,8 +53,8 @@ class StreamImpl<T,D> extends AbstractStream<T,D> {
 
   private Iterator<T> iterator ;
 
-  protected StreamImpl( Closure<D> definition, Closure condition, Closure<T> transform, LinkedHashMap<String,Object> using ) {
-    super( definition, condition, transform, using ) ;
+  protected StreamImpl( Closure<D> definition, Closure condition, Closure<T> transform, LinkedHashMap<String,Object> using, Closure<Boolean> until ) {
+    super( definition, condition, transform, using, until ) ;
   }
 
   @Override
@@ -99,6 +99,10 @@ class StreamImpl<T,D> extends AbstractStream<T,D> {
         else {
           exhausted = true ;
         }
+      }
+      if( until.call( current ) ) {
+        exhausted = true ;
+        break ;
       }
       condition.setDelegate( generateMapDelegate( using, stopDelegate ) ) ;
       Object cond = condition.call( current ) ;
