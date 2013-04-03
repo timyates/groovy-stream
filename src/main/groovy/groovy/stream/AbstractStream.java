@@ -16,6 +16,7 @@
 package groovy.stream ;
 
 import groovy.lang.Closure ;
+import groovy.lang.GroovyObjectSupport ;
 import java.util.List ;
 import java.util.Map ;
 import java.util.HashMap ;
@@ -26,9 +27,45 @@ import java.util.HashMap ;
  * @author Tim Yates
  */
 abstract class AbstractStream<T,D> implements StreamInterface<T> {
-  protected static final Map<String,StreamStopper> stopDelegate = new HashMap<String,StreamStopper>() {{
-    put( "STOP", StreamStopper.getInstance() ) ;
-  }} ;
+  protected class StreamDelegate extends GroovyObjectSupport {
+    private Map<String,Object> backingMap ;
+    private Map<String,Object> currentMap ;
+
+    private StreamDelegate( Map<String,Object> using ) {
+      this( using, new HashMap<String,Object>() ) ;
+    }
+
+    private StreamDelegate( Map<String,Object> using, Map<String,Object> current ) {
+      this.backingMap = using ;
+      this.currentMap = current ;
+    }
+
+    public void propertyMissing( String name, Object value ) {
+      System.out.println( "PM: '" + name + "' " + value ) ;
+      if( currentMap.keySet().contains( name ) ) {
+        currentMap.put( name, value ) ;
+      }
+      else if( backingMap.keySet().contains( name ) ) {
+        backingMap.put( name, value ) ;
+      }
+    }
+
+    public Object propertyMissing( String name ) {
+      if( "streamIndex".equals( name ) )         { return getStreamIndex() ;            }
+      if( "unfilteredIndex".equals( name ) )     { return getUnfilteredIndex() ;        }
+      if( "exhausted".equals( name ) )           { return isExhausted() ;               }
+      if( "STOP".equals( name ) )                { return StreamStopper.getInstance() ; }
+      if( currentMap.keySet().contains( name ) ) { return currentMap.get( name ) ;      }
+      else                                       { return backingMap.get( name ) ;      }      
+    }
+
+    @SuppressWarnings("unchecked")
+    protected StreamDelegate integrateCurrent( Map currentMap ) {
+      return new StreamDelegate( backingMap, currentMap ) ;
+    }
+  }
+
+  final StreamDelegate delegate ;
   protected int streamIndex = -1 ;
   protected int unfilteredIndex = -1 ;
   protected boolean exhausted = false ;
@@ -44,21 +81,23 @@ abstract class AbstractStream<T,D> implements StreamInterface<T> {
   protected AbstractStream( Closure<D> definition, Closure condition, Closure<T> transform, Map<String,Object> using, Closure<Boolean> until ) {
     this.using = using ;
 
+    this.delegate = new StreamDelegate( this.using ) ;
+
     this.definition = definition ;
-    this.definition.setDelegate( this.using ) ;
-    this.definition.setResolveStrategy( Closure.DELEGATE_FIRST ) ;
+    this.definition.setDelegate( this.delegate ) ;
+    this.definition.setResolveStrategy( Closure.DELEGATE_ONLY ) ;
 
     this.condition = condition ;
-    this.condition.setDelegate( this.using ) ;
-    this.condition.setResolveStrategy( Closure.DELEGATE_FIRST ) ;
+    this.condition.setDelegate( this.delegate ) ;
+    this.condition.setResolveStrategy( Closure.DELEGATE_ONLY ) ;
 
     this.transform = transform ;
-    this.transform.setDelegate( this.using ) ;
-    this.transform.setResolveStrategy( Closure.DELEGATE_FIRST ) ;
+    this.transform.setDelegate( this.delegate ) ;
+    this.transform.setResolveStrategy( Closure.DELEGATE_ONLY ) ;
 
     this.until = until ;
-    this.until.setDelegate( this.using ) ;
-    this.until.setResolveStrategy( Closure.DELEGATE_FIRST ) ;
+    this.until.setDelegate( this.delegate ) ;
+    this.until.setResolveStrategy( Closure.DELEGATE_ONLY ) ;
   }
 
   protected Closure<D> getDefinition() { return definition ; }
@@ -82,15 +121,6 @@ abstract class AbstractStream<T,D> implements StreamInterface<T> {
   }
 
   protected abstract void loadNext() ;
-
-  @SuppressWarnings("unchecked")
-  protected Map generateMapDelegate( Map... subMaps ) {
-    Map ret = new HashMap() ;
-    for( Map m : subMaps ) {
-      ret.putAll( m ) ;
-    }
-    return ret ;
-  }
 
   @Override
   public boolean hasNext() {

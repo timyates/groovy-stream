@@ -87,14 +87,13 @@ class StreamImpl<T,D> extends AbstractStream<T,D> {
   @Override
   protected void loadNext() {
     while( !exhausted ) {
+      this.unfilteredIndex++ ;
       if( current == null && iterator.hasNext() ) {
         current = iterator.next() ;
-        this.unfilteredIndex++ ;
       }
       else {
         if( iterator.hasNext() ) {
           current = iterator.next() ;
-          this.unfilteredIndex++ ;
         }
         else {
           exhausted = true ;
@@ -104,7 +103,6 @@ class StreamImpl<T,D> extends AbstractStream<T,D> {
         exhausted = true ;
         break ;
       }
-      condition.setDelegate( generateMapDelegate( using, stopDelegate ) ) ;
       Object cond = condition.call( current ) ;
       if( cond == StreamStopper.getInstance() ) {
         exhausted = true ;

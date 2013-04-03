@@ -25,7 +25,7 @@ public class MapTests extends spock.lang.Specification {
 
   def "Map with transformation"() {
     setup:
-      def stream = Stream.from x:1..2, y:1..2 map { x + y }
+      def stream = Stream.from x:1..2, y:1..2 map { println "$x $y" ; x + y }
 
     when:
       def result = stream.collect()
