@@ -17,7 +17,6 @@ public abstract class AbstractStep<T,U> implements StreamStep<T,U>, Delegatable 
 
     @Override
     public T execute( U current ) {
-        System.out.println( "Current = " + current ) ;
         return closure.call( current ) ;
     }
 }

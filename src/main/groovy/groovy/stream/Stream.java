@@ -17,11 +17,12 @@ import java.util.List ;
 public class Stream<T> implements Iterator<T> {
     private final Iterator<T> iterator ;
     private T                 current ;
-    private boolean           exhausted   = false ;
-    private boolean           initialised = false ;
-    private List<StreamStep>  steps       = new ArrayList<StreamStep>() ;
-    private StreamDelegate    delegate    = new StreamDelegate( new LinkedHashMap<String,Object>() ) ;
+    private boolean           exhausted       = false ;
+    private boolean           initialised     = false ;
+    private List<StreamStep>  steps           = new ArrayList<StreamStep>() ;
+    private StreamDelegate    delegate        = new StreamDelegate( new LinkedHashMap<String,Object>() ) ;
     private int               unfilteredIndex = -1 ;
+    private int               streamIndex     = 0 ;
 
     private Stream( Iterator<T> iterator ) {
         this.iterator = iterator ;
@@ -53,7 +54,6 @@ public class Stream<T> implements Iterator<T> {
                 }
             }
             unfilteredIndex++ ;
-
             for( StreamStep step : steps ) {
                 if( step instanceof Delegatable && current instanceof Map ) {
                     ((Delegatable)step).setDelegate( delegate.integrateCurrent( (Map)current ) ) ;
@@ -78,6 +78,7 @@ public class Stream<T> implements Iterator<T> {
             }
             break ;
         }
+        if( !exhausted ) streamIndex++ ;
     }
 
     @SuppressWarnings("unchecked")
@@ -95,11 +96,11 @@ public class Stream<T> implements Iterator<T> {
     }
 
     public int getStreamIndex() {
-        return -1 ;
+        return streamIndex ;
     }
 
     public int getUnfilteredIndex() {
-        return unfilteredIndex - 1 ;
+        return unfilteredIndex ;
     }
 
     private void setDelegate( Map<String,Object> delegate ) {
@@ -245,11 +246,11 @@ public class Stream<T> implements Iterator<T> {
         }
 
         public Object propertyMissing( String name ) {
-            if( "streamIndex".equals( name ) )         { return getStreamIndex() ;            }
-            if( "unfilteredIndex".equals( name ) )     { return unfilteredIndex ;             }
-            if( "exhausted".equals( name ) )           { return isExhausted() ;               }
-            if( currentMap.keySet().contains( name ) ) { return currentMap.get( name ) ;      }
-            else                                       { return backingMap.get( name ) ;      }      
+            if( "streamIndex".equals( name ) )         { return streamIndex ;            }
+            if( "unfilteredIndex".equals( name ) )     { return unfilteredIndex ;        }
+            if( "exhausted".equals( name ) )           { return isExhausted() ;          }
+            if( currentMap.keySet().contains( name ) ) { return currentMap.get( name ) ; }
+            else                                       { return backingMap.get( name ) ; }      
         }
 
         @SuppressWarnings("unchecked")
