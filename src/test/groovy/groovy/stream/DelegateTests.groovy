@@ -16,7 +16,7 @@
 
 package groovy.stream
 
-public class DelegateTests extends spock.lang.Specification {
+class DelegateTests extends spock.lang.Specification {
     def "unfilteredIndex map test"() {
         setup:
             def stream = Stream.from 1..4 map { it * unfilteredIndex }
