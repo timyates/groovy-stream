@@ -25,20 +25,34 @@ import groovy.stream.steps.* ;
 import java.lang.reflect.Array;
 
 import java.util.ArrayList ;
+import java.util.Collection ;
 import java.util.Iterator ;
 import java.util.Map ;
 import java.util.LinkedHashMap ;
+import java.util.LinkedList ;
 import java.util.List ;
+import java.util.Queue ;
 
 public class Stream<T> implements Iterator<T> {
-    private final Iterator<T> iterator ;
-    private T                 current ;
-    private boolean           exhausted       = false ;
-    private boolean           initialised     = false ;
-    private List<StreamStep>  steps           = new ArrayList<StreamStep>() ;
-    private StreamDelegate    delegate        = new StreamDelegate( new LinkedHashMap<String,Object>() ) ;
-    private int               unfilteredIndex = -1 ;
-    private int               streamIndex     = 0 ;
+    private class Pushback {
+        int stepIndex ;
+        T   value ;
+
+        Pushback( int stepIndex, T value ) {
+            this.stepIndex = stepIndex ;
+            this.value = value ;
+        }
+    }
+
+    private final Iterator<T>  iterator ;
+    private T                  current ;
+    private boolean            exhausted       = false ;
+    private boolean            initialised     = false ;
+    private List<StreamStep>   steps           = new ArrayList<StreamStep>() ;
+    private Queue<Pushback>    pushback        = new LinkedList<Pushback>() ;
+    private StreamDelegate     delegate        = new StreamDelegate( new LinkedHashMap<String,Object>() ) ;
+    private int                unfilteredIndex = -1 ;
+    private int                streamIndex     = 0 ;
 
     private Stream( Iterator<T> iterator ) {
         this.iterator = iterator ;
@@ -56,11 +70,16 @@ public class Stream<T> implements Iterator<T> {
     @SuppressWarnings("unchecked")
     private void loadNext() {
         outer: while( !exhausted ) {
+            Pushback pb = null ;
             if( current == null ) {
                 loadFirst() ;
             }
             else {
-                if( iterator.hasNext() ) {
+                if( !pushback.isEmpty() ) {
+                    pb = pushback.poll() ;
+                    current = pb.value ;
+                }
+                else if( iterator.hasNext() ) {
                     current = iterator.next() ;
                 }
                 else {
@@ -70,9 +89,24 @@ public class Stream<T> implements Iterator<T> {
                 }
             }
             unfilteredIndex++ ;
-            for( StreamStep step : steps ) {
+            for( int sidx = ( pb != null ? pb.stepIndex : 0 ) ; sidx < steps.size() ; sidx++ ) {
+                StreamStep step = steps.get( sidx ) ;
+
                 if( step instanceof Delegatable && current instanceof Map ) {
                     ((Delegatable)step).setDelegate( delegate.integrateCurrent( (Map)current ) ) ;
+                }
+                if( step instanceof FlatMapStep ) {
+                    Collection<T> c = (Collection<T>)step.execute( current ) ;
+                    boolean first = true ;
+                    for( T element : c ) {
+                        if( first ) {
+                            current = element ;
+                            first = false ;
+                        }
+                        else {
+                            pushback.offer( new Pushback( sidx + 1, element ) ) ;
+                        }
+                    }
                 }
                 if( step instanceof MappingStep ) {
                     current = (T)step.execute( current ) ;
@@ -173,6 +207,8 @@ public class Stream<T> implements Iterator<T> {
     public Stream<T> using( final Map<String,Object> delegate ) { return fromStreamWithDelegate( this, delegate ) ;                   }
     @SuppressWarnings("unchecked")
     public Stream<T> filter( final Closure<Boolean> filter )    { return fromStreamWithStep( this, new FilterStep<T>( filter ) ) ;    }
+    @SuppressWarnings("unchecked")
+    public <U extends Collection<T>> Stream<U> flatMap( final Closure<U> map )  { return fromStreamWithStep( this, new FlatMapStep<U,T>( map ) ) ;    }
     @SuppressWarnings("unchecked")
     public <U extends T> Stream<U> map( final Closure<U> map )  { return fromStreamWithStep( this, new MappingStep<U,T>( map ) ) ;    }
 

@@ -74,4 +74,26 @@ public class MapTests extends spock.lang.Specification {
         then:
             result == [ [ x:1,y:1 ], [x:1,y:2], [x:1,y:3 ] ]
     }
+
+    def 'basic flatMap'() {
+        setup:
+            def stream = Stream.from x:1..3, y:1..3 filter { x == y } flatMap { [ x ] * y }
+
+        when:
+            def result = stream.collect()
+
+        then:
+            result == [ 1, 2, 2, 3, 3, 3 ]
+    }
+
+    def 'basic flatMap with filter'() {
+        setup:
+            def stream = Stream.from x:1..3, y:1..3 filter { x == y } flatMap { [ x ] * y } filter { it % 2 }
+
+        when:
+            def result = stream.collect()
+
+        then:
+            result == [ 1, 3, 3, 3 ]
+    }
 }
