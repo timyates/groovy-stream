@@ -14,25 +14,36 @@
  * limitations under the License.
  */
 
-package groovy.stream ;
+package groovy.stream.iterators ;
 
 import groovy.lang.Closure ;
-import java.util.* ;
+import java.util.Iterator ;
 
-public class StreamExtension {
-    public static <T> Stream toStream( Closure<T> delegate ) {
-        return Stream.from( delegate ) ;
+public class RepeatingClosureIterator<T> implements Iterator<T>, Delegatable {
+    Closure<T> value ;
+
+    public RepeatingClosureIterator( Closure<T> value ) {
+        this.value = value ;
     }
 
-    public static <T> Stream toStream( Iterator<T> delegate ) {
-        return Stream.from( delegate ) ;
+    @Override
+    public void setDelegate( Object delegate ) {
+        value.setDelegate( delegate ) ;
+        value.setResolveStrategy( Closure.DELEGATE_ONLY ) ;
     }
 
-    public static <T> Stream toStream( Iterable<T> delegate ) {
-        return Stream.from( delegate ) ;
+    @Override
+    public boolean hasNext() {
+        return true ;
     }
 
-    public static Stream toStream( Map<Object,Iterable> delegate ) {
-        return Stream.from( delegate ) ;
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException() ;
+    }
+
+    @Override
+    public T next() {
+        return value.call() ;
     }
 }

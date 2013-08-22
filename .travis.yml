@@ -1,7 +1,8 @@
 language: groovy
 jdk:
   - oraclejdk7
-before_install:
-  - "./gradlew --version"
-install: "./gradlew -q assemble"
-script: "./gradlew -q test"
+install: true
+before_script:
+  - echo sonatypeUsername='' >> gradle.properties
+  - echo sonatypePassword='' >> gradle.properties
+script: "./gradlew -q check"

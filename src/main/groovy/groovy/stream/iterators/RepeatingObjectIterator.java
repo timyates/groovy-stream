@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package groovy.stream ;
+
+package groovy.stream.iterators ;
 
 import java.util.Iterator ;
 
-/**
- * @author Tim Yates
- */
-public interface StreamInterface<T> extends Iterator<T> {
-  /**
-   * @return true if the Stream is exhausted, false otherwise
-   */
-  public boolean isExhausted() ;
-  /**
-   * @return the current index in the Stream
-   */
-  public int getStreamIndex() ;
+public class RepeatingObjectIterator<T> implements Iterator<T> {
+    private final T value ;
+
+    public RepeatingObjectIterator( T value ) {
+        this.value = value ;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return true ;
+    }
+
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException() ;
+    }
+
+    @Override
+    public T next() {
+        return value ;
+    }
 }

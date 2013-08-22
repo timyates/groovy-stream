@@ -14,17 +14,8 @@
  * limitations under the License.
  */
 
-package groovy.stream
+package groovy.stream.steps ;
 
-public class ObjectTests extends spock.lang.Specification {
-    def "test obj appender"() {
-        setup:
-            def stream = Stream.from { 1 }
-
-        when:
-            def result = stream.take( 4 ).collect()
-
-        then:
-            result == [ 1, 1, 1, 1 ]
-    }
+public interface StreamStep<T,U> {
+    T execute( U current ) ;
 }

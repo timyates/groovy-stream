@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package groovy.stream ;
 
-/**
- * This is a singleton object that can be returned from the <code>where</code> Closure
- * of a Stream to cause the Stream to finish iteration.
- *
- * @author Tim Yates
- */
-public class StreamStopper {
-  private static StreamStopper instance = new StreamStopper() ;
-  private StreamStopper() {}
-  public static StreamStopper getInstance() { return instance ; }
+package groovy.stream.steps ;
+
+import groovy.lang.Closure ;
+import java.util.Collection ;
+
+public class FlatMapStep<T extends Collection,U> extends AbstractStep<T,U> {
+    public FlatMapStep( Closure<T> condition ) {
+        super( condition ) ;
+    }
 }

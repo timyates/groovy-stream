@@ -1,54 +1,39 @@
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.2'
-  }
-}
-
 apply plugin: 'groovy'
-apply plugin: 'nexus'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
-sourceCompatibility=1.6
-targetCompatibility=1.6
-
-group = 'com.bloidonia'
-version = '0.5.4'
-
-repositories {
-  mavenCentral()
-}
-
-dependencies {
-  compile     'org.codehaus.groovy:groovy-all:2.1.0'
-  testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
-  testRuntime fileTree( dir:'build/libs/', includes:[ "groovy-stream-${version}.jar".toString() ] )
-}
+group               = 'com.bloidonia'
+version             = '0.6-SNAPSHOT'
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
 
 compileGroovy.options.compilerArgs << "-Xlint:unchecked"
 
-groovydoc {
-  docTitle = "Groovy Stream: A Lazy Generator"
-  header = docTitle
-  footer = ''
-  windowTitle = docTitle
-  use = true
-  link( 'http://download.oracle.com/javase/6/docs/api/', 'java.' )
-  link('http://groovy.codehaus.org/api/',  'groovy.', 'org.codehaus.groovy.')
+// In this section you declare where to find the dependencies of your project
+repositories {
+    // Use 'maven central' for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    mavenCentral()
+}
+
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    compile     'org.codehaus.groovy:groovy-all:2.1.6'
+    testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+    testRuntime fileTree( dir:'build/libs/', includes:[ "groovy-stream-${version}.jar".toString() ] )
 }
 
 def metaServices = new File( 'src/main/groovy/META-INF/services' )
 
 task generateModule << {
-  metaServices.mkdirs()
-  new File( metaServices, 'org.codehaus.groovy.runtime.ExtensionModule' ).withWriter { w ->
-    w.writeLine 'moduleName=groovy-stream'
-    w.writeLine "moduleVersion=$version"
-    w.writeLine 'extensionClasses=groovy.stream.StreamExtension'
-    w.writeLine 'staticExtensionClasses='
-  }
+    metaServices.mkdirs()
+    new File( metaServices, 'org.codehaus.groovy.runtime.ExtensionModule' ).withWriter { w ->
+        w.writeLine 'moduleName=groovy-stream'
+        w.writeLine "moduleVersion=$version"
+        w.writeLine 'extensionClasses=groovy.stream.StreamExtension'
+        w.writeLine 'staticExtensionClasses='
+    }
 }
 
 compileGroovy.dependsOn( generateModule )
@@ -56,63 +41,75 @@ test.dependsOn( jar )
 uploadArchives.dependsOn( test )
 
 jar {
-  from( metaServices ) {
-    include 'org.codehaus.groovy.runtime.ExtensionModule' into( 'META-INF/services' )
-  }
+    from( metaServices ) {
+        include 'org.codehaus.groovy.runtime.ExtensionModule' into( 'META-INF/services' )
+    }
 }
 
-groovydoc {
-  use             = true
-  destinationDir  = new File( "${project.buildDir.path}/groovydoc", project.version )
-  header = '<a href="https://github.com/timyates/groovy-common-extensions">groovy-common-extensions</a>'
-  footer = null
-
-  link 'http://download.oracle.com/javase/6/docs/api/',                 'java.'
-  link 'http://groovy.codehaus.org/api/',                               'groovy.', 'org.codehaus.groovy.'
+task groovydocJar( type: Jar, dependsOn: groovydoc ) {
+    classifier 'javadoc'
+    from groovydoc.destinationDir
 }
 
-task groovydocJar(type: Jar, dependsOn: groovydoc) {
-  classifier 'javadoc'
-  from groovydoc.destinationDir
+task sourcesJar( type: Jar ) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
 }
 
 artifacts {
-  archives jar
-  archives sourcesJar
-  archives groovydocJar
+    archives jar
+    archives sourcesJar
+    archives groovydocJar
 }
 
-modifyPom {
-  project {
-    name 'Groovy Stream'
-    description 'A collection of classes to give a fluent builder for Streams (Lazy Groovy Generators).'
-    url 'http://timyates.github.com/groovy-stream/'
-    inceptionYear '2012'
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
-    scm {
-      url 'https://github.com/timyates/groovy-stream'
-      connection 'scm:https://github.com/timyates/groovy-stream.git'
-      developerConnection 'scm:git://github.com/timyates/groovy-stream.git'
-    }
-
-    licenses {
-      license {
-        name 'The Apache Software License, Version 2.0'
-        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-        distribution 'repo'
-      }
-    }
-
-    developers {
-      developer {
-        id 'tim_yates'
-        name 'Tim Yates'
-        email 'tim.yates@gmail.com'
-      }
-    }
-  }
+signing {
+    required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
 }
 
-task wrapper(type: Wrapper) {
-  gradleVersion = '1.4'
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+ 
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+
+            pom.project {
+                name 'Groovy Stream'
+                description 'A collection of classes to give a fluent builder for Streams (Lazy Groovy Generators).'
+                url 'http://timyates.github.com/groovy-stream/'
+                inceptionYear '2012'
+
+                scm {
+                    url 'https://github.com/timyates/groovy-stream'
+                    connection 'scm:https://github.com/timyates/groovy-stream.git'
+                    developerConnection 'scm:git://github.com/timyates/groovy-stream.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'tim_yates'
+                        name 'Tim Yates'
+                        email 'tim.yates@gmail.com'
+                    }
+                }
+            }
+        }
+    }
 }

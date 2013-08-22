@@ -16,15 +16,25 @@
 
 package groovy.stream
 
-public class ObjectTests extends spock.lang.Specification {
-    def "test obj appender"() {
+class ChainTests extends spock.lang.Specification {
+    def "filter map filter chain"() {
         setup:
-            def stream = Stream.from { 1 }
-
+            def stream = Stream.from 1..10 filter { it % 2 } map { it * 2 } filter { it % 3 }
         when:
-            def result = stream.take( 4 ).collect()
-
+            def result = stream.collect()
         then:
-            result == [ 1, 1, 1, 1 ]
+            result == [ 2, 10, 14 ]
+    }
+
+    def "map map filter chain"() {
+        setup:
+            def stream = Stream.from( x:1..2, y:3..4 )
+                               .map { [ x: x, y: y, z: x + y ] }
+                               .map { [ diff: Math.abs( x - y ), sum: z ] }
+                               .filter { diff > 2 }
+        when:
+            def result = stream.collect()
+        then:
+            result == [ [ diff: 3, sum: 5 ] ]
     }
 }

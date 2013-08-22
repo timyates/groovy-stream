@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-package groovy.stream
+package groovy.stream.steps ;
 
-public class ObjectTests extends spock.lang.Specification {
-    def "test obj appender"() {
-        setup:
-            def stream = Stream.from { 1 }
+import groovy.lang.Closure ;
 
-        when:
-            def result = stream.take( 4 ).collect()
-
-        then:
-            result == [ 1, 1, 1, 1 ]
+public class MappingStep<T,U> extends AbstractStep<T,U> {
+    public MappingStep( Closure<T> condition ) {
+        super( condition ) ;
     }
 }

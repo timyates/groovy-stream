@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package groovy.stream
+package groovy.stream.steps ;
 
-public class ObjectTests extends spock.lang.Specification {
-    def "test obj appender"() {
-        setup:
-            def stream = Stream.from { 1 }
+import groovy.lang.Closure ;
+import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation ;
 
-        when:
-            def result = stream.take( 4 ).collect()
+public class TerminateStep<U> extends AbstractStep<Boolean,U> {
+    public TerminateStep( Closure<Boolean> condition ) {
+        super( condition ) ;
+    }
 
-        then:
-            result == [ 1, 1, 1, 1 ]
+    @Override
+    public Boolean execute( U current ) {
+        return DefaultTypeTransformation.castToBoolean( closure.call( current ) ) ;
     }
 }

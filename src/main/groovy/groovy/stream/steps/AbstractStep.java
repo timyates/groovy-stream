@@ -14,17 +14,25 @@
  * limitations under the License.
  */
 
-package groovy.stream
+package groovy.stream.steps ;
 
-public class ObjectTests extends spock.lang.Specification {
-    def "test obj appender"() {
-        setup:
-            def stream = Stream.from { 1 }
+import groovy.lang.Closure ;
+import groovy.stream.iterators.Delegatable ;
 
-        when:
-            def result = stream.take( 4 ).collect()
+public abstract class AbstractStep<T,U> implements StreamStep<T,U>, Delegatable {
+    Closure<T> closure ;
+    public AbstractStep( Closure<T> closure ) {
+        this.closure = closure ;
+    }
 
-        then:
-            result == [ 1, 1, 1, 1 ]
+    @Override
+    public void setDelegate( Object delegate ) {
+        closure.setDelegate( delegate ) ;
+        closure.setResolveStrategy( Closure.DELEGATE_ONLY ) ;
+    }
+
+    @Override
+    public T execute( U current ) {
+        return closure.call( current ) ;
     }
 }
