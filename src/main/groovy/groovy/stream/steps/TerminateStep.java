@@ -17,9 +17,15 @@
 package groovy.stream.steps ;
 
 import groovy.lang.Closure ;
+import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation ;
 
 public class TerminateStep<U> extends AbstractStep<Boolean,U> {
     public TerminateStep( Closure<Boolean> condition ) {
         super( condition ) ;
+    }
+
+    @Override
+    public Boolean execute( U current ) {
+        return DefaultTypeTransformation.castToBoolean( closure.call( current ) ) ;
     }
 }
