@@ -62,4 +62,19 @@ class ExtensionTests extends spock.lang.Specification {
         then:
             result == [ 10, 22, 36, 52 ]
     }
+
+    def "example from http://blog.hartveld.com/2013/03/jdk-8-33-stream-api.html"() {
+        setup:
+            def blocks = [ [ color: 'red',   weight: 10.5 ],
+                           [ color: 'green', weight: 3 ],
+                           [ color: 'red',   weight: 1.5 ],
+                           [ color: 'blue',  weight: 12 ] ]
+            def stream = blocks.toStream()
+                               .filter { it.color == 'red' }
+                               .map { it.weight }
+        when:
+            def result = stream.sum()
+        then:
+            result == 12.0
+    }
 }
