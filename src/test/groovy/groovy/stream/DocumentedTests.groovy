@@ -63,4 +63,70 @@ public class DocumentedTests extends spock.lang.Specification {
         then:
             result == [ [0,'a'], [1,'b'], [2,'c'] ]
     }
+
+    def 'rock paper scissors'() {
+
+        "http://blog.bloidonia.com/post/55170995645/rock-paper-scissors-with-groovy-stream"
+
+        setup:
+            // Seeded random (for testing)
+            Random rnd = new Random( 1 )
+
+            // A list of possible moves
+            List moves = [ 'rock', 'paper', 'scissors' ]
+
+            // A map showing whch moves beat which
+            Map beats  = [ 'rock'     : 'scissors',
+                           'paper'    : 'rock',
+                           'scissors' : 'paper' ]
+
+            // Each player is a Stream of moves
+            def player = { String name ->
+                Stream.from { [ player:name, move:moves[ rnd.nextInt( moves.size() ) ] ] }
+            }
+
+            // A Closure that declares a winner between two moves
+            def winner = { move1, move2 ->
+                def ret = "$move1.move vs $move2.move : "
+                if( move1.move == move2.move )               { ret + 'no one wins' }
+                else if( move2.move == beats[ move1.move ] ) { ret + "$move1.player wins" }
+                else                                         { ret + "$move2.player wins" }
+            }
+
+            // Create a never-ending stream that gives us the winner of the two players
+            def judge = Stream.from { 1 }
+                              .map { winner( p1.next(), p2.next() ) }
+                              .using p1: player( 'tim' ), p2: player( 'alice' )
+        when:
+            def result = judge.take( 3 ).collect()
+
+        then:
+            result == [ 'rock vs paper : alice wins', 
+                        'paper vs rock : tim wins',
+                        'scissors vs paper : tim wins' ]
+    }
+
+    def 'lazy squares'() {
+
+        "http://blog.bloidonia.com/post/41103158982/lazy-squares-using-groovy-stream"
+
+        setup:
+            // Create a lazy unending stream of integers from 1
+            Stream integers = Stream.from { x++ } using x:1
+             
+            // Create a stream of squares based on this stream of integers
+            Stream squares  = Stream.from integers map { it * it }
+
+        when:
+            // Create an Iterator that looks at the first 25 elements of squares
+            Iterator first25 = squares.take( 25 )
+
+        then:             
+            // Collect the elements
+            assert first25.collect() == [  1,   4,   9,  16,  25,
+                                          36,  49,  64,  81, 100,
+                                         121, 144, 169, 196, 225,
+                                         256, 289, 324, 361, 400,
+                                         441, 484, 529, 576, 625 ]
+    }
 }
