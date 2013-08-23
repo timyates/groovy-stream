@@ -13,20 +13,18 @@ The groovy-stream has been almost entirely rewritten so it's hopefully easier to
 The main difference now is that you can have multiple `filter` and `map` steps and they are executed
 in the same order they are added to the Stream.  ie:
 
-```groovy
-@GrabResolver( name='snaps', root='https://oss.sonatype.org/content/repositories/snapshots/' )
-@Grab( 'com.bloidonia:groovy-stream:0.6-SNAPSHOT' )
-import groovy.stream.*
+    @GrabResolver( name='snaps', root='https://oss.sonatype.org/content/repositories/snapshots/' )
+    @Grab( 'com.bloidonia:groovy-stream:0.6-SNAPSHOT' )
+    import groovy.stream.*
 
-def result = Stream.from( 1..50 )
-                   .filter { it % 5 == 0 }            // just the multiples of 5
-                   .map    { 100 / it    }            // as a divisor of 100
-                   .filter { it == Math.round( it ) } // Just the integers
-                   .map    { "#$it" }                 // Convert to a String
-                   .collect()
+    def result = Stream.from( 1..50 )
+                       .filter { it % 5 == 0 }            // just the multiples of 5
+                       .map    { 100 / it    }            // as a divisor of 100
+                       .filter { it == Math.round( it ) } // Just the integers
+                       .map    { "#$it" }                 // Convert to a String
+                       .collect()
 
-assert result == ['#20', '#10', '#5', '#4', '#2']
-```
+    assert result == ['#20', '#10', '#5', '#4', '#2']
 
 Accordingly as there is no implicit order things are fired any more, the `unfilteredIndex` is updated
 before any steps are executed, and the `streamIndex` variable is updated after all steps have fired.
@@ -34,19 +32,17 @@ before any steps are executed, and the `streamIndex` variable is updated after a
 We also have a new step `flatMap`, which returns a `Collection`, and these values are passed individually
 through the following steps before a new value is fetched from the source, ie:
 
-```groovy
-@GrabResolver( name='snaps', root='https://oss.sonatype.org/content/repositories/snapshots/' )
-@Grab( 'com.bloidonia:groovy-stream:0.6-SNAPSHOT' )
-import groovy.stream.*
+    @GrabResolver( name='snaps', root='https://oss.sonatype.org/content/repositories/snapshots/' )
+    @Grab( 'com.bloidonia:groovy-stream:0.6-SNAPSHOT' )
+    import groovy.stream.*
 
-def result = Stream.from( [ 'ham', 'bread', 'eggs' ] )
-                   .flatMap { [ it ] * quantities[ it ] }          // so 'ham' will return [ 'ham', 'ham' ]
-                   .filter { it != 'bread' }                       // get rid of bread
-                   .using( quantities:[ eggs:3, ham:2, bread:4 ] ) // Our quantities
-                   .join( ',' )                                    // Join into a string
+    def result = Stream.from( [ 'ham', 'bread', 'eggs' ] )
+                       .flatMap { [ it ] * quantities[ it ] }          // so 'ham' will return [ 'ham', 'ham' ]
+                       .filter { it != 'bread' }                       // get rid of bread
+                       .using( quantities:[ eggs:3, ham:2, bread:4 ] ) // Our quantities
+                       .join( ',' )                                    // Join into a string
 
-assert result == 'ham,ham,eggs,eggs,eggs'
-```
+    assert result == 'ham,ham,eggs,eggs,eggs'
 
 ### v0.5.4
 
