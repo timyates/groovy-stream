@@ -33,7 +33,7 @@ import java.util.LinkedList ;
 import java.util.List ;
 import java.util.Queue ;
 
-public class Stream<T> implements Iterator<T> {
+public class Stream<T> implements Iterator<T>, Iterable<T> {
     private class Pushback {
         int stepIndex ;
         T   value ;
@@ -190,6 +190,11 @@ public class Stream<T> implements Iterator<T> {
         return ret ;
     }
 
+    @Override
+    public Iterator<T> iterator() {
+        return this ;
+    }
+
     private void delegateSteps() {
         for( StreamStep s : steps ) {
             if( s instanceof Delegatable ) {
@@ -213,6 +218,7 @@ public class Stream<T> implements Iterator<T> {
     public <U extends T> Stream<U> map( final Closure<U> map )  { return fromStreamWithStep( this, new MappingStep<U,T>( map ) ) ;    }
 
     public static     Stream<Map> from( Map<Object,Iterable> map ) { return new Stream<Map>( new MapIterator( map ) ) ;                   }
+    public static <T> Stream<T>   from( Stream<T> stream )         { return new Stream<T>( stream ) ;                                     }
     public static <T> Stream<T>   from( Iterable<T> iterable )     { return new Stream<T>( iterable.iterator() ) ;                        }
     public static <T> Stream<T>   from( Iterator<T> iterator )     { return new Stream<T>( iterator ) ;                                   }
     public static <T> Stream<T>   from( Closure<T> closure )       { return new Stream<T>( new RepeatingClosureIterator<T>( closure ) ) ; }
