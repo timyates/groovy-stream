@@ -44,6 +44,18 @@ through the following steps before a new value is fetched from the source, ie:
 
     assert result == 'ham,ham,eggs,eggs,eggs'
 
+Also, added a `collate` method to Streams (same params as the Groovy `collate` method on `List`).  Allows you to do:
+
+    @GrabResolver( name='snaps', root='https://oss.sonatype.org/content/repositories/snapshots/' )
+    @Grab( 'com.bloidonia:groovy-stream:0.6-SNAPSHOT' )
+    import groovy.stream.*
+
+    def result = Stream.from( 1..10 )
+                       .collate( 3 )
+                       .collect()
+                       
+    assert result == [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ], [ 10 ] ]
+
 ### v0.5.4
 
 `Stream` now implements `Iterable<T>`
