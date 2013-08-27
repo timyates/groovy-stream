@@ -217,6 +217,15 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     @SuppressWarnings("unchecked")
     public <U extends T> Stream<U> map( final Closure<U> map )  { return fromStreamWithStep( this, new MappingStep<U,T>( map ) ) ;    }
 
+    @SuppressWarnings("unchecked")
+    public Stream<T> collate( int size )                                  { return collate( size, size, true ) ; }
+    @SuppressWarnings("unchecked")
+    public Stream<T> collate( int size, int step )                        { return collate( size, step, true ) ; }
+    @SuppressWarnings("unchecked")
+    public Stream<T> collate( int size, boolean keepRemainder )           { return collate( size, size, keepRemainder ) ; }
+    @SuppressWarnings("unchecked")
+    public Stream<T> collate( int size, int step, boolean keepRemainder ) { return new Stream<T>( new CollatingIterator( this, size, step, keepRemainder ) ) ; }
+
     public static     Stream<Map> from( Map<Object,Iterable> map ) { return new Stream<Map>( new MapIterator( map ) ) ;                   }
     public static <T> Stream<T>   from( Stream<T> stream )         { return new Stream<T>( stream ) ;                                     }
     public static <T> Stream<T>   from( Iterable<T> iterable )     { return new Stream<T>( iterable.iterator() ) ;                        }
