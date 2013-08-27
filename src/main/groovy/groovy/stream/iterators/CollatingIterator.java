@@ -31,7 +31,6 @@ public class CollatingIterator<T> implements Iterator<List<T>> {
     private List<T> current ;
     private Queue<List<T>> cache = new LinkedList<List<T>>() ;
     private boolean initialised  = false ;
-    private boolean exhausted    = false ;
     private int index            = 0 ;
 
     public CollatingIterator( Iterator<T> parent, int size ) {
@@ -88,7 +87,7 @@ public class CollatingIterator<T> implements Iterator<List<T>> {
             loadNext() ;
             initialised = true ;
         }
-        return current != null && !exhausted ;
+        return current != null ;
     }
 
     public List<T> next() {
