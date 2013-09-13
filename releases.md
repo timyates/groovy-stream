@@ -6,15 +6,14 @@ group: navigation
 ---
 {% include JB/setup %}
 
-### v0.6 (currently SNAPSHOT)
+### v0.6
 
 The groovy-stream has been almost entirely rewritten so it's hopefully easier to maintain and extend.
 
 The main difference now is that you can have multiple `filter` and `map` steps and they are executed
 in the same order they are added to the Stream.  ie:
 
-    @GrabResolver( name='snaps', root='https://oss.sonatype.org/content/repositories/snapshots/' )
-    @Grab( 'com.bloidonia:groovy-stream:0.6-SNAPSHOT' )
+    @Grab( 'com.bloidonia:groovy-stream:0.6' )
     import groovy.stream.*
 
     def result = Stream.from( 1..50 )
@@ -32,8 +31,7 @@ before any steps are executed, and the `streamIndex` variable is updated after a
 We also have a new step `flatMap`, which returns a `Collection`, and these values are passed individually
 through the following steps before a new value is fetched from the source, ie:
 
-    @GrabResolver( name='snaps', root='https://oss.sonatype.org/content/repositories/snapshots/' )
-    @Grab( 'com.bloidonia:groovy-stream:0.6-SNAPSHOT' )
+    @Grab( 'com.bloidonia:groovy-stream:0.6' )
     import groovy.stream.*
 
     def result = Stream.from( [ 'ham', 'bread', 'eggs' ] )
@@ -46,8 +44,7 @@ through the following steps before a new value is fetched from the source, ie:
 
 Also, added a `collate` method to Streams (same params as the Groovy `collate` method on `List`).  Allows you to do:
 
-    @GrabResolver( name='snaps', root='https://oss.sonatype.org/content/repositories/snapshots/' )
-    @Grab( 'com.bloidonia:groovy-stream:0.6-SNAPSHOT' )
+    @Grab( 'com.bloidonia:groovy-stream:0.6' )
     import groovy.stream.*
 
     def result = Stream.from( 1..10 )
