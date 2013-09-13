@@ -18,6 +18,7 @@ package groovy.stream ;
 
 import groovy.lang.Closure ;
 import groovy.lang.GroovyObjectSupport ;
+import org.codehaus.groovy.runtime.DefaultGroovyMethods ;
 
 import groovy.stream.iterators.* ;
 import groovy.stream.steps.* ;
@@ -169,6 +170,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
 
     @Override
     public void remove() { throw new UnsupportedOperationException() ; }
+
+    public Iterator<T> take( int n ) {
+        return DefaultGroovyMethods.take( (Iterator<T>)this, n ) ;
+    }
 
     @SuppressWarnings("unchecked")
     @Override
