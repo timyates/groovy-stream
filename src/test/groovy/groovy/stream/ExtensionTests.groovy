@@ -77,4 +77,16 @@ class ExtensionTests extends spock.lang.Specification {
         then:
             result == 12.0
     }
+
+    def "test arrays"() {
+        when:
+            def incremented = 'w00t'.chars.toStream()
+                                          .map { (int)it }
+                                          .map { it + 1 }
+                                          .map { (char)it }
+                                          .collect()
+                                          .join()
+        then:
+            incremented == 'x11u'
+    }
 }
