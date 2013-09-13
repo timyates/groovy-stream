@@ -3,7 +3,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 group               = 'com.bloidonia'
-version             = '0.6-SNAPSHOT'
+version             = '0.6'
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
