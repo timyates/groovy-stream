@@ -62,6 +62,14 @@ artifacts {
     archives groovydocJar
 }
 
+if( !hasProperty( 'sonatypeUsername' ) ) {
+    ext.sonatypeUsername = ''
+}
+
+if( !hasProperty( 'sonatypePassword' ) ) {
+    ext.sonatypePassword = ''
+}
+
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 signing {
