@@ -25,7 +25,15 @@ import groovy.stream.steps.* ;
 
 import java.lang.reflect.Array;
 
-import java.util.*;
+import java.util.ArrayList ;
+import java.util.Collection ;
+import java.util.Iterator ;
+import java.util.Map ;
+import java.util.LinkedHashMap ;
+import java.util.LinkedList ;
+import java.util.List ;
+import java.util.NoSuchElementException ;
+import java.util.Queue ;
 
 public class Stream<T> implements Iterator<T>, Iterable<T> {
     private class Pushback {
@@ -172,7 +180,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     @Override
     public T next() {
         if( exhausted ) {
-            throw new NoSuchElementException("Stream has been exhausted and contains no more elements");
+            throw new NoSuchElementException( "Stream has been exhausted and contains no more elements" ) ;
         }
         if( !initialised ) {
             hasNext() ;
