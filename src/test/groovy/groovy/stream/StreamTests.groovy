@@ -29,6 +29,20 @@ public class StreamTests extends spock.lang.Specification {
             result == [ 1, 2, 3 ]
     }
 
+    def "Stream should respect Iterator API"() {
+        setup:
+            def instream  = Stream.from 1..3
+        when:
+            instream.each {}
+            boolean hasNext = instream.hasNext()
+        then:
+            !hasNext
+        when:
+            instream.next()
+        then:
+            thrown NoSuchElementException
+    }
+
     @Unroll("#name are both an Iterator and an Iterable")
     def "iterator/iterable tests"() {
         expect:
