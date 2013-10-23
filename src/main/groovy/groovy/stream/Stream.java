@@ -216,15 +216,19 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public Stream<T> until( final Closure<Boolean> filter )     { return fromStreamWithStep( this, new TerminateStep<T>( filter ) ) ; }
+    public Stream<T> atEvery( Closure<Void> output )            { return atEvery( 1, output ) ;                                           }
     @SuppressWarnings("unchecked")
-    public Stream<T> using( final Map<String,Object> delegate ) { return fromStreamWithDelegate( this, delegate ) ;                   }
+    public Stream<T> atEvery( int count, Closure<Void> output ) { return new Stream<T>( new AtEveryIterator<T>( this, count, output ) ) ; }
     @SuppressWarnings("unchecked")
-    public Stream<T> filter( final Closure<Boolean> filter )    { return fromStreamWithStep( this, new FilterStep<T>( filter ) ) ;    }
+    public Stream<T> until( final Closure<Boolean> filter )     { return fromStreamWithStep( this, new TerminateStep<T>( filter ) ) ;     }
     @SuppressWarnings("unchecked")
-    public <U extends Collection<T>> Stream<U> flatMap( final Closure<U> map )  { return fromStreamWithStep( this, new FlatMapStep<U,T>( map ) ) ;    }
+    public Stream<T> using( final Map<String,Object> delegate ) { return fromStreamWithDelegate( this, delegate ) ;                       }
     @SuppressWarnings("unchecked")
-    public <U extends T> Stream<U> map( final Closure<U> map )  { return fromStreamWithStep( this, new MappingStep<U,T>( map ) ) ;    }
+    public Stream<T> filter( final Closure<Boolean> filter )    { return fromStreamWithStep( this, new FilterStep<T>( filter ) ) ;        }
+    @SuppressWarnings("unchecked")
+    public <U extends Collection<T>> Stream<U> flatMap( final Closure<U> map )  { return fromStreamWithStep( this, new FlatMapStep<U,T>( map ) ) ; }
+    @SuppressWarnings("unchecked")
+    public <U extends T> Stream<U> map( final Closure<U> map )  { return fromStreamWithStep( this, new MappingStep<U,T>( map ) ) ;        }
 
     @SuppressWarnings("unchecked")
     public Stream<T> collate( int size )                                  { return collate( size, size, true ) ; }
