@@ -62,18 +62,20 @@ Streams are composed of 4 parts:
   3. A `map` which transforms the next item in the Stream into another object or value
   4. A `using` block of variables that the stream may access (and modify in the `map` closure)
 
-There is only one of each of these components per Stream (filter defaults to `{ true }`, map defaults to `{ it }`),
-and they are run in an explicit order, for every element, `filter` is ALWAYS executed before `map` no matter what
-order they are declared in your code.
+There is can be many `filter` and `map` steps (since v0.6) in a Stream and they
+are executed in the order they are defined.
+
+There can only be a single `using` block (and I am considering dropping the `using` block
+as it doesn't feel functionally sound).
 
 ### Input Examples
 
 Examples of valid input are (just input on it's own isn't very exciting, but hereare examples anyway):
 
 {% highlight groovy linenum %}
-assert [ 1, 2, 3 ]       == Stream.from( [ 1, 2, 3 ] ).collect()            // An iterable
-assert [ 'a', 'b' ]      == Stream.from( 'a'..'z' ).take( 2 ).collect()     // An iterable
-assert [ [ x:1, y:3 ] ]  == Stream.from( x:1..3, y:3..4 ).take(1).collect() // A map
+assert [ 1, 2, 3 ]       == Stream.from( [ 1, 2, 3 ] ).collect()              // An iterable
+assert [ 'a', 'b' ]      == Stream.from( 'a'..'z' ).take( 2 ).collect()       // An iterable
+assert [ [ x:1, y:3 ] ]  == Stream.from( x:1..3, y:3..4 ).take( 1 ).collect() // A map
 {% endhighlight %}
 
 ### Filter Examples
@@ -87,27 +89,24 @@ assert s.collect() == [ 2, 4, 6, 8, 10 ]
 
 Just the elements where the sum of the values is even (note that the `from` map is set as the
 delegate of the `filter` closure, so you can access them without requiring the `it.a` prefixed
-notation
+notation:
 
 {% highlight groovy linenum %}
 Stream s = Stream.from a:1..2, b:3..4 filter { ( a + b ) % 2 == 0 }
 assert s.collect() == [ [a:1,b:3], [a:2,b:4] ]
 {% endhighlight %}
 
-It is also possible to tell a Stream to `STOP` running (for example if using an eternal iterator
-that you wish to break out of).  The `STOP` property is injected as the delegate for the `find`
-closure (as a Singleton instance of StreamStopper), and can be used for this purpose as so:
+It is also possible to tell a Stream to stop running by using an `until` predicate Closure.
 
 {% highlight groovy linenum %}
 def x = 0
+
 def eternal = [ hasNext:{ true }, next:{ x++ } ] as Iterator
-// True whilst it < 5 otherwise, STOP
-Stream s = Stream.from eternal filter { it < 5 ?: STOP }
+
+Stream s = Stream.from eternal until { it >= 5 }
+
 assert s.collect() == [ 0, 1, 2, 3, 4 ]
 {% endhighlight %}
-
-In future versions of the Stream, this may change to a fifth element of a Stream (something like an `until` block),
-but as of v0.5.2, this is the only way.
 
 ### Map Examples
 
@@ -136,17 +135,43 @@ Stream s = Stream.from 'a'..'c' map { [ idx++, it ] } using idx:0
 assert s.collect() == [ [0,'a'], [1,'b'], [2,'c'] ]
 {% endhighlight %}
 
-### Things to remember
+### Other methods
 
-Due to the order of execution, strange things can be afoot at the circle K if you try something like this:
+There are currently 2 other methods available in a Stream definition:
+
+#### `flatMap`
+
+The `flatMap` step returns a List of elements, and each of this list is then passed
+individually along the rest of the stream.  Only when the list is exhausted will the
+stream go back to the source for another value to process:
 
 {% highlight groovy linenum %}
-// Try and limit an endless Stream with a using block
-Stream s = Stream.from { 1 } filter { idx < 5 ?: STOP } map { idx++ ; it } using idx:0
- 
-// The length of this is 1 greater than expected as transform is executed
-// (and so idx is updated) AFTER the where condition has already passed the
-// last element.
-assert s.collect().size() == 6
+Stream s = Stream.from 1..5 flatMap { [ 'a', it ] }
+assert s.collect() == [ 'a', 1, 'a', 2, 'a', 3, 'a', 4, 'a', 5 ]
 {% endhighlight %}
 
+#### `collate`
+
+The `collate` call will group the Stream into chunks of a given size, and will only
+release an item to the rest of the stream when this criteria is met (or the stream terminates).
+
+{% highlight groovy linenum %}
+Stream s = Stream.from 1..5 collate( 3 )
+assert s.collect() == [ [ 1, 2, 3 ], [ 4, 5 ] ]
+{% endhighlight %}
+
+You can also (as in Groovy) give collate a `step` value to give you a sliding window effect:
+
+{% highlight groovy linenum %}
+// Step along by 2 each time
+Stream s = Stream.from 1..5 collate( 3, 1 )
+assert s.collect() == [ [ 1, 2, 3 ], [ 2, 3, 4 ], [ 3, 4, 5 ], [ 4, 5 ], [ 5 ] ]
+{% endhighlight %}
+
+And You can tell it to drop the remainder results:
+
+{% highlight groovy linenum %}
+// Step along by 2 each time
+Stream s = Stream.from 1..5 collate( 3, 1, false )
+assert s.collect() == [ [ 1, 2, 3 ], [ 2, 3, 4 ], [ 3, 4, 5 ] ]
+{% endhighlight %}
