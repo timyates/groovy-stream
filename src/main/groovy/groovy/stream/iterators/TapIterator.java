@@ -20,7 +20,7 @@ import groovy.lang.Closure ;
 
 import java.util.Iterator ;
 
-public class AtEveryIterator<T> implements Iterator<T> {
+public class TapIterator<T> implements Iterator<T> {
     private Iterator<T> parent ;
     private int every ;
     private int index ;
@@ -28,7 +28,7 @@ public class AtEveryIterator<T> implements Iterator<T> {
     private T current ;
     private boolean initialised ;
 
-    public AtEveryIterator( Iterator<T> parent, int every, Closure<Void> output ) {
+    public TapIterator( Iterator<T> parent, int every, Closure<Void> output ) {
         this.parent = parent ;
         this.every = every ;
         this.index = 0 ;
