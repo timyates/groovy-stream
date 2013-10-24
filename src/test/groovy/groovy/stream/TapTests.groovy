@@ -16,7 +16,7 @@
 
 package groovy.stream
 
-class AtEveryTests extends spock.lang.Specification {
+class TapTests extends spock.lang.Specification {
     def "test every time"() {
         setup:
             def list = []
