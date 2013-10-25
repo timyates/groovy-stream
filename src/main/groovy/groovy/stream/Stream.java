@@ -85,7 +85,6 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
                     current = iterator.next() ;
                 }
                 else {
-                    current = null ;
                     exhausted = true ;
                     break ;
                 }
@@ -166,7 +165,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
             loadNext() ;
             initialised = true ;
         }
-        return current != null && !exhausted ;
+        return !exhausted ;
     }
 
     @Override

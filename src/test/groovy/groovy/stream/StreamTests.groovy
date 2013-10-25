@@ -57,4 +57,15 @@ public class StreamTests extends spock.lang.Specification {
                 Stream.from( 1..4 ).filter { it % 2 == 0 }
             ]
     }
+
+    def "Stream should handle nulls in the stream"() {
+        setup:
+            def s = Stream.from( [ 1, null, 2, null ] )
+
+        when:
+            def result = s.collect()
+
+        then:
+            result == [ 1, null, 2, null ]
+    }
 }
