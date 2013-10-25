@@ -21,6 +21,7 @@ import java.util.Iterator ;
 import java.util.LinkedList ;
 import java.util.List ;
 import java.util.Queue ;
+import java.util.NoSuchElementException ;
 
 public class CollatingIterator<T> implements Iterator<List<T>> {
     private Iterator<T> parent ;
@@ -31,6 +32,7 @@ public class CollatingIterator<T> implements Iterator<List<T>> {
     private List<T> current ;
     private Queue<List<T>> cache = new LinkedList<List<T>>() ;
     private boolean initialised  = false ;
+    private boolean exhausted    = false ;
     private int index            = 0 ;
 
     public CollatingIterator( Iterator<T> parent, int size ) {
@@ -78,7 +80,10 @@ public class CollatingIterator<T> implements Iterator<List<T>> {
         }
         current = cache.poll() ;
         if( !keepRemainder && current.size() < size ) {
-            current = null ;
+            exhausted = true ;
+        }
+        else if( current == null && !parent.hasNext() ) {
+            exhausted = true ;
         }
     }
 
@@ -87,12 +92,15 @@ public class CollatingIterator<T> implements Iterator<List<T>> {
             loadNext() ;
             initialised = true ;
         }
-        return current != null ;
+        return !exhausted ;
     }
 
     public List<T> next() {
         if( !initialised ) {
             hasNext() ;
+        }
+        if( exhausted ) {
+            throw new NoSuchElementException( "CollatingIterator has been exhausted and contains no more elements" ) ;
         }
         List<T> ret = new ArrayList<T>( current ) ;
         loadNext() ;

@@ -18,9 +18,10 @@ package groovy.stream.iterators ;
 
 import java.util.ArrayList ;
 import java.util.Iterator ;
+import java.util.LinkedHashMap ;
 import java.util.List ;
 import java.util.Map ;
-import java.util.LinkedHashMap ;
+import java.util.NoSuchElementException ;
 
 public class MapIterator implements Iterator<Map> {
 
@@ -81,11 +82,17 @@ public class MapIterator implements Iterator<Map> {
             loadNext() ;
             initialised = true ;
         }
-        return current != null && !exhausted ;
+        return !exhausted ;
     }
 
     @Override
     public Map next() {
+        if( !initialised ) {
+            hasNext() ;
+        }
+        if( exhausted ) {
+            throw new NoSuchElementException( "MapIterator has been exhausted and contains no more elements" ) ;
+        }
         Map<Object,Object> ret = new LinkedHashMap<Object,Object>( current ) ;
         loadNext() ;
         return ret ;

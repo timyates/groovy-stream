@@ -19,6 +19,7 @@ package groovy.stream.iterators ;
 import groovy.lang.Closure ;
 
 import java.util.Iterator ;
+import java.util.NoSuchElementException ;
 
 public class TapIterator<T> implements Iterator<T> {
     private Iterator<T> parent ;
@@ -27,6 +28,7 @@ public class TapIterator<T> implements Iterator<T> {
     private Closure<Void> output ;
     private T current ;
     private boolean initialised ;
+    private boolean exhausted ;
 
     public TapIterator( Iterator<T> parent, int every, Closure<Void> output ) {
         this.parent = parent ;
@@ -35,6 +37,7 @@ public class TapIterator<T> implements Iterator<T> {
         this.output = output ;
         this.initialised = false ;
         this.current = null ;
+        this.exhausted = false ;
     }
 
     public void remove() {
@@ -44,10 +47,9 @@ public class TapIterator<T> implements Iterator<T> {
     private void loadNext() {
         if( parent.hasNext() ) {
             current = parent.next() ;
-
         }
         else {
-            current = null ;
+            exhausted = true ;
         }
     }
 
@@ -56,12 +58,15 @@ public class TapIterator<T> implements Iterator<T> {
             loadNext() ;
             initialised = true ;
         }
-        return current != null ;
+        return !exhausted ;
     }
 
     public T next() {
         if( !initialised ) {
             hasNext() ;
+        }
+        if( exhausted ) {
+            throw new NoSuchElementException( "TapIterator has been exhausted and contains no more elements" ) ;
         }
         T ret = current ;
         if( ++index % every == 0 ) {
