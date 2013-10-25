@@ -12,7 +12,7 @@ tagline: A lazy functional generator for Groovy
 As a simple example, lets create a Stream representing all positive integers:
 
 {% highlight groovy linenum %}
-@Grab( 'com.bloidonia:groovy-stream:0.5.2' )
+@Grab( 'com.bloidonia:groovy-stream:0.6.1' )
 import groovy.stream.Stream
 
 def integers = Stream.from { x++ } using x:1
@@ -174,4 +174,16 @@ And You can tell it to drop the remainder results:
 // Step along by 2 each time
 Stream s = Stream.from 1..5 collate( 3, 1, false )
 assert s.collect() == [ [ 1, 2, 3 ], [ 2, 3, 4 ], [ 3, 4, 5 ] ]
+{% endhighlight %}
+
+#### `tap` and `tapEvery`
+
+To look at every 2nd element as it passes the stream, you can do:
+
+{% highlight groovy linenum %}
+// prints '2' and '4' as the Stream progresses
+def s = Stream.from 1..5 tapEvery( 2 ) { idx -> println idx } collect()
+
+// prints '2 : b' and '4 : d' as the Stream progresses
+def s = Stream.from 'a'..'e' tapEvery( 2 ) { idx, obj -> println "$idx : $obj" } collect()
 {% endhighlight %}

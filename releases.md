@@ -6,6 +6,12 @@ group: navigation
 ---
 {% include JB/setup %}
 
+### v0.6.1
+
+- Streams and Iterators all return `NoSuchElementException` if `next()` is called when exhausted.
+- Added `tap` and `tapEvery` for tapping into the stream every `n` elements
+- Fixed an issue with nulls in the stream
+
 ### v0.6
 
 The groovy-stream has been almost entirely rewritten so it's hopefully easier to maintain and extend.
