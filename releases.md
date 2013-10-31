@@ -6,6 +6,11 @@ group: navigation
 ---
 {% include JB/setup %}
 
+### v0.6.2
+
+- If `collate` was called with `keepRemainder` set to false, but there would be
+  no remainder, then a NPE was thrown.
+
 ### v0.6.1
 
 - Streams and Iterators all return `NoSuchElementException` if `next()` is called when exhausted.
