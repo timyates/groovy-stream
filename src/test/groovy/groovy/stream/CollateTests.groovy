@@ -52,4 +52,13 @@ class CollateTests extends spock.lang.Specification {
         then:
             result == [ 6, 12, 18, 24, 19 ]
     }
+
+    def "Check for NPE bug"() {
+        setup:
+            def stream = Stream.from 1..9 filter { it % 2 == 0 } collate( 2, false )
+        when:
+            def result = stream.collect()
+        then:
+            result == [ [ 2, 4 ], [ 6, 8 ] ]
+    }
 }

@@ -79,7 +79,7 @@ public class CollatingIterator<T> implements Iterator<List<T>> {
             }
         }
         current = cache.poll() ;
-        if( !keepRemainder && current.size() < size ) {
+        if( !keepRemainder && ( current == null || current.size() < size ) ) {
             exhausted = true ;
         }
         else if( current == null && !parent.hasNext() ) {
