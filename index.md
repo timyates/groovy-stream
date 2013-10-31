@@ -12,7 +12,7 @@ tagline: A lazy functional generator for Groovy
 As a simple example, lets create a Stream representing all positive integers:
 
 {% highlight groovy linenum %}
-@Grab( 'com.bloidonia:groovy-stream:0.6.1' )
+@Grab( 'com.bloidonia:groovy-stream:0.6.2' )
 import groovy.stream.Stream
 
 def integers = Stream.from { x++ } using x:1
