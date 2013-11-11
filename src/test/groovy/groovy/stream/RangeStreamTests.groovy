@@ -24,7 +24,7 @@ public class RangeStreamTests extends spock.lang.Specification {
             def index  = 0
 
         when:
-            def result = stream.tap { index = it }.collect()
+            def result = stream.tapWithIndex { obj, idx -> index = idx }.collect()
 
         then:
             result.size()     == range.size()
@@ -37,7 +37,7 @@ public class RangeStreamTests extends spock.lang.Specification {
             def range  = 1..10
             def limit  = 4..6
             def index  = 0
-            def stream = Stream.from range filter { it in limit } tap { index = it }
+            def stream = Stream.from range filter { it in limit } tapWithIndex { obj, idx -> index = idx }
 
         when:
             def result = stream.collect()
@@ -53,7 +53,7 @@ public class RangeStreamTests extends spock.lang.Specification {
         setup:
             def range  = 1..3
             def index  = 0
-            def stream = Stream.from range map { it * 2 } tap { index = it }
+            def stream = Stream.from range map { it * 2 } tapWithIndex { obj, idx -> index = idx }
 
         when:
             def result = stream.collect()
@@ -71,7 +71,7 @@ public class RangeStreamTests extends spock.lang.Specification {
             def expected = [ 4, 8, 12, 16, 20 ]
             def preIndex = 0
             def index    = 0
-            def stream   = Stream.from range tap { preIndex = it } filter { it % 2 == 0 } map { it * 2 } tap { index = it }
+            def stream   = Stream.from range tapWithIndex { obj, idx -> preIndex = idx } filter { it % 2 == 0 } map { it * 2 } tapWithIndex { obj, idx -> index = idx }
 
         when:
             def result = stream.collect()
@@ -87,7 +87,7 @@ public class RangeStreamTests extends spock.lang.Specification {
         setup:
             def upper  = 5
             def index  = 0
-            def stream = Stream.from 1..upper tap { idx -> index = idx }
+            def stream = Stream.from 1..upper tapWithIndex { obj, idx -> index = idx }
 
         when:
             def result = stream.collect()
@@ -104,7 +104,7 @@ public class RangeStreamTests extends spock.lang.Specification {
             def max      = 5
             def index    = 0
             def expected = (min..max)*.multiply( -1 )
-            def stream   = Stream.from 1..max filter { it >= min } map { -it } tap { idx -> index = idx }
+            def stream   = Stream.from 1..max filter { it >= min } map { -it } tapWithIndex { obj, idx -> index = idx }
 
         when:
             def result = stream.collect()
@@ -120,7 +120,7 @@ public class RangeStreamTests extends spock.lang.Specification {
             def expected = [ 0, 2, 6, 12 ]
             def stream
             def index = 0
-            stream = Stream.from 1..4 tap { index = it } map { index * it } tap { index = it }
+            stream = Stream.from 1..4 tapWithIndex { obj, idx -> index = idx } map { index * it } tapWithIndex { obj, idx -> index = idx }
 
         when:
             def result = stream.collect()

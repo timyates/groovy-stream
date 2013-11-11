@@ -20,7 +20,7 @@ class TapIteratorTests extends spock.lang.Specification {
     def "Test NoSuchElementException"() {
         setup:
             def list = []
-            def i = new TapIterator( [ 1, 2, null ].iterator(), 2, { index, object -> list << [ index, object ] } )
+            def i = new TapIterator( [ 1, 2, null ].iterator(), 2, true, { object, index -> list << [ index, object ] } )
 
         when:
             def result = i.collect()

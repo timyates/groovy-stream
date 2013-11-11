@@ -22,18 +22,20 @@ import java.util.Iterator ;
 import java.util.NoSuchElementException ;
 
 public class TapIterator<T> implements Iterator<T> {
-    private Iterator<T> parent ;
-    private int every ;
-    private int index ;
+    private Iterator<T>   parent ;
+    private int           every ;
+    private int           index ;
+    private boolean       withIndex ;
     private Closure<Void> output ;
-    private T current ;
-    private boolean initialised ;
-    private boolean exhausted ;
+    private T             current ;
+    private boolean       initialised ;
+    private boolean       exhausted ;
 
-    public TapIterator( Iterator<T> parent, int every, Closure<Void> output ) {
+    public TapIterator( Iterator<T> parent, int every, boolean withIndex, Closure<Void> output ) {
         this.parent = parent ;
         this.every = every ;
         this.index = 0 ;
+        this.withIndex = withIndex ;
         this.output = output ;
         this.initialised = false ;
         this.current = null ;
@@ -70,11 +72,11 @@ public class TapIterator<T> implements Iterator<T> {
         }
         T ret = current ;
         if( ++index % every == 0 ) {
-            if( output.getMaximumNumberOfParameters() == 1 ) {
-                output.call( index - 1 ) ;
+            if( withIndex ) {
+                output.call( ret, index - 1 ) ; 
             }
             else {
-                output.call( index - 1, ret ) ;
+                output.call( ret ) ;
             }
         }
         loadNext() ;

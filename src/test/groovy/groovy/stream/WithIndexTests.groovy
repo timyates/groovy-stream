@@ -69,4 +69,42 @@ class WithIndexTests extends spock.lang.Specification {
             // ( 10 - 3 ) * 8 == 56 + 8 == 64
             result == [ 18, 18, 28, 42, 56 ]
     }
+
+    def "Test untilWithIndex"() {
+        setup:
+            def instream  = Stream.from x:1..3, y:8..10
+
+        when:
+            def result = instream.mapWithIndex { it, idx -> ( y - x ) * idx }
+                                 .filterWithIndex { it, idx -> ( it + idx ) % 9 }
+                                 .untilWithIndex { it, idx -> idx == 3 }
+                                 .collect()
+
+        then:
+            // ( 8  - 1 ) * 0 == 0  + 0 == 0    X
+            // ( 9  - 1 ) * 1 == 8  + 1 == 9    X 
+            // ( 10 - 1 ) * 2 == 18 + 2 == 20
+            // ( 8  - 2 ) * 3 == 18 + 3 == 21
+            // ( 9  - 2 ) * 4 == 28 + 4 == 32
+            // ( 10 - 2 ) * 5 == 40 + 5 == 45   X
+            // ( 8  - 3 ) * 6 == 30 + 6 == 36   X
+            // ( 9  - 3 ) * 7 == 42 + 7 == 49
+            // ( 10 - 3 ) * 8 == 56 + 8 == 64
+            result == [ 18, 18, 28 ]
+    }
+
+    def "Test flatMapWithIndex"() {
+        setup:
+            def instream  = Stream.from x:1..3, y:8..10
+
+        when:
+            def result = instream.flatMapWithIndex { it, idx -> [ y + idx ] * x }
+                                 .filterWithIndex { it, idx -> ( it + idx ) % 2 }
+                                 .collect()
+
+        then:
+            // 8, 10, 12, 11, 11, 13, 13, 15, 15, 14, 14, 14, 16, 16, 16, 18, 18, 18
+            // X, 11,  X,  X, 15,  X, 19,  X, 23, 23,  X, 25,  X, 29,  X, 33,  X, 35
+            result == [ 10, 11, 13, 15, 14, 14, 16, 18, 18 ]
+    }
 }

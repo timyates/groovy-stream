@@ -21,7 +21,7 @@ class TapTests extends spock.lang.Specification {
         setup:
             def list = []
             def stream = Stream.from( 1..10 ).filter { it % 2 }
-                                             .tap { idx -> list << idx }
+                                             .tapWithIndex { obj, idx -> list << idx }
                                              .map { it * 2 }
                                              .filter { it % 3 }
         when:
@@ -35,7 +35,7 @@ class TapTests extends spock.lang.Specification {
         setup:
             def list = []
             def stream = Stream.from( 1..10 ).filter { it % 2 }
-                                             .tapEvery( 2 ) { idx -> list << idx }
+                                             .tapEveryWithIndex( 2 ) { obj, idx -> list << idx }
                                              .map { it * 2 }
                                              .filter { it % 3 }
         when:
@@ -43,33 +43,5 @@ class TapTests extends spock.lang.Specification {
         then:
             result == [ 2, 10, 14 ]
             list == [ 1, 3 ]
-    }
-
-    def "test every time with object"() {
-        setup:
-            def list = []
-            def stream = Stream.from( 1..10 ).filter { it % 2 }
-                                             .tap { idx, obj -> list << [ idx, obj ] }
-                                             .map { it * 2 }
-                                             .filter { it % 3 }
-        when:
-            def result = stream.collect()
-        then:
-            result == [ 2, 10, 14 ]
-            list == [ [ 0, 1 ], [ 1, 3 ], [ 2, 5 ], [ 3, 7 ], [ 4, 9 ] ]
-    }
-
-    def "test every 2 times with object"() {
-        setup:
-            def list = []
-            def stream = Stream.from( 1..10 ).filter { it % 2 }
-                                             .tapEvery( 2 ) { idx, obj -> list << [ idx, obj ] }
-                                             .map { it * 2 }
-                                             .filter { it % 3 }
-        when:
-            def result = stream.collect()
-        then:
-            result == [ 2, 10, 14 ]
-            list == [ [ 1, 3 ], [ 3, 7 ] ]
     }
 }

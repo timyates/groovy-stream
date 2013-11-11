@@ -35,7 +35,11 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
 
     public Stream<T> tap( Closure<Void> output ) { return tapEvery( 1, output ) ; }
     public Stream<T> tapEvery( int n, Closure<Void> output ) {
-        return new Stream<T>( new TapIterator<T>( iterator, n, output ) ) ;
+        return new Stream<T>( new TapIterator<T>( iterator, n, false, output ) ) ;
+    }
+    public Stream<T> tapWithIndex( Closure<Void> output ) { return tapEveryWithIndex( 1, output ) ; }
+    public Stream<T> tapEveryWithIndex( int n, Closure<Void> output ) {
+        return new Stream<T>( new TapIterator<T>( iterator, n, true, output ) ) ;
     }
 
     public <U> Stream<U> map( Closure<U> map ) {

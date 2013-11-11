@@ -165,7 +165,7 @@ class NewStreamTests extends spock.lang.Specification {
     def "unfilteredIndex map test"() {
         setup:
             def index = 0
-            def stream = Stream.from 1..4 tap { index = it } map { it * index }
+            def stream = Stream.from 1..4 tapWithIndex { obj, idx -> index = idx } map { it * index }
         when:
             def result = stream.collect()
         then:
@@ -175,7 +175,7 @@ class NewStreamTests extends spock.lang.Specification {
     def "unfilteredIndex filter test"() {
         setup:
             def index = 0
-            def stream = Stream.from 1..4 tap { index = it } filter { 2 != index }
+            def stream = Stream.from 1..4 tapWithIndex { obj, idx -> index = idx } filter { 2 != index }
         when:
             def result = stream.collect()
         then:
@@ -185,7 +185,7 @@ class NewStreamTests extends spock.lang.Specification {
     def "unfilteredIndex until test"() {
         setup:
             def index = 0
-            def stream = Stream.from 1..4 tap { index = it } until { index == 2 }
+            def stream = Stream.from 1..4 tapWithIndex { obj, idx -> index = idx } until { index == 2 }
         when:
             def result = stream.collect()
         then:
