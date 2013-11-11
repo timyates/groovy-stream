@@ -4,3 +4,4 @@ gradle.properties
 src/main/groovy/META-INF
 .idea
 *.iml
+.nb-gradle
