@@ -47,4 +47,26 @@ class WithIndexTests extends spock.lang.Specification {
             // ( 10 - 3 ) * 8 == 56
             result == [ 0, 8, 18, 18, 28, 40, 30, 42, 56 ]
     }
+
+    def "Test filterWithIndex"() {
+        setup:
+            def instream  = Stream.from x:1..3, y:8..10
+
+        when:
+            def result = instream.mapWithIndex { it, idx -> ( y - x ) * idx }
+                                 .filterWithIndex { it, idx -> ( it + idx ) % 9 }
+                                 .collect()
+
+        then:
+            // ( 8  - 1 ) * 0 == 0  + 0 == 0    X
+            // ( 9  - 1 ) * 1 == 8  + 1 == 9    X 
+            // ( 10 - 1 ) * 2 == 18 + 2 == 20
+            // ( 8  - 2 ) * 3 == 18 + 3 == 21
+            // ( 9  - 2 ) * 4 == 28 + 4 == 32
+            // ( 10 - 2 ) * 5 == 40 + 5 == 45   X
+            // ( 8  - 3 ) * 6 == 30 + 6 == 36   X
+            // ( 9  - 3 ) * 7 == 42 + 7 == 49
+            // ( 10 - 3 ) * 8 == 56 + 8 == 64
+            result == [ 18, 18, 28, 42, 56 ]
+    }
 }
