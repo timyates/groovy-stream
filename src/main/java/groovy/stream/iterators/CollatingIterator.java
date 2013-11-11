@@ -17,20 +17,21 @@
 package groovy.stream.iterators ;
 
 import java.util.ArrayList ;
+import java.util.Collection ;
 import java.util.Iterator ;
 import java.util.LinkedList ;
 import java.util.List ;
 import java.util.Queue ;
 import java.util.NoSuchElementException ;
 
-public class CollatingIterator<T> implements Iterator<List<T>> {
+public class CollatingIterator<T> implements Iterator<Collection<T>> {
     private Iterator<T> parent ;
     private int size ;
     private int step ;
     private boolean keepRemainder ;
 
-    private List<T> current ;
-    private Queue<List<T>> cache = new LinkedList<List<T>>() ;
+    private Collection<T> current ;
+    private Queue<Collection<T>> cache = new LinkedList<Collection<T>>() ;
     private boolean initialised  = false ;
     private boolean exhausted    = false ;
     private int index            = 0 ;
@@ -71,7 +72,7 @@ public class CollatingIterator<T> implements Iterator<List<T>> {
                 cache.offer( new ArrayList<T>() ) ;
             }
             index++ ;
-            for( List<T> item : cache ) {
+            for( Collection<T> item : cache ) {
                 item.add( next ) ;
             }
             if( cache.peek().size() == size ) {
@@ -95,7 +96,7 @@ public class CollatingIterator<T> implements Iterator<List<T>> {
         return !exhausted ;
     }
 
-    public List<T> next() {
+    public Collection<T> next() {
         if( !initialised ) {
             hasNext() ;
         }

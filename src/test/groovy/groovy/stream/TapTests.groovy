@@ -28,7 +28,7 @@ class TapTests extends spock.lang.Specification {
             def result = stream.collect()
         then:
             result == [ 2, 10, 14 ]
-            list == [ 1, 2, 3, 4, 5 ]
+            list == [ 0, 1, 2, 3, 4 ]
     }
 
     def "test every 2 times"() {
@@ -42,7 +42,7 @@ class TapTests extends spock.lang.Specification {
             def result = stream.collect()
         then:
             result == [ 2, 10, 14 ]
-            list == [ 2, 4 ]
+            list == [ 1, 3 ]
     }
 
     def "test every time with object"() {
@@ -56,7 +56,7 @@ class TapTests extends spock.lang.Specification {
             def result = stream.collect()
         then:
             result == [ 2, 10, 14 ]
-            list == [ [ 1, 1 ], [ 2, 3 ], [ 3, 5 ], [ 4, 7 ], [ 5, 9 ] ]
+            list == [ [ 0, 1 ], [ 1, 3 ], [ 2, 5 ], [ 3, 7 ], [ 4, 9 ] ]
     }
 
     def "test every 2 times with object"() {
@@ -70,6 +70,6 @@ class TapTests extends spock.lang.Specification {
             def result = stream.collect()
         then:
             result == [ 2, 10, 14 ]
-            list == [ [ 2, 3 ], [ 4, 7 ] ]
+            list == [ [ 1, 3 ], [ 3, 7 ] ]
     }
 }

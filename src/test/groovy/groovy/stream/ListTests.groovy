@@ -19,8 +19,9 @@ package groovy.stream
 public class ListTests extends spock.lang.Specification {
     def "test index appender"() {
         setup:
+            def idx = 0
             def list = [ 1, 2, 3 ]
-            def stream = Stream.from list map { [ it, idx++ ] } using idx:0
+            def stream = Stream.from list map { [ it, idx++ ] }
 
         when:
             def result = stream.collect()
@@ -31,8 +32,9 @@ public class ListTests extends spock.lang.Specification {
 
     def "test arrays"() {
         setup:
+            def idx = 0
             int[] array = 1..3
-            def stream = Stream.from array map { [ it, idx++ ] } using idx:0
+            def stream = Stream.from array map { [ it, idx++ ] }
 
         when:
             def result = stream.collect()

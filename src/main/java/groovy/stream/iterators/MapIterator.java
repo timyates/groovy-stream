@@ -23,23 +23,23 @@ import java.util.List ;
 import java.util.Map ;
 import java.util.NoSuchElementException ;
 
-public class MapIterator implements Iterator<Map> {
+public class MapIterator<T,U> implements Iterator<Map<T,U>> {
 
-    private final Map<Object,Iterable> iterables ;
-    private final Map<Object,Iterator> iterators ;
-    private final List<Object>         keys ;
-    private boolean                    exhausted ;
-    private boolean                    initialised ;
-    private Map<Object,Object>         current ;
+    private final Map<T,Iterable<U>> iterables ;
+    private final Map<T,Iterator<U>> iterators ;
+    private final List<T>         keys ;
+    private boolean               exhausted ;
+    private boolean               initialised ;
+    private Map<T,U>              current ;
 
-    public MapIterator( Map<Object,Iterable> underlying ) {
-        this.iterables = new LinkedHashMap<Object,Iterable>();
-        this.iterators = new LinkedHashMap<Object,Iterator>();
-        this.keys = new ArrayList<Object>();
+    public MapIterator( Map<T,Iterable<U>> underlying ) {
+        this.iterables = new LinkedHashMap<T,Iterable<U>>();
+        this.iterators = new LinkedHashMap<T,Iterator<U>>();
+        this.keys = new ArrayList<T>();
         this.exhausted = false;
         this.current = null;
         this.initialised = false;
-        for( Map.Entry<Object,Iterable> entry : underlying.entrySet() ) {
+        for( Map.Entry<T,Iterable<U>> entry : underlying.entrySet() ) {
             keys.add( entry.getKey() ) ;
             iterables.put( entry.getKey(), entry.getValue() ) ;
             iterators.put( entry.getKey(), entry.getValue().iterator() ) ;
@@ -47,8 +47,8 @@ public class MapIterator implements Iterator<Map> {
     }
 
     private void loadFirst() {
-        current = new LinkedHashMap<Object,Object>() ;
-        for( Object key : keys ) {
+        current = new LinkedHashMap<T,U>() ;
+        for( T key : keys ) {
             current.put( key, iterators.get( key ).next() ) ;
         }
     }
@@ -58,9 +58,9 @@ public class MapIterator implements Iterator<Map> {
             loadFirst() ;
         }
         else {
-            current = new LinkedHashMap<Object,Object>( current ) ;
+            current = new LinkedHashMap<T,U>( current ) ;
             for( int i = keys.size() - 1 ; i >= 0 ; i-- ) {
-                Object key = keys.get( i ) ;
+                T key = keys.get( i ) ;
                 if( iterators.get( key ).hasNext() ) {
                     current.put( key, iterators.get( key ).next() ) ;
                     break ;
@@ -86,14 +86,14 @@ public class MapIterator implements Iterator<Map> {
     }
 
     @Override
-    public Map next() {
+    public Map<T,U> next() {
         if( !initialised ) {
             hasNext() ;
         }
         if( exhausted ) {
             throw new NoSuchElementException( "MapIterator has been exhausted and contains no more elements" ) ;
         }
-        Map<Object,Object> ret = new LinkedHashMap<Object,Object>( current ) ;
+        Map<T,U> ret = new LinkedHashMap<T,U>( current ) ;
         loadNext() ;
         return ret ;
     }

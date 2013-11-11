@@ -19,7 +19,8 @@ package groovy.stream
 class DelegateTests extends spock.lang.Specification {
     def "unfilteredIndex map test"() {
         setup:
-            def stream = Stream.from 1..4 map { it * unfilteredIndex }
+            def index = 0
+            def stream = Stream.from 1..4 tap { index = it } map { it * index }
         when:
             def result = stream.collect()
         then:
@@ -28,7 +29,8 @@ class DelegateTests extends spock.lang.Specification {
 
     def "unfilteredIndex filter test"() {
         setup:
-            def stream = Stream.from 1..4 filter { 2 != unfilteredIndex }
+            def index = 0
+            def stream = Stream.from 1..4 tap { index = it } filter { 2 != index }
         when:
             def result = stream.collect()
         then:
@@ -37,7 +39,8 @@ class DelegateTests extends spock.lang.Specification {
 
     def "unfilteredIndex until test"() {
         setup:
-            def stream = Stream.from 1..4 until { unfilteredIndex == 2 }
+            def index = 0
+            def stream = Stream.from 1..4 tap { index = it } until { index == 2 }
         when:
             def result = stream.collect()
         then:

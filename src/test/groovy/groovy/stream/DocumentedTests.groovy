@@ -57,7 +57,8 @@ public class DocumentedTests extends spock.lang.Specification {
 
     def "test 5"() {
         setup:
-            def stream = Stream.from 'a'..'c' map { [ idx++, it ] } using idx:0
+            def idx = 0
+            def stream = Stream.from 'a'..'c' map { [ idx++, it ] }
         when:
             def result = stream.collect()
         then:
@@ -94,9 +95,10 @@ public class DocumentedTests extends spock.lang.Specification {
             }
 
             // Create a never-ending stream that gives us the winner of the two players
+            def p1 = player( 'tim' )
+            def p2 = player( 'alice' )
             def judge = Stream.from { 1 }
                               .map { winner( p1.next(), p2.next() ) }
-                              .using p1: player( 'tim' ), p2: player( 'alice' )
         when:
             def result = judge.take( 3 ).collect()
 
@@ -112,7 +114,8 @@ public class DocumentedTests extends spock.lang.Specification {
 
         setup:
             // Create a lazy unending stream of integers from 1
-            Stream integers = Stream.from { x++ } using x:1
+            def x = 1
+            Stream integers = Stream.from { x++ }
              
             // Create a stream of squares based on this stream of integers
             Stream squares  = Stream.from integers map { it * it }

@@ -27,7 +27,7 @@ class TapIteratorTests extends spock.lang.Specification {
 
         then:
             result == [ 1, 2, null ]
-            list   == [ [ 2, 2 ] ]
+            list   == [ [ 1, 2 ] ]
 
         when:
             i.next()

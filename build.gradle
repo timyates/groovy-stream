@@ -3,11 +3,11 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 group               = 'com.bloidonia'
-version             = '0.6.2'
+version             = '0.7.0-SNAPSHOT'
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
-compileGroovy.options.compilerArgs << "-Xlint:unchecked"
+compileJava.options.compilerArgs << "-Xlint:unchecked"
 
 // In this section you declare where to find the dependencies of your project
 repositories {

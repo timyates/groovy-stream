@@ -41,8 +41,7 @@ public class IteratorTests extends spock.lang.Specification {
         then:
             result == [ 0, 1, 2, 3, 4 ]
             eternal.next() == 6
-            stream.exhausted
-            stream.streamIndex == 5
+            stream.hasNext() == false
     }
 
     def "Test until with large ranges"() {
@@ -58,8 +57,7 @@ public class IteratorTests extends spock.lang.Specification {
         then:
             result == [ 1, 2, 3, 4 ]
             eternal.next() == 6
-            stream.exhausted
-            stream.streamIndex == 4
+            stream.hasNext() == false
     }
 
     def "Stream of randoms"() {

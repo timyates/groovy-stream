@@ -71,10 +71,10 @@ public class TapIterator<T> implements Iterator<T> {
         T ret = current ;
         if( ++index % every == 0 ) {
             if( output.getMaximumNumberOfParameters() == 1 ) {
-                output.call( index ) ;
+                output.call( index - 1 ) ;
             }
             else {
-                output.call( index, ret ) ;
+                output.call( index - 1, ret ) ;
             }
         }
         loadNext() ;
