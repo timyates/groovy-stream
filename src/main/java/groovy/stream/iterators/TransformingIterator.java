@@ -7,13 +7,17 @@ import java.util.NoSuchElementException ;
 public class TransformingIterator<T,U> implements Iterator<U> {
     private final Iterator<T> iterator ;
     private final Closure<U> mapping ;
-    private U current ;
+
+    private U       current ;
+    private int     index = 0 ;
+    private boolean withIndex ;
     private boolean exhausted ;
     private boolean initialised ;
 
-    public TransformingIterator( Iterator<T> iterator, Closure<U> mapping ) {
+    public TransformingIterator( Iterator<T> iterator, Closure<U> mapping, boolean withIndex ) {
         this.iterator = iterator ;
         this.mapping = mapping ;
+        this.withIndex = withIndex ;
         this.exhausted = false ;
         this.initialised = false ;
     }
@@ -26,7 +30,8 @@ public class TransformingIterator<T,U> implements Iterator<U> {
         if( iterator.hasNext() ) {
             T next = iterator.next() ;
             mapping.setDelegate( next ) ;
-            current = mapping.call( next ) ;
+            current = withIndex ? mapping.call( next, index ) : mapping.call( next ) ;
+            index++ ;
         }
         else {
             exhausted = true ;

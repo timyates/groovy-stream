@@ -10,13 +10,17 @@ import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation ;
 public class UntilIterator<T> implements Iterator<T> {
     private final Iterator<T> iterator ;
     private final Closure<Boolean> predicate ;
-    private T current ;
+
+    private T       current ;
+    private int     index = 0 ;
+    private boolean withIndex ;
     private boolean exhausted ;
     private boolean initialised ;
 
-    public UntilIterator( Iterator<T> iterator, Closure<Boolean> predicate ) {
+    public UntilIterator( Iterator<T> iterator, Closure<Boolean> predicate, boolean withIndex ) {
         this.iterator = iterator ;
         this.predicate = predicate ;
+        this.withIndex = withIndex ;
         this.exhausted = false ;
         this.initialised = false ;
     }
@@ -29,7 +33,11 @@ public class UntilIterator<T> implements Iterator<T> {
         if( iterator.hasNext() ) {
             current = iterator.next() ;
             predicate.setDelegate( current ) ;
-            if( DefaultTypeTransformation.castToBoolean( predicate.call( current ) ) ) {
+            Boolean check = withIndex ?
+                                DefaultTypeTransformation.castToBoolean( predicate.call( current, index ) ) :
+                                DefaultTypeTransformation.castToBoolean( predicate.call( current ) ) ;
+            index++ ;
+            if( check ) {
                 exhausted = true ;
             }
         }

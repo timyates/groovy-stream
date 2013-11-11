@@ -20,11 +20,17 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     }
 
     public Stream<T> filter( Closure<Boolean> predicate ) {
-        return new Stream<T>( new FilteringIterator<T>( iterator, predicate ) ) ;
+        return new Stream<T>( new FilteringIterator<T>( iterator, predicate, false ) ) ;
+    }
+    public Stream<T> filterWithIndex( Closure<Boolean> predicate ) {
+        return new Stream<T>( new FilteringIterator<T>( iterator, predicate, true ) ) ;
     }
 
     public Stream<T> flatMap( Closure<Collection<T>> map ) { 
-        return new Stream<T>( new FlatMapIterator<T,Collection<T>>( iterator, map ) ) ;
+        return new Stream<T>( new FlatMapIterator<T,Collection<T>>( iterator, map, false ) ) ;
+    }
+    public Stream<T> flatMapWithIndex( Closure<Collection<T>> map ) { 
+        return new Stream<T>( new FlatMapIterator<T,Collection<T>>( iterator, map, true ) ) ;
     }
 
     public Stream<T> tap( Closure<Void> output ) { return tapEvery( 1, output ) ; }
@@ -33,11 +39,17 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     }
 
     public <U> Stream<U> map( Closure<U> map ) {
-        return new Stream<U>( new TransformingIterator<T,U>( iterator, map ) ) ;
+        return new Stream<U>( new TransformingIterator<T,U>( iterator, map, false ) ) ;
+    }
+    public <U> Stream<U> mapWithIndex( Closure<U> map ) {
+        return new Stream<U>( new TransformingIterator<T,U>( iterator, map, true ) ) ;
     }
 
     public Stream<T> until( Closure<Boolean> predicate ) {
-        return new Stream<T>( new UntilIterator<T>( iterator, predicate ) ) ;
+        return new Stream<T>( new UntilIterator<T>( iterator, predicate, false ) ) ;
+    }
+    public Stream<T> untilWithIndex( Closure<Boolean> predicate ) {
+        return new Stream<T>( new UntilIterator<T>( iterator, predicate, true ) ) ;
     }
 
     public Stream<Collection<T>> collate( int size ) { return collate( size, size, true ) ; }

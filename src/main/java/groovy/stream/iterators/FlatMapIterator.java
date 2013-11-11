@@ -11,13 +11,16 @@ public class FlatMapIterator<T,U extends Collection<T>> implements Iterator<T> {
     Closure<Collection<T>> mapping ;
     private Queue<T>      pushback = new LinkedList<T>() ;
     private Iterator<T>   iterator ;
+    private int           index = 0 ;
+    private boolean       withIndex ;
     private boolean       exhausted ;
     private boolean       initialised ;
     private T             current ;
 
-    public FlatMapIterator( Iterator<T> iterator, Closure<Collection<T>> mapping ) {
+    public FlatMapIterator( Iterator<T> iterator, Closure<Collection<T>> mapping, boolean withIndex ) {
         this.mapping = mapping ;
         this.iterator = iterator ;
+        this.withIndex = withIndex ;
         this.exhausted = false ;
         this.initialised = false ;
     }
@@ -30,7 +33,8 @@ public class FlatMapIterator<T,U extends Collection<T>> implements Iterator<T> {
         if( pushback.isEmpty() && iterator.hasNext() ) {
             T next = iterator.next() ;
             mapping.setDelegate( next ) ;
-            Collection<T> mapped = mapping.call( next ) ;
+            Collection<T> mapped = withIndex ? mapping.call( next, index ) : mapping.call( next ) ;
+            index++ ;
             for( T element : mapped ) {
                 pushback.offer( element ) ;
             }
