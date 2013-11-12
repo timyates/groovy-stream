@@ -26,6 +26,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<T>( new FilteringIterator<T>( iterator, predicate, true ) ) ;
     }
 
+    public Stream<T> skip( int n ) {
+        return new Stream<T>( new SkipIterator<T>( iterator, n ) ) ;
+    }
+
     public Stream<T> flatMap( Closure<Collection<T>> map ) { 
         return new Stream<T>( new FlatMapIterator<T,Collection<T>>( iterator, map, false ) ) ;
     }
