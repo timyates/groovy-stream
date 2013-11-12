@@ -19,17 +19,11 @@ package groovy.stream.iterators ;
 import groovy.lang.Closure ;
 import java.util.Iterator ;
 
-public class RepeatingClosureIterator<T> implements Iterator<T>, Delegatable {
+public class RepeatingClosureIterator<T> implements Iterator<T> {
     Closure<T> value ;
 
     public RepeatingClosureIterator( Closure<T> value ) {
         this.value = value ;
-    }
-
-    @Override
-    public void setDelegate( Object delegate ) {
-        value.setDelegate( delegate ) ;
-        value.setResolveStrategy( Closure.DELEGATE_ONLY ) ;
     }
 
     @Override
