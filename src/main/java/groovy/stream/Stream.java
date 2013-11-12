@@ -85,11 +85,11 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<Collection<T>>( new CollatingIterator<T>( this.iterator, size, step, keepRemainder ) ) ;
     }
 
-    public <U extends Iterator,V> Stream<V> zip( Iterator<U> other, Closure<V> map ) {
+    public <U,V> Stream<V> zip( Iterator<U> other, Closure<V> map ) {
         return new Stream<V>( new ZipIterator<T,U,V>( this.iterator, other, false, map ) ) ;
     }
 
-    public <U extends Iterator,V> Stream<V> zipWithIndex( Iterator<U> other, Closure<V> map ) {
+    public <U,V> Stream<V> zipWithIndex( Iterator<U> other, Closure<V> map ) {
         return new Stream<V>( new ZipIterator<T,U,V>( this.iterator, other, true, map ) ) ;
     }
 
