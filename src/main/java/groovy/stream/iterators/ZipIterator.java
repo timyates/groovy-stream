@@ -23,7 +23,7 @@ import java.util.LinkedList ;
 import java.util.Queue ;
 import java.util.NoSuchElementException ;
 
-public class TransposingIterator<T,U,V> implements Iterator<V> {
+public class ZipIterator<T,U,V> implements Iterator<V> {
     private Iterator<T> iter1 ;
     private Iterator<U> iter2 ;
     private Closure<V>  method ;
@@ -33,7 +33,7 @@ public class TransposingIterator<T,U,V> implements Iterator<V> {
     private int         index ;
     private V           current ;
 
-    public TransposingIterator( Iterator<T> iter1, Iterator<U> iter2, boolean withIndex, Closure<V> method ) {
+    public ZipIterator( Iterator<T> iter1, Iterator<U> iter2, boolean withIndex, Closure<V> method ) {
         this.iter1 = iter1 ;
         this.iter2 = iter2 ;
         this.method = method ;

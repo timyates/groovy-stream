@@ -16,25 +16,25 @@
 
 package groovy.stream
 
-class TransposeTests extends spock.lang.Specification {
-    def "Test simple transposition"() {
+class ZipTests extends spock.lang.Specification {
+    def "Test simple zip"() {
         setup:
             def stream1 = Stream.from 1..3
             def stream2 = Stream.from 'a'..'c'
 
         expect:
-            stream1.transpose( stream2 ) { a, b ->
+            stream1.zip( stream2 ) { a, b ->
                 [ a, b ]
             }.collect() == [ [ 1, 'a' ], [ 2, 'b' ], [ 3, 'c' ] ]
     }
 
-    def "Test transposition with index"() {
+    def "Test zip with index"() {
         setup:
             def stream1 = Stream.from 1..3
             def stream2 = Stream.from 'a'..'c'
 
         expect:
-            stream1.transposeWithIndex( stream2 ) { a, b, idx ->
+            stream1.zipWithIndex( stream2 ) { a, b, idx ->
                 [ idx, a, b ]
             }.collect() == [ [ 0, 1, 'a' ], [ 1, 2, 'b' ], [ 2, 3, 'c' ] ]
     }
