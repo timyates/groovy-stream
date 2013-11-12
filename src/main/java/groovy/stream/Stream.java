@@ -83,6 +83,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<Collection<T>>( new CollatingIterator<T>( this.iterator, size, step, keepRemainder ) ) ;
     }
 
+    public Iterator<T> take( int n ) {
+        return DefaultGroovyMethods.take( (Iterator<T>)this, n ) ;
+    }
+
     public static <T> Stream<Map<Object,T>> from( Map<Object,Iterable<T>> map ) { return new Stream<Map<Object,T>>( new MapIterator<Object,T>( map ) ) ;     }
     public static <T> Stream<T>             from( Stream<T> stream            ) { return new Stream<T>( stream.iterator ) ;                                         }
     public static <T> Stream<T>             from( Iterable<T> iterable        ) { return new Stream<T>( iterable.iterator() ) ;                              }
