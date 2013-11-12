@@ -28,6 +28,8 @@ import java.util.Iterator ;
 import java.util.List ;
 import java.util.Map ;
 
+import org.codehaus.groovy.runtime.DefaultGroovyMethods ;
+
 public class Stream<T> implements Iterator<T>, Iterable<T> {
     Iterator<T> iterator ;
 
