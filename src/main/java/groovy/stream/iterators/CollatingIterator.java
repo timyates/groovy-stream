@@ -25,16 +25,16 @@ import java.util.Queue ;
 import java.util.NoSuchElementException ;
 
 public class CollatingIterator<T> implements Iterator<Collection<T>> {
-    private Iterator<T> parent ;
-    private int size ;
-    private int step ;
-    private boolean keepRemainder ;
+    private final Iterator<T>          parent ;
+    private final Queue<Collection<T>> cache = new LinkedList<Collection<T>>() ;
 
+    private int           size ;
+    private int           step ;
+    private boolean       keepRemainder ;
     private Collection<T> current ;
-    private Queue<Collection<T>> cache = new LinkedList<Collection<T>>() ;
-    private boolean initialised  = false ;
-    private boolean exhausted    = false ;
-    private int index            = 0 ;
+    private boolean       initialised  = false ;
+    private boolean       exhausted    = false ;
+    private int           index        = 0 ;
 
     public CollatingIterator( Iterator<T> parent, int size ) {
         this( parent, size, size, true ) ;

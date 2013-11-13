@@ -20,7 +20,7 @@ import groovy.lang.Closure ;
 import java.util.Iterator ;
 
 public class RepeatingClosureIterator<T> implements Iterator<T> {
-    Closure<T> value ;
+    private final Closure<T> value ;
 
     public RepeatingClosureIterator( Closure<T> value ) {
         this.value = value ;

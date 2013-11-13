@@ -22,11 +22,11 @@ import java.util.NoSuchElementException ;
 
 public class TransformingIterator<T,U> implements Iterator<U> {
     private final Iterator<T> iterator ;
-    private final Closure<U> mapping ;
+    private final Closure<U>  mapping ;
+    private final boolean     withIndex ;
 
     private U       current ;
     private int     index = 0 ;
-    private boolean withIndex ;
     private boolean exhausted ;
     private boolean initialised ;
 
@@ -38,6 +38,7 @@ public class TransformingIterator<T,U> implements Iterator<U> {
         this.initialised = false ;
     }
 
+    @Override
     public void remove() {
         iterator.remove() ;
     }
@@ -54,6 +55,7 @@ public class TransformingIterator<T,U> implements Iterator<U> {
         }
     }
 
+    @Override
     public boolean hasNext() {
         if( !initialised ) {
             loadNext() ;
@@ -62,6 +64,7 @@ public class TransformingIterator<T,U> implements Iterator<U> {
         return !exhausted ;
     }
 
+    @Override
     public U next() {
         if( !initialised ) {
             hasNext() ;

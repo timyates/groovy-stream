@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package groovy.stream ;
+package groovy.stream.iterators ;
 
 import groovy.lang.Closure ;
 import java.util.Collection ;
@@ -24,14 +24,15 @@ import java.util.Queue ;
 import java.util.NoSuchElementException ;
 
 public class FlatMapIterator<T,U extends Collection<T>> implements Iterator<T> {
+    private final Queue<T>    pushback = new LinkedList<T>() ;
+    private final Iterator<T> iterator ;
+    private final boolean     withIndex ;
+
     Closure<Collection<T>> mapping ;
-    private Queue<T>      pushback = new LinkedList<T>() ;
-    private Iterator<T>   iterator ;
-    private int           index = 0 ;
-    private boolean       withIndex ;
-    private boolean       exhausted ;
-    private boolean       initialised ;
-    private T             current ;
+    private int            index = 0 ;
+    private boolean        exhausted ;
+    private boolean        initialised ;
+    private T              current ;
 
     public FlatMapIterator( Iterator<T> iterator, Closure<Collection<T>> mapping, boolean withIndex ) {
         this.mapping = mapping ;
@@ -41,6 +42,7 @@ public class FlatMapIterator<T,U extends Collection<T>> implements Iterator<T> {
         this.initialised = false ;
     }
 
+    @Override
     public void remove() {
         iterator.remove() ;
     }
@@ -63,6 +65,7 @@ public class FlatMapIterator<T,U extends Collection<T>> implements Iterator<T> {
         }
     }
 
+    @Override
     public boolean hasNext() {
         if( !initialised ) {
             loadNext() ;
@@ -71,6 +74,7 @@ public class FlatMapIterator<T,U extends Collection<T>> implements Iterator<T> {
         return !exhausted ;
     }
 
+    @Override
     public T next() {
         if( !initialised ) {
             hasNext() ;

@@ -22,14 +22,15 @@ import java.util.Iterator ;
 import java.util.NoSuchElementException ;
 
 public class TapIterator<T> implements Iterator<T> {
-    private Iterator<T>   parent ;
-    private int           every ;
-    private int           index ;
-    private boolean       withIndex ;
-    private Closure<Void> output ;
-    private T             current ;
-    private boolean       initialised ;
-    private boolean       exhausted ;
+    private final Iterator<T>   parent ;
+    private final int           every ;
+    private final boolean       withIndex ;
+    private final Closure<Void> output ;
+
+    private int     index ;
+    private T       current ;
+    private boolean initialised ;
+    private boolean exhausted ;
 
     public TapIterator( Iterator<T> parent, int every, boolean withIndex, Closure<Void> output ) {
         this.parent = parent ;
@@ -42,6 +43,7 @@ public class TapIterator<T> implements Iterator<T> {
         this.exhausted = false ;
     }
 
+    @Override
     public void remove() {
         throw new UnsupportedOperationException() ;
     }
@@ -55,6 +57,7 @@ public class TapIterator<T> implements Iterator<T> {
         }
     }
 
+    @Override
     public boolean hasNext() {
         if( !initialised ) {
             loadNext() ;
@@ -63,6 +66,7 @@ public class TapIterator<T> implements Iterator<T> {
         return !exhausted ;
     }
 
+    @Override
     public T next() {
         if( !initialised ) {
             hasNext() ;

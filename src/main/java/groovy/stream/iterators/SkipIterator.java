@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package groovy.stream ;
+package groovy.stream.iterators ;
 
-import groovy.lang.Closure ;
-import java.util.Collection ;
 import java.util.Iterator ;
-import java.util.LinkedList ;
-import java.util.Queue ;
 import java.util.NoSuchElementException ;
 
 public class SkipIterator<T> implements Iterator<T> {
-    private Iterator<T>   parent ;
-    private int           numberToSkip ;
-    private T             current ;
-    private boolean       initialised ;
-    private boolean       exhausted ;
+    private final Iterator<T>   parent ;
+
+    private int     numberToSkip ;
+    private T       current ;
+    private boolean initialised ;
+    private boolean exhausted ;
 
     public SkipIterator( Iterator<T> parent, int numberToSkip ) {
         this.parent = parent ;
@@ -38,6 +35,7 @@ public class SkipIterator<T> implements Iterator<T> {
         this.exhausted = false ;
     }
 
+    @Override
     public void remove() {
         parent.remove() ;
     }
@@ -59,6 +57,7 @@ public class SkipIterator<T> implements Iterator<T> {
         }
     }
 
+    @Override
     public boolean hasNext() {
         if( !initialised ) {
             loadNext() ;
@@ -67,6 +66,7 @@ public class SkipIterator<T> implements Iterator<T> {
         return !exhausted ;
     }
 
+    @Override
     public T next() {
         if( !initialised ) {
             hasNext() ;

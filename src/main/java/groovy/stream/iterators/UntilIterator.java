@@ -24,12 +24,12 @@ import java.util.NoSuchElementException ;
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation ;
 
 public class UntilIterator<T> implements Iterator<T> {
-    private final Iterator<T> iterator ;
+    private final Iterator<T>      iterator ;
     private final Closure<Boolean> predicate ;
+    private final boolean          withIndex ;
 
     private T       current ;
     private int     index = 0 ;
-    private boolean withIndex ;
     private boolean exhausted ;
     private boolean initialised ;
 
@@ -41,6 +41,7 @@ public class UntilIterator<T> implements Iterator<T> {
         this.initialised = false ;
     }
 
+    @Override
     public void remove() {
         iterator.remove() ;
     }
@@ -62,6 +63,7 @@ public class UntilIterator<T> implements Iterator<T> {
         }
     }
 
+    @Override
     public boolean hasNext() {
         if( !initialised ) {
             loadNext() ;
@@ -70,6 +72,7 @@ public class UntilIterator<T> implements Iterator<T> {
         return !exhausted ;
     }
 
+    @Override
     public T next() {
         if( !initialised ) {
             hasNext() ;

@@ -17,7 +17,9 @@
 package groovy.stream ;
 
 import groovy.lang.Closure ;
-import java.util.* ;
+
+import java.util.Iterator;
+import java.util.Map;
 
 public class StreamExtension {
     public static <T>   Stream<T>         toStream( Closure<T>                   delegate ) { return Stream.from( delegate ) ; }

@@ -31,7 +31,7 @@ import java.util.Map ;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods ;
 
 public class Stream<T> implements Iterator<T>, Iterable<T> {
-    Iterator<T> iterator ;
+    private final Iterator<T> iterator ;
 
     private Stream( Iterator<T> iterator ) {
         this.iterator = iterator ;

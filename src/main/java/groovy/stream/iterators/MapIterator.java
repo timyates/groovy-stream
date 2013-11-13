@@ -24,13 +24,13 @@ import java.util.Map ;
 import java.util.NoSuchElementException ;
 
 public class MapIterator<T,U> implements Iterator<Map<T,U>> {
-
     private final Map<T,Iterable<U>> iterables ;
     private final Map<T,Iterator<U>> iterators ;
-    private final List<T>         keys ;
-    private boolean               exhausted ;
-    private boolean               initialised ;
-    private Map<T,U>              current ;
+    private final List<T>            keys ;
+
+    private boolean  exhausted ;
+    private boolean  initialised ;
+    private Map<T,U> current ;
 
     public MapIterator( Map<T,? extends Iterable<U>> underlying ) {
         this.iterables = new LinkedHashMap<T,Iterable<U>>();

@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-package groovy.stream ;
+package groovy.stream.iterators ;
 
 import groovy.lang.Closure ;
-import java.util.Collection ;
 import java.util.Iterator ;
-import java.util.LinkedList ;
-import java.util.Queue ;
 import java.util.NoSuchElementException ;
 
 public class ZipIterator<T,U,V> implements Iterator<V> {
-    private Iterator<T> iter1 ;
-    private Iterator<U> iter2 ;
-    private Closure<V>  method ;
-    private boolean     initialised ;
-    private boolean     exhausted ;
-    private boolean     withIndex ;
-    private int         index ;
-    private V           current ;
+    private final Iterator<T> iter1 ;
+    private final Iterator<U> iter2 ;
+    private final Closure<V>  method ;
+    private final boolean     withIndex ;
+
+    private boolean initialised ;
+    private boolean exhausted ;
+    private int     index ;
+    private V       current ;
 
     public ZipIterator( Iterator<T> iter1, Iterator<U> iter2, boolean withIndex, Closure<V> method ) {
         this.iter1 = iter1 ;
@@ -43,6 +41,7 @@ public class ZipIterator<T,U,V> implements Iterator<V> {
         this.index = 0 ;
     }
 
+    @Override
     public void remove() {
         iter1.remove() ;
         iter2.remove() ;
@@ -65,6 +64,7 @@ public class ZipIterator<T,U,V> implements Iterator<V> {
         }
     }
 
+    @Override
     public boolean hasNext() {
         if( !initialised ) {
             loadNext() ;
@@ -73,6 +73,7 @@ public class ZipIterator<T,U,V> implements Iterator<V> {
         return !exhausted ;
     }
 
+    @Override
     public V next() {
         if( !initialised ) {
             hasNext() ;
