@@ -97,29 +97,29 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return DefaultGroovyMethods.take( (Iterator<T>)this, n ) ;
     }
 
-    public static <K,V> Stream<Map<K,V>>    from( Map<K,? extends Iterable<V>> map )      { return new Stream<Map<K,V>>( new MapIterator<K,V>( map ) ) ;     }
-    public static <T> Stream<T>             from( Stream<T> stream            ) { return new Stream<T>( stream.iterator ) ;                                         }
-    public static <T> Stream<T>             from( Iterable<T> iterable        ) { return new Stream<T>( iterable.iterator() ) ;                              }
-    public static <T> Stream<T>             from( Iterator<T> iterator        ) { return new Stream<T>( iterator ) ;                                         }
-    public static <T> Stream<T>             from( Closure<T> closure          ) { return new Stream<T>( new RepeatingClosureIterator<T>( closure ) ) ;       }
+    public static <K,V> Stream<Map<K,V>>  from( Map<K,? extends Iterable<V>> map ) { return new Stream<Map<K,V>>( new MapIterator<K,V>( map ) ) ;               }
+    public static <T>   Stream<T>         from( Stream<T> stream                 ) { return new Stream<T>( stream.iterator ) ;                                  }
+    public static <T>   Stream<T>         from( Iterable<T> iterable             ) { return new Stream<T>( iterable.iterator() ) ;                              }
+    public static <T>   Stream<T>         from( Iterator<T> iterator             ) { return new Stream<T>( iterator ) ;                                         }
+    public static <T>   Stream<T>         from( Closure<T> closure               ) { return new Stream<T>( new RepeatingClosureIterator<T>( closure ) ) ;       }
     @SuppressWarnings("unchecked")
-    public static <T> Stream<T>             from( T[] array                   ) { return new Stream<T>(         primitiveArrayToList( array ).iterator() ) ; }
+    public static <T>   Stream<T>         from( T[] array                        ) { return new Stream<T>(         primitiveArrayToList( array ).iterator() ) ; }
     @SuppressWarnings("unchecked")
-    public static     Stream<Byte>          from( byte[] array                ) { return new Stream<Byte>(      primitiveArrayToList( array ).iterator() ) ; }
+    public static       Stream<Byte>      from( byte[] array                     ) { return new Stream<Byte>(      primitiveArrayToList( array ).iterator() ) ; }
     @SuppressWarnings("unchecked")
-    public static     Stream<Character>     from( char[] array                ) { return new Stream<Character>( primitiveArrayToList( array ).iterator() ) ; }
+    public static       Stream<Character> from( char[] array                     ) { return new Stream<Character>( primitiveArrayToList( array ).iterator() ) ; }
     @SuppressWarnings("unchecked")
-    public static     Stream<Short>         from( short[] array               ) { return new Stream<Short>(     primitiveArrayToList( array ).iterator() ) ; }
+    public static       Stream<Short>     from( short[] array                    ) { return new Stream<Short>(     primitiveArrayToList( array ).iterator() ) ; }
     @SuppressWarnings("unchecked")
-    public static     Stream<Integer>       from( int[] array                 ) { return new Stream<Integer>(   primitiveArrayToList( array ).iterator() ) ; }
+    public static       Stream<Integer>   from( int[] array                      ) { return new Stream<Integer>(   primitiveArrayToList( array ).iterator() ) ; }
     @SuppressWarnings("unchecked")
-    public static     Stream<Long>          from( long[] array                ) { return new Stream<Long>(      primitiveArrayToList( array ).iterator() ) ; }
+    public static       Stream<Long>      from( long[] array                     ) { return new Stream<Long>(      primitiveArrayToList( array ).iterator() ) ; }
     @SuppressWarnings("unchecked")
-    public static     Stream<Float>         from( float[] array               ) { return new Stream<Float>(     primitiveArrayToList( array ).iterator() ) ; }
+    public static       Stream<Float>     from( float[] array                    ) { return new Stream<Float>(     primitiveArrayToList( array ).iterator() ) ; }
     @SuppressWarnings("unchecked")
-    public static     Stream<Double>        from( double[] array              ) { return new Stream<Double>(    primitiveArrayToList( array ).iterator() ) ; }
+    public static       Stream<Double>    from( double[] array                   ) { return new Stream<Double>(    primitiveArrayToList( array ).iterator() ) ; }
     @SuppressWarnings("unchecked")
-    public static     Stream<Boolean>       from( boolean[] array             ) { return new Stream<Boolean>(   primitiveArrayToList( array ).iterator() ) ; }
+    public static       Stream<Boolean>   from( boolean[] array                  ) { return new Stream<Boolean>(   primitiveArrayToList( array ).iterator() ) ; }
 
     /* Iterator and Iterable Methods */
     @Override public Iterator<T> iterator() { return this ; }
