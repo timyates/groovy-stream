@@ -19,7 +19,7 @@ package groovy.stream
 public class StaticTests extends spock.lang.Specification {
 
     @groovy.transform.CompileStatic
-    def generate() {
+    private Collection<Integer> generate() {
         Stream.from( [ x:1..3, y:1..3 ] )
               .map { Map<String,Integer> it -> it.x + it.y }
               .collect()
@@ -31,5 +31,22 @@ public class StaticTests extends spock.lang.Specification {
 
         then:
             result == [ 2, 3, 4, 3, 4, 5, 4, 5, 6 ]
+    }
+
+    /*
+    @groovy.transform.CompileStatic
+    private Collection<Integer> generateExtension() {
+        [ 1, 2, 3 ].toStream()
+                   .collect()
+    }
+    */
+
+    @spock.lang.Ignore("Extensions cannot yet be statically checked")
+    def "Static extension"() {
+        when:
+            def result = generateExtension()
+
+        then:
+            result == [ 1, 2, 3 ]
     }
 }

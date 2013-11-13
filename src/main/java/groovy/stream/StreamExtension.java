@@ -20,17 +20,17 @@ import groovy.lang.Closure ;
 import java.util.* ;
 
 public class StreamExtension {
-    public static <T> Stream<T>             toStream( Closure<T>           delegate ) { return Stream.from( delegate ) ; }
-    public static <T> Stream<T>             toStream( Iterator<T>          delegate ) { return Stream.from( delegate ) ; }
-    public static <T> Stream<T>             toStream( Iterable<T>          delegate ) { return Stream.from( delegate ) ; }
-    public static <T> Stream<Map<Object,T>> toStream( Map<Object,Iterable<T>> delegate ) { return Stream.from( delegate ) ; }
-    public static <T> Stream<T>             toStream( T[]                  delegate ) { return Stream.from( delegate ) ; }
-    public static     Stream<Byte>          toStream( byte[]               delegate ) { return Stream.from( delegate ) ; }
-    public static     Stream<Character>     toStream( char[]               delegate ) { return Stream.from( delegate ) ; }
-    public static     Stream<Short>         toStream( short[]              delegate ) { return Stream.from( delegate ) ; }
-    public static     Stream<Integer>       toStream( int[]                delegate ) { return Stream.from( delegate ) ; }
-    public static     Stream<Long>          toStream( long[]               delegate ) { return Stream.from( delegate ) ; }
-    public static     Stream<Float>         toStream( float[]              delegate ) { return Stream.from( delegate ) ; }
-    public static     Stream<Double>        toStream( double[]             delegate ) { return Stream.from( delegate ) ; }
-    public static     Stream<Boolean>       toStream( boolean[]            delegate ) { return Stream.from( delegate ) ; }
+    public static <T>   Stream<T>         toStream( Closure<T>                   delegate ) { return Stream.from( delegate ) ; }
+    public static <T>   Stream<T>         toStream( Iterator<T>                  delegate ) { return Stream.from( delegate ) ; }
+    public static <T>   Stream<T>         toStream( Iterable<T>                  delegate ) { return Stream.from( delegate ) ; }
+    public static <K,V> Stream<Map<K,V>>  toStream( Map<K,? extends Iterable<V>> delegate ) { return Stream.from( delegate ) ; }
+    public static <T>   Stream<T>         toStream( T[]                          delegate ) { return Stream.from( delegate ) ; }
+    public static       Stream<Byte>      toStream( byte[]                       delegate ) { return Stream.from( delegate ) ; }
+    public static       Stream<Character> toStream( char[]                       delegate ) { return Stream.from( delegate ) ; }
+    public static       Stream<Short>     toStream( short[]                      delegate ) { return Stream.from( delegate ) ; }
+    public static       Stream<Integer>   toStream( int[]                        delegate ) { return Stream.from( delegate ) ; }
+    public static       Stream<Long>      toStream( long[]                       delegate ) { return Stream.from( delegate ) ; }
+    public static       Stream<Float>     toStream( float[]                      delegate ) { return Stream.from( delegate ) ; }
+    public static       Stream<Double>    toStream( double[]                     delegate ) { return Stream.from( delegate ) ; }
+    public static       Stream<Boolean>   toStream( boolean[]                    delegate ) { return Stream.from( delegate ) ; }
 }
