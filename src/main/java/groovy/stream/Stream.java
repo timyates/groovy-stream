@@ -97,7 +97,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return DefaultGroovyMethods.take( (Iterator<T>)this, n ) ;
     }
 
-    public static <T> Stream<Map<Object,T>> from( Map<Object,Iterable<T>> map ) { return new Stream<Map<Object,T>>( new MapIterator<Object,T>( map ) ) ;     }
+    public static <K,V> Stream<Map<K,V>>    from( Map<K,? extends Iterable<V>> map )      { return new Stream<Map<K,V>>( new MapIterator<K,V>( map ) ) ;     }
     public static <T> Stream<T>             from( Stream<T> stream            ) { return new Stream<T>( stream.iterator ) ;                                         }
     public static <T> Stream<T>             from( Iterable<T> iterable        ) { return new Stream<T>( iterable.iterator() ) ;                              }
     public static <T> Stream<T>             from( Iterator<T> iterator        ) { return new Stream<T>( iterator ) ;                                         }

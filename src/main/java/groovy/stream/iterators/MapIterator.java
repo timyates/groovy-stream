@@ -32,14 +32,14 @@ public class MapIterator<T,U> implements Iterator<Map<T,U>> {
     private boolean               initialised ;
     private Map<T,U>              current ;
 
-    public MapIterator( Map<T,Iterable<U>> underlying ) {
+    public MapIterator( Map<T,? extends Iterable<U>> underlying ) {
         this.iterables = new LinkedHashMap<T,Iterable<U>>();
         this.iterators = new LinkedHashMap<T,Iterator<U>>();
         this.keys = new ArrayList<T>();
         this.exhausted = false;
         this.current = null;
         this.initialised = false;
-        for( Map.Entry<T,Iterable<U>> entry : underlying.entrySet() ) {
+        for( Map.Entry<T,? extends Iterable<U>> entry : underlying.entrySet() ) {
             keys.add( entry.getKey() ) ;
             iterables.put( entry.getKey(), entry.getValue() ) ;
             iterators.put( entry.getKey(), entry.getValue().iterator() ) ;
