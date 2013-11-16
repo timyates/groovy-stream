@@ -25,12 +25,33 @@ public class StaticTests extends spock.lang.Specification {
               .collect()
     }
 
+    @groovy.transform.CompileStatic
+    private Collection<Integer> generateOdd() {
+        Stream.from( [ x:1..3, y:1..3 ] )
+              .map { Map<String,Integer> it -> it.x + it.y }
+              .filter { Integer it -> it % 2 }
+              .collect()
+    }
+
+    @groovy.transform.CompileStatic
+    private Collection<Integer> generateOddTill5() {
+        Stream.from( [ x:1..3, y:1..3 ] )
+              .map { Map<String,Integer> it -> it.x + it.y }
+              .filter { Integer it -> it % 2 }
+              .until { Integer it -> it == 5 }
+              .collect()
+    }
+
     def "Quick test"() {
         when:
             def result = generate()
+            def resultOdd = generateOdd()
+            def resultOddTill5 = generateOddTill5()
 
         then:
             result == [ 2, 3, 4, 3, 4, 5, 4, 5, 6 ]
+            resultOdd == [ 3, 3, 5, 5 ]
+            resultOddTill5 == [ 3, 3 ]
     }
 
     /*
