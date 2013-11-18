@@ -44,6 +44,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<T>( new FilteringIterator<T>( iterator, predicate, true ) ) ;
     }
 
+    public Stream<T> concat( Iterator<? extends T> other ) {
+        return new Stream<T>( new ConcatenationIterator<T>( iterator, other ) ) ;
+    }
+
     public Stream<T> skip( int n ) {
         return new Stream<T>( new SkipIterator<T>( iterator, n ) ) ;
     }
