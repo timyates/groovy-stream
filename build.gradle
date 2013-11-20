@@ -19,7 +19,7 @@ repositories {
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
-    compile     'org.codehaus.groovy:groovy-all:2.1.8'
+    compile     'org.codehaus.groovy:groovy-all:2.2.0'
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
     testRuntime fileTree( dir:'build/libs/', includes:[ "groovy-stream-${version}.jar".toString() ] )
 }
