@@ -6,7 +6,7 @@ group: navigation
 ---
 {% include JB/setup %}
 
-### v0.7.0-SNAPSHOT
+### v0.7.0-SNAPSHOT ([code here](https://github.com/timyates/groovy-stream/tree/development))
 
 {% highlight groovy linenum %}
 @GrabResolver( name='so', root='https://oss.sonatype.org/content/repositories/snapshots/' )
