@@ -6,10 +6,51 @@ group: navigation
 ---
 {% include JB/setup %}
 
+### v0.7.0-SNAPSHOT
+
+    @GrabResolver( name='so', root='https://oss.sonatype.org/content/repositories/snapshots/' )
+    @Grab( 'com.bloidonia:groovy-stream:0.7.0-SNAPSHOT' )
+    import groovy.stream.*
+
+ - Removed the `using` block. This can be handled externally by the calling scope, and was adding much complexity to the Stream code.
+
+    def quantities = [ eggs:3, ham:2, bread:4 ]
+    def result = Stream.from( [ 'ham', 'bread', 'eggs' ] )
+                       .flatMap { [ it ] * quantities[ it ] }          // so 'ham' will return [ 'ham', 'ham' ]
+                       .filter { it != 'bread' }                       // get rid of bread
+                       .join( ',' )                                    // Join into a string
+
+ - Added `skip` method to skip `n` elements in the Stream
+
+    assert Stream.from( 1..5 ).skip( 3 ).collect() == [ 4, 5 ]
+
+ - Added `zip` method which takes an Iterator (or another Stream), and executes a 2 parameter Closure that is passed the next elements from each Iterator. The result of this Closure is passed on down the Stream. The stream will end when *either* iterator is exhausted.
+
+    def letters = Stream.from 'a'..'c'
+    def numbers = Stream.from 1..4
+    assert letters.zip( numbers ) { a, b -> "$a$b" }
+                  .collect() == [ 'a1', 'b2', 'c3' ]
+
+and:
+
+    def letters = Stream.from 'a'..'c'
+    def numbers = Stream.from 1..4
+    assert numbers.zip( letters ) { a, b -> "$a$b" }
+                  .collect() == [ '1a', '2b', '3c' ]
+
+
+ - Added `concat` method which takes an Iterator, and once the current stream is exhausted, will start returning items from this.
+
+    def letters = Stream.from 'a'..'c'
+    def numbers = Stream.from 1..4
+    assert letters.concat( numbers ).collect() == [ 'a', 'b', 'c', 1, 2, 3, 4 ]
+    
+ - Added `withIndex` methods, ie: `filterWithIndex`, `flatMapWithIndex`, `tapWithIndex`, `tapEveryWithIndex`, `mapWithIndex`, `untilWithIndex` and `zipWithIndex`.  Most of these take a 2 argument Closure (3 arguments in the case of `zipWithIndex`) in which the last parameter will be the current index at this point in the Stream.
+ 
 ### v0.6.2
 
 - If `collate` was called with `keepRemainder` set to false, but there would be
-  no remainder, then a NPE was thrown.
+    no remainder, then a NPE was thrown.
 
 ### v0.6.1
 
@@ -28,11 +69,11 @@ in the same order they are added to the Stream.  ie:
     import groovy.stream.*
 
     def result = Stream.from( 1..50 )
-                       .filter { it % 5 == 0 }            // just the multiples of 5
-                       .map    { 100 / it    }            // as a divisor of 100
-                       .filter { it == Math.round( it ) } // Just the integers
-                       .map    { "#$it" }                 // Convert to a String
-                       .collect()
+                                         .filter { it % 5 == 0 }            // just the multiples of 5
+                                         .map    { 100 / it    }            // as a divisor of 100
+                                         .filter { it == Math.round( it ) } // Just the integers
+                                         .map    { "#$it" }                 // Convert to a String
+                                         .collect()
 
     assert result == ['#20', '#10', '#5', '#4', '#2']
 
@@ -59,9 +100,9 @@ Also, added a `collate` method to Streams (same params as the Groovy `collate` m
     import groovy.stream.*
 
     def result = Stream.from( 1..10 )
-                       .collate( 3 )
-                       .collect()
-                       
+                                         .collate( 3 )
+                                         .collect()
+                                         
     assert result == [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ], [ 10 ] ]
 
 ### v0.5.4
@@ -77,10 +118,10 @@ This lets you (once 0.5.4 hits maven) use streams as observables with [RxJava](h
 
     def integers = Stream.from 1..50
     Observable.toObservable( integers )
-              .skip( 10 )
-              .take( 5 )
-              .map { "Number $it" }
-              .subscribe { println "onNext => " + it }
+                        .skip( 10 )
+                        .take( 5 )
+                        .map { "Number $it" }
+                        .subscribe { println "onNext => " + it }
 
 Which should print:
 
@@ -89,7 +130,7 @@ Which should print:
     onNext => Number 13
     onNext => Number 14
     onNext => Number 15
-          
+                    
 ### v0.5.3
 
 Fixed a [slight issue](https://github.com/timyates/groovy-stream/issues/11) where calling `next()` on a Stream before calling `hasNext()` would cause a `NullPointerException`
