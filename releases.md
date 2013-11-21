@@ -14,36 +14,37 @@ group: navigation
 
  - Removed the `using` block. This can be handled externally by the calling scope, and was adding much complexity to the Stream code.
 
-    def quantities = [ eggs:3, ham:2, bread:4 ]
-    def result = Stream.from( [ 'ham', 'bread', 'eggs' ] )
-                       .flatMap { [ it ] * quantities[ it ] }          // so 'ham' will return [ 'ham', 'ham' ]
-                       .filter { it != 'bread' }                       // get rid of bread
-                       .join( ',' )                                    // Join into a string
+        def quantities = [ eggs:3, ham:2, bread:4 ]
+        def result = Stream.from( [ 'ham', 'bread', 'eggs' ] )
+                           .flatMap { [ it ] * quantities[ it ] }          // so 'ham' will return [ 'ham', 'ham' ]
+                           .filter { it != 'bread' }                       // get rid of bread
+                           .join( ',' )                                    // Join into a string
 
  - Added `skip` method to skip `n` elements in the Stream
 
-    assert Stream.from( 1..5 ).skip( 3 ).collect() == [ 4, 5 ]
+        assert Stream.from( 1..5 ).skip( 3 ).collect() == [ 4, 5 ]
 
  - Added `zip` method which takes an Iterator (or another Stream), and executes a 2 parameter Closure that is passed the next elements from each Iterator. The result of this Closure is passed on down the Stream. The stream will end when *either* iterator is exhausted.
 
-    def letters = Stream.from 'a'..'c'
-    def numbers = Stream.from 1..4
-    assert letters.zip( numbers ) { a, b -> "$a$b" }
-                  .collect() == [ 'a1', 'b2', 'c3' ]
+        // One stream of 3 elements, one of 4
+        def letters = Stream.from 'a'..'c'
+        def numbers = Stream.from 1..4
+        assert letters.zip( numbers ) { a, b -> "$a$b" }
+                      .collect() == [ 'a1', 'b2', 'c3' ]
 
-and:
 
-    def letters = Stream.from 'a'..'c'
-    def numbers = Stream.from 1..4
-    assert numbers.zip( letters ) { a, b -> "$a$b" }
-                  .collect() == [ '1a', '2b', '3c' ]
+        // other way round, same result
+        letters = Stream.from 'a'..'c'
+        numbers = Stream.from 1..4
+        assert numbers.zip( letters ) { a, b -> "$a$b" }
+                      .collect() == [ '1a', '2b', '3c' ]
 
 
  - Added `concat` method which takes an Iterator, and once the current stream is exhausted, will start returning items from this.
 
-    def letters = Stream.from 'a'..'c'
-    def numbers = Stream.from 1..4
-    assert letters.concat( numbers ).collect() == [ 'a', 'b', 'c', 1, 2, 3, 4 ]
+        def letters = Stream.from 'a'..'c'
+        def numbers = Stream.from 1..4
+        assert letters.concat( numbers ).collect() == [ 'a', 'b', 'c', 1, 2, 3, 4 ]
     
  - Added `withIndex` methods, ie: `filterWithIndex`, `flatMapWithIndex`, `tapWithIndex`, `tapEveryWithIndex`, `mapWithIndex`, `untilWithIndex` and `zipWithIndex`.  Most of these take a 2 argument Closure (3 arguments in the case of `zipWithIndex`) in which the last parameter will be the current index at this point in the Stream.
  
