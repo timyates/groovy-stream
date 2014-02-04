@@ -1,5 +1,0 @@
-
-http://timyates.github.com/groovy-stream/atom.xml
-http://timyates.github.com/groovy-stream/index.html
-http://timyates.github.com/groovy-stream/releases.html
-http://timyates.github.com/groovy-stream/sitemap.txt

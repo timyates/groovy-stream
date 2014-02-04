@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Releases</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content"JBake">
+
+    <!-- Le styles -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/asciidoctor.css" rel="stylesheet">
+    <link href="/css/base.css" rel="stylesheet">
+    <link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="favicon.ico">
+  </head>
+  <body>
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+      <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="/">groovy-stream</a>
+            <div class="nav-collapse collapse">
+              <ul class="nav">
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/releases.html">Releases</a></li>
+
+<!--
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Coming Soon <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#"></a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li class="nav-header">Nav header</li>
+                    <li><a href="#">Separated link</a></li>
+                    <li><a href="#">One more separated link</a></li>
+                  </ul>
+                </li>
+-->
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div>
+        </div>
+      </div>
+      <div class="container">	
+	<div class="page-header">
+		<h1>Releases</h1>
+	</div>
+<!--
+	<p><em>24 September 2013</em></p>
+-->
+	<p><h3>v0.7.0-SNAPSHOT</h3><p>Code <a href="https://github.com/timyates/groovy-stream/tree/development">can be found here</a> on the development branch atm.</p>
+<pre><code class="groovy">@GrabResolver( name=&#39;so&#39;, root=&#39;https://oss.sonatype.org/content/repositories/snapshots/&#39; )
+@Grab( &#39;com.bloidonia:groovy-stream:0.7.0-SNAPSHOT&#39; )
+import groovy.stream.*
+</code></pre>
+<ul>
+  <li>Removed the <code>using</code> block. This can be handled externally by the calling scope, and was adding much complexity to the Stream code.</li>
+</ul>
+<pre><code class="groovy">def quantities = [ eggs:3, ham:2, bread:4 ]
+def result = Stream.from( [ &#39;ham&#39;, &#39;bread&#39;, &#39;eggs&#39; ] )
+                   .flatMap { [ it ] * quantities[ it ] }          // so &#39;ham&#39; will return [ &#39;ham&#39;, &#39;ham&#39; ]
+                   .filter { it != &#39;bread&#39; }                       // get rid of bread
+                   .join( &#39;,&#39; )                                    // Join into a string
+</code></pre>
+<ul>
+  <li>Added <code>skip</code> method to skip <code>n</code> elements in the Stream</li>
+</ul>
+<pre><code class="groovy">assert Stream.from( 1..5 ).skip( 3 ).collect() == [ 4, 5 ]
+</code></pre>
+<ul>
+  <li>Added <code>zip</code> method which takes an Iterator (or another Stream), and executes a 2 parameter Closure that is passed the next elements from each Iterator. The result of this Closure is passed on down the Stream. The stream will end when <em>either</em> iterator is exhausted.</li>
+</ul>
+<pre><code class="groovy">// One stream of 3 elements, one of 4
+def letters = Stream.from &#39;a&#39;..&#39;c&#39;
+def numbers = Stream.from 1..4
+assert letters.zip( numbers ) { a, b -&gt; &quot;$a$b&quot; }
+              .collect() == [ &#39;a1&#39;, &#39;b2&#39;, &#39;c3&#39; ]
+
+
+// other way round, same result
+letters = Stream.from &#39;a&#39;..&#39;c&#39;
+numbers = Stream.from 1..4
+assert numbers.zip( letters ) { a, b -&gt; &quot;$a$b&quot; }
+              .collect() == [ &#39;1a&#39;, &#39;2b&#39;, &#39;3c&#39; ]
+</code></pre>
+<ul>
+  <li>Added <code>concat</code> method which takes an Iterator, and once the current stream is exhausted, will start returning items from this.</li>
+</ul>
+<pre><code class="groovy">def letters = Stream.from &#39;a&#39;..&#39;c&#39;
+def numbers = Stream.from 1..4
+assert letters.concat( numbers ).collect() == [ &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, 1, 2, 3, 4 ]
+</code></pre>
+<ul>
+  <li>Added <code>withIndex</code> methods, ie: <code>filterWithIndex</code>, <code>flatMapWithIndex</code>, <code>tapWithIndex</code>, <code>tapEveryWithIndex</code>, <code>mapWithIndex</code>, <code>untilWithIndex</code> and <code>zipWithIndex</code>. Most of these take a 2 argument Closure (3 arguments in the case of <code>zipWithIndex</code>) in which the last parameter will be the current index at this point in the Stream.</li>
+</ul><h3>v0.6.2</h3>
+<ul>
+  <li>If <code>collate</code> was called with <code>keepRemainder</code> set to false, but there would be<br/>no remainder, then a NPE was thrown.</li>
+</ul><h3>v0.6.1</h3>
+<ul>
+  <li>Streams and Iterators all return <code>NoSuchElementException</code> if <code>next()</code> is called when exhausted.</li>
+  <li>Added <code>tap</code> and <code>tapEvery</code> for tapping into the stream every <code>n</code> elements</li>
+  <li>Fixed an issue with nulls in the stream</li>
+</ul><h3>v0.6</h3><p>The groovy-stream has been almost entirely rewritten so it's hopefully easier to maintain and extend.</p><p>The main difference now is that you can have multiple <code>filter</code> and <code>map</code> steps and they are executed<br/>in the same order they are added to the Stream. ie:</p>
+<pre><code class="groovy">@Grab( &#39;com.bloidonia:groovy-stream:0.6&#39; )
+import groovy.stream.*
+
+def result = Stream.from( 1..50 )
+                                     .filter { it % 5 == 0 }            // just the multiples of 5
+                                     .map    { 100 / it    }            // as a divisor of 100
+                                     .filter { it == Math.round( it ) } // Just the integers
+                                     .map    { &quot;#$it&quot; }                 // Convert to a String
+                                     .collect()
+
+assert result == [&#39;#20&#39;, &#39;#10&#39;, &#39;#5&#39;, &#39;#4&#39;, &#39;#2&#39;]
+</code></pre><p>Accordingly as there is no implicit order things are fired any more, the <code>unfilteredIndex</code> is updated<br/>before any steps are executed, and the <code>streamIndex</code> variable is updated after all steps have fired.</p><p>We also have a new step <code>flatMap</code>, which returns a <code>Collection</code>, and these values are passed individually<br/>through the following steps before a new value is fetched from the source, ie:</p>
+<pre><code class="groovy">@Grab( &#39;com.bloidonia:groovy-stream:0.6&#39; )
+import groovy.stream.*
+
+def result = Stream.from( [ &#39;ham&#39;, &#39;bread&#39;, &#39;eggs&#39; ] )
+                   .flatMap { [ it ] * quantities[ it ] }          // so &#39;ham&#39; will return [ &#39;ham&#39;, &#39;ham&#39; ]
+                   .filter { it != &#39;bread&#39; }                       // get rid of bread
+                   .using( quantities:[ eggs:3, ham:2, bread:4 ] ) // Our quantities
+                   .join( &#39;,&#39; )                                    // Join into a string
+
+assert result == &#39;ham,ham,eggs,eggs,eggs&#39;
+</code></pre><p>Also, added a <code>collate</code> method to Streams (same params as the Groovy <code>collate</code> method on <code>List</code>). Allows you to do:</p>
+<pre><code class="groovy">@Grab( &#39;com.bloidonia:groovy-stream:0.6&#39; )
+import groovy.stream.*
+
+def result = Stream.from( 1..10 )
+                                     .collate( 3 )
+                                     .collect()
+                                     
+assert result == [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ], [ 10 ] ]
+</code></pre><h3>v0.5.4</h3><p><code>Stream</code> now implements <code>Iterable&lt;T&gt;</code></p><p>This lets you (once 0.5.4 hits maven) use streams as observables with <a href="https://github.com/Netflix/RxJava">RxJava</a>, ie:</p>
+<pre><code class="groovy">@Grab(&#39;com.bloidonia:groovy-stream:0.5.4&#39;)
+import groovy.stream.*
+@Grab(&#39;com.netflix.rxjava:rxjava-groovy:0.5.2&#39;)
+import rx.*
+
+def integers = Stream.from 1..50
+Observable.toObservable( integers )
+                    .skip( 10 )
+                    .take( 5 )
+                    .map { &quot;Number $it&quot; }
+                    .subscribe { println &quot;onNext =&gt; &quot; + it }
+</code></pre><p>Which should print:</p>
+<pre><code>onNext =&gt; Number 11
+onNext =&gt; Number 12
+onNext =&gt; Number 13
+onNext =&gt; Number 14
+onNext =&gt; Number 15
+</code></pre><h3>v0.5.3</h3><p>Fixed a <a href="https://github.com/timyates/groovy-stream/issues/11">slight issue</a> where calling <code>next()</code> on a Stream before calling <code>hasNext()</code> would cause a <code>NullPointerException</code></p><p>Although calling <code>next()</code> before calling <code>hasNext()</code> feels a bit free and loose as programming goes, it was probably wrong ;-)</p><h3>v0.5.2</h3><p>The library now works with Java 6 (thanks to <a href="https://twitter.com/aalmiray">Andres Almiray</a> for <a href="https://github.com/timyates/groovy-stream/issues/8">spotting this one</a>)</p><h3>v0.5.1</h3><p>Fixed a bug whereby Streams couldn't iterate another Stream.</p><h3>v0.5</h3><p>The functions where and transform have been renamed to <code>filter</code> and <code>map</code> respectively.</p><p>It's better to use existing, known function names for existing functionality rather than inventing your own terms.</p><h3>v0.4</h3><p>You can now use arrays as a source for groovy-streams. Previously, running:</p>
+<pre><code class="groovy">int[] arr = [ 1,2,3 ]
+Stream s = Stream.from arr
+s.each { println it }
+</code></pre><p>Would be an infinite loop, returning <code>[1,2,3]</code> every time.</p><p>This will now behave as expected.</p><h3>v0.3</h3><p>groovy-stream can now be used as a Module Extension with Groovy 2.0</p><p>This means you can do:</p>
+<pre><code class="groovy">Stream s = [1,2,3].toStream()
+</code></pre><p>Just by including the built jar on your classpath. It works with <code>@Grab</code> too:</p>
+<pre><code class="groovy">@GrabResolver( name=&#39;bloidonia&#39;, root=&#39;https://raw.github.com/timyates/bloidonia-repo/master&#39; )
+@Grab(&#39;com.bloidonia:groovy-stream:0.3&#39;)
+import groovy.stream.Stream 
+
+def s = (1..4).toStream()
+assert [1,2,3,4] == s.collect()
+</code></pre><p>See <code>groovy.stream.StreamExtension</code> for the decorated classes.</p><p>Currently (as of Groovy 2.0RC4) there are issues with using @Grab -- (see GROOVY-5543 but this should work fine where the jar is added to the classpath by hand.</p><h3>v0.2</h3><p>When Streaming over a Map, it is now passed as a parameter to the where block so you can deal with shadowed variables, ie:</p>
+<pre><code class="groovy">def x = 10
+
+def bad = Stream.from x:1..3, y:1..3 where { x == y }
+assert bad.collect() == [] // as &#39;x&#39; in the where block == 10
+
+def good = Stream.from x:1..3, y:1..3 where { it.x == it.y }
+assert good.collect() == [ [x:1,y:1],[x:2,y:2],[x:3,y:3] ]
+</code></pre><h3>v0.1</h3><p>Initial release.</p></p>
+
+	<hr>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2013 | Mixed with <a href="http://twitter.github.com/bootstrap/">Bootstrap v2.3.1</a> | Baked with <a href="http://jbake.org">JBake v2.2.1</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/js/jquery-1.9.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/run_prettify.js"></script>
+    
+  </body>
+</html>
