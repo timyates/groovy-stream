@@ -16,7 +16,7 @@
 
 package groovy.stream
 
-public class IteratorTests extends spock.lang.Specification {
+class IteratorTests extends spock.lang.Specification {
     def "test list iterator"() {
         setup:
             def iterator = [ 1, 2, 3 ].iterator()

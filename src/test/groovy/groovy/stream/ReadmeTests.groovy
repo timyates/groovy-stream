@@ -16,7 +16,7 @@
 
 package groovy.stream
 
-public class ReadmeTests extends spock.lang.Specification {
+class ReadmeTests extends spock.lang.Specification {
     def "first example"() {
         setup:
             def s = Stream.from x:1..2, y:1..4 filter { x + y == 4 }

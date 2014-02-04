@@ -16,7 +16,7 @@
 
 package groovy.stream
 
-public class ObjectTests extends spock.lang.Specification {
+class ObjectTests extends spock.lang.Specification {
     def "test obj appender"() {
         setup:
             def stream = Stream.from { 1 }

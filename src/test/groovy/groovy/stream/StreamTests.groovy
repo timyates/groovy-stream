@@ -18,7 +18,7 @@ package groovy.stream
 
 import spock.lang.Unroll
 
-public class StreamTests extends spock.lang.Specification {
+class StreamTests extends spock.lang.Specification {
     def "test Streaming a List Stream"() {
         setup:
             def instream  = Stream.from 1..3

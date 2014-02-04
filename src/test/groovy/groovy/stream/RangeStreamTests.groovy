@@ -16,7 +16,7 @@
 
 package groovy.stream
 
-public class RangeStreamTests extends spock.lang.Specification {
+class RangeStreamTests extends spock.lang.Specification {
     def "Simple Range usage"() {
         setup:
             def range  = 1..10

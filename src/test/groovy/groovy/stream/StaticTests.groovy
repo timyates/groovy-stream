@@ -16,7 +16,7 @@
 
 package groovy.stream
 
-public class StaticTests extends spock.lang.Specification {
+class StaticTests extends spock.lang.Specification {
 
     @groovy.transform.CompileStatic
     private Collection<Integer> generate() {

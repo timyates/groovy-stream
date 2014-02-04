@@ -16,7 +16,7 @@
 
 package groovy.stream
 
-public class MapTests extends spock.lang.Specification {
+class MapTests extends spock.lang.Specification {
     def "Simple Map"() {
         setup:
             def stream = Stream.from x:1..2, y:1..2

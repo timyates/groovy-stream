@@ -16,7 +16,7 @@
 
 package groovy.stream
 
-public class DocumentedTests extends spock.lang.Specification {
+class DocumentedTests extends spock.lang.Specification {
     def "test 1"() {
         setup:
             def stream = Stream.from 1..3

@@ -16,7 +16,7 @@
 
 package groovy.stream
 
-public class ListTests extends spock.lang.Specification {
+class ListTests extends spock.lang.Specification {
     def "test index appender"() {
         setup:
             def idx = 0
