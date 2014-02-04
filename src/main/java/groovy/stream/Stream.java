@@ -187,7 +187,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      *
      *   def list = []
      *   assert Stream.from( 1..3 )
-     *                .tap( 2 ) { list &lt;&lt; it }
+     *                .tapEvery( 2 ) { list &lt;&lt; it }
      *                .collect() == [ 1, 2, 3 ]
      *   assert list == [ 2 ]
      * </pre>
