@@ -10,14 +10,14 @@
     <meta name="generator" content"JBake">
 
     <!-- Le styles -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/asciidoctor.css" rel="stylesheet">
-    <link href="/css/base.css" rel="stylesheet">
-    <link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="/groovy-stream/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/groovy-stream/css/asciidoctor.css" rel="stylesheet">
+    <link href="/groovy-stream/css/base.css" rel="stylesheet">
+    <link href="/groovy-stream/css/bootstrap-responsive.min.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-      <script src="/js/html5shiv.js"></script>
+      <script src="/groovy-stream/js/html5shiv.js"></script>
     <![endif]-->
 
     <!-- Fav and touch icons -->
