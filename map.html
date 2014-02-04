@@ -92,7 +92,10 @@ assert stream.collect() == [ 'Item 1', 'Item 2', 'Item 3' ]</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint groovy language-groovy"><code></code></pre>
+<pre class="prettyprint groovy language-groovy"><code>def stream = Stream.from( 1..3 )
+                   .mapWithIndex { num, idx -&gt; "Item $num @ $idx" }
+
+assert stream.collect() == [ 'Item 1 @ 0', 'Item 2 @ 1', 'Item 3 @ 2' ]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -102,7 +105,10 @@ the next sequence in the list:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint groovy language-groovy"><code></code></pre>
+<pre class="prettyprint groovy language-groovy"><code>def stream = Stream.from( 1..3 )
+                   .flatMap { num -&gt; [ num, num ] }
+
+assert stream.collect() == [ 1, 1, 2, 2, 3, 3 ]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -110,7 +116,10 @@ the next sequence in the list:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint groovy language-groovy"><code></code></pre>
+<pre class="prettyprint groovy language-groovy"><code>def stream = Stream.from( 1..3 )
+                   .flatMapWithIndex { num, idx -&gt; [ num ] * ( idx + 1 ) }
+
+assert stream.collect() == [ 1, 2, 2, 3, 3, 3 ]</code></pre>
 </div>
 </div>
 </div>
