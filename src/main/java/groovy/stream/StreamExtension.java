@@ -18,6 +18,8 @@ package groovy.stream ;
 
 import groovy.lang.Closure ;
 
+import java.io.BufferedReader ;
+
 import java.util.Iterator;
 import java.util.Map;
 
@@ -25,6 +27,7 @@ public class StreamExtension {
     public static <T>   Stream<T>         toStream( Closure<T>                   delegate ) { return Stream.from( delegate ) ; }
     public static <T>   Stream<T>         toStream( Iterator<T>                  delegate ) { return Stream.from( delegate ) ; }
     public static <T>   Stream<T>         toStream( Iterable<T>                  delegate ) { return Stream.from( delegate ) ; }
+    public static       Stream<String>    toStream( BufferedReader               delegate ) { return Stream.from( delegate ) ; }
     public static <K,V> Stream<Map<K,V>>  toStream( Map<K,? extends Iterable<V>> delegate ) { return Stream.from( delegate ) ; }
     public static <T>   Stream<T>         toStream( T[]                          delegate ) { return Stream.from( delegate ) ; }
     public static       Stream<Byte>      toStream( byte[]                       delegate ) { return Stream.from( delegate ) ; }

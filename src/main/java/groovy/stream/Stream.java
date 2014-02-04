@@ -20,6 +20,8 @@ import groovy.lang.Closure ;
 
 import groovy.stream.iterators.* ;
 
+import java.io.BufferedReader ;
+
 import java.lang.reflect.Array;
 
 import java.util.ArrayList ;
@@ -318,6 +320,14 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      * @return
      */
     public static <T>   Stream<T>         from( Iterator<T> iterator             ) { return new Stream<T>( iterator ) ;                                         }
+
+    /**
+     *
+     * @param <T>
+     * @param iterator
+     * @return
+     */
+    public static       Stream<String>    from( BufferedReader reader            ) { return new Stream<String>( new BufferedReaderIterator( reader ) ) ;        }
 
     /**
      *
