@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Map Functions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content"JBake">
+
+    <!-- Le styles -->
+    <link href="/groovy-stream/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/groovy-stream/css/asciidoctor.css" rel="stylesheet">
+    <link href="/groovy-stream/css/base.css" rel="stylesheet">
+    <link href="/groovy-stream/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/groovy-stream/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="favicon.ico">
+  </head>
+  <body>
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+      <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="/">groovy-stream</a>
+            <div class="nav-collapse collapse">
+              <ul class="nav">
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/releases.html">Releases</a></li>
+
+<!--
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Coming Soon <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#"></a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li class="nav-header">Nav header</li>
+                    <li><a href="#">Separated link</a></li>
+                    <li><a href="#">One more separated link</a></li>
+                  </ul>
+                </li>
+-->
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div>
+        </div>
+      </div>
+      <div class="container">	
+	<div class="page-header">
+		<h1>Map Functions</h1>
+	</div>
+<!--
+	<p><em>04 February 2014</em></p>
+-->
+	<p><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Map functions transform elements in the Stream from one form to another.</p>
+</div>
+<div class="paragraph">
+<p>At it&#8217;s simplest level, it looks like the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint groovy language-groovy"><code>def stream = Stream.from( 1..3 )
+                   .map { num -&gt; "Item $num" }
+
+assert stream.collect() == [ 'Item 1', 'Item 2', 'Item 3' ]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also pass the index into the map call by calling <code>mapWithIndex</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint groovy language-groovy"><code></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There also exists a <code>flatMap</code> variant, so you can return a Collection of values and
+each of these will be iterated first, before the underlying Stream is queried again for
+the next sequence in the list:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint groovy language-groovy"><code></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And of course, this has a <code>flatMapWithIndex</code> variant.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint groovy language-groovy"><code></code></pre>
+</div>
+</div>
+</div>
+</div></p>
+
+	<hr>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2013 | Mixed with <a href="http://twitter.github.com/bootstrap/">Bootstrap v2.3.1</a> | Baked with <a href="http://jbake.org">JBake v2.2.1</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/groovy-stream/js/jquery-1.9.1.min.js"></script>
+    <script src="/groovy-stream/js/bootstrap.min.js"></script>
+    <script src="/groovy-stream/js/run_prettify.js"></script>
+    
+  </body>
+</html>
