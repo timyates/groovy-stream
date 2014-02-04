@@ -48,7 +48,7 @@ public class FlatMapIterator<T,U extends Collection<T>> implements Iterator<T> {
     }
 
     private void loadNext() {
-        if( pushback.isEmpty() && iterator.hasNext() ) {
+        while( pushback.isEmpty() && iterator.hasNext() ) {
             T next = iterator.next() ;
             mapping.setDelegate( next ) ;
             Collection<T> mapped = withIndex ? mapping.call( next, index ) : mapping.call( next ) ;

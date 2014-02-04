@@ -96,4 +96,15 @@ public class MapTests extends spock.lang.Specification {
         then:
             result == [ 1, 3, 3, 3 ]
     }
+
+    def 'check empty lists'() {
+        setup:
+            def stream = Stream.from( [ [], 1..3, [], 4..6, [] ] ).flatMap { it }
+
+        when:
+            def result = stream.collect()
+
+        then:
+            result == [ 1, 2, 3, 4, 5, 6 ]
+    }
 }
