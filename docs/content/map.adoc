@@ -1,0 +1,39 @@
+Map Functions
+=============
+Tim Yates
+2014-02-04
+:jbake-type: page
+:jbake-tags: documentation, manual
+:jbake-status: published
+
+Map functions transform elements in the Stream from one form to another.
+
+At it's simplest level, it looks like the following:
+
+[source,groovy]
+----
+include::../../src/test/groovy/asciidoc/MapExamples.groovy[tags=simple_example,indent=0]
+----
+
+You can also pass the index into the map call by calling `mapWithIndex`:
+
+[source,groovy]
+----
+include::../../src/test/groovy/asciidoc/MapExamples.groovy[tags=index_example,indent=0]
+----
+
+There also exists a `flatMap` variant, so you can return a Collection of values and
+each of these will be iterated first, before the underlying Stream is queried again for
+the next sequence in the list:
+
+[source,groovy]
+----
+include::../../src/test/groovy/asciidoc/MapExamples.groovy[tags=flat_example,indent=0]
+----
+
+And of course, this has a `flatMapWithIndex` variant.
+
+[source,groovy]
+----
+include::../../src/test/groovy/asciidoc/MapExamples.groovy[tags=flat_index_example,indent=0]
+----
