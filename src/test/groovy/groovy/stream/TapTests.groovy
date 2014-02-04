@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,55 +21,27 @@ class TapTests extends spock.lang.Specification {
         setup:
             def list = []
             def stream = Stream.from( 1..10 ).filter { it % 2 }
-                                             .tap { idx -> list << idx }
+                                             .tapWithIndex { obj, idx -> list << idx }
                                              .map { it * 2 }
                                              .filter { it % 3 }
         when:
             def result = stream.collect()
         then:
             result == [ 2, 10, 14 ]
-            list == [ 1, 2, 3, 4, 5 ]
+            list == [ 0, 1, 2, 3, 4 ]
     }
 
     def "test every 2 times"() {
         setup:
             def list = []
             def stream = Stream.from( 1..10 ).filter { it % 2 }
-                                             .tapEvery( 2 ) { idx -> list << idx }
+                                             .tapEveryWithIndex( 2 ) { obj, idx -> list << idx }
                                              .map { it * 2 }
                                              .filter { it % 3 }
         when:
             def result = stream.collect()
         then:
             result == [ 2, 10, 14 ]
-            list == [ 2, 4 ]
-    }
-
-    def "test every time with object"() {
-        setup:
-            def list = []
-            def stream = Stream.from( 1..10 ).filter { it % 2 }
-                                             .tap { idx, obj -> list << [ idx, obj ] }
-                                             .map { it * 2 }
-                                             .filter { it % 3 }
-        when:
-            def result = stream.collect()
-        then:
-            result == [ 2, 10, 14 ]
-            list == [ [ 1, 1 ], [ 2, 3 ], [ 3, 5 ], [ 4, 7 ], [ 5, 9 ] ]
-    }
-
-    def "test every 2 times with object"() {
-        setup:
-            def list = []
-            def stream = Stream.from( 1..10 ).filter { it % 2 }
-                                             .tapEvery( 2 ) { idx, obj -> list << [ idx, obj ] }
-                                             .map { it * 2 }
-                                             .filter { it % 3 }
-        when:
-            def result = stream.collect()
-        then:
-            result == [ 2, 10, 14 ]
-            list == [ [ 2, 3 ], [ 4, 7 ] ]
+            list == [ 1, 3 ]
     }
 }

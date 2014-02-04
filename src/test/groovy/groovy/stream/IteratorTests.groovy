@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package groovy.stream
 
-public class IteratorTests extends spock.lang.Specification {
+class IteratorTests extends spock.lang.Specification {
     def "test list iterator"() {
         setup:
             def iterator = [ 1, 2, 3 ].iterator()
@@ -41,8 +41,7 @@ public class IteratorTests extends spock.lang.Specification {
         then:
             result == [ 0, 1, 2, 3, 4 ]
             eternal.next() == 6
-            stream.exhausted
-            stream.streamIndex == 5
+            stream.hasNext() == false
     }
 
     def "Test until with large ranges"() {
@@ -58,8 +57,7 @@ public class IteratorTests extends spock.lang.Specification {
         then:
             result == [ 1, 2, 3, 4 ]
             eternal.next() == 6
-            stream.exhausted
-            stream.streamIndex == 4
+            stream.hasNext() == false
     }
 
     def "Stream of randoms"() {

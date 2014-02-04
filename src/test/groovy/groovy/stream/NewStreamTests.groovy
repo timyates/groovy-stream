@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,8 +54,9 @@ class NewStreamTests extends spock.lang.Specification {
 
     def "test index appender"() {
         setup:
+            def idx = 0
             def list = [ 1, 2, 3 ]
-            def stream = Stream.from list map { [ it, idx++ ] } using idx:0
+            def stream = Stream.from list map { [ it, idx++ ] }
 
         when:
             def result = stream.collect()
@@ -66,8 +67,9 @@ class NewStreamTests extends spock.lang.Specification {
 
     def "test arrays"() {
         setup:
+            def idx = 0
             int[] array = 1..3
-            def stream = Stream.from array map { [ it, idx++ ] } using idx:0
+            def stream = Stream.from array map { [ it, idx++ ] }
 
         when:
             def result = stream.collect()
@@ -140,7 +142,8 @@ class NewStreamTests extends spock.lang.Specification {
 
     def "test 5"() {
         setup:
-            def stream = Stream.from 'a'..'c' map { [ idx++, it ] } using idx:0
+            def idx = 0
+            def stream = Stream.from 'a'..'c' map { [ idx++, it ] }
         when:
             def result = stream.collect()
         then:
@@ -161,7 +164,8 @@ class NewStreamTests extends spock.lang.Specification {
 
     def "unfilteredIndex map test"() {
         setup:
-            def stream = Stream.from 1..4 map { it * unfilteredIndex }
+            def index = 0
+            def stream = Stream.from 1..4 tapWithIndex { obj, idx -> index = idx } map { it * index }
         when:
             def result = stream.collect()
         then:
@@ -170,7 +174,8 @@ class NewStreamTests extends spock.lang.Specification {
 
     def "unfilteredIndex filter test"() {
         setup:
-            def stream = Stream.from 1..4 filter { 2 != unfilteredIndex }
+            def index = 0
+            def stream = Stream.from 1..4 tapWithIndex { obj, idx -> index = idx } filter { 2 != index }
         when:
             def result = stream.collect()
         then:
@@ -179,7 +184,8 @@ class NewStreamTests extends spock.lang.Specification {
 
     def "unfilteredIndex until test"() {
         setup:
-            def stream = Stream.from 1..4 until { unfilteredIndex == 2 }
+            def index = 0
+            def stream = Stream.from 1..4 tapWithIndex { obj, idx -> index = idx } until { index == 2 }
         when:
             def result = stream.collect()
         then:

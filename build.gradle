@@ -1,26 +1,39 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.3'
+    }
+}
+
 apply plugin: 'groovy'
-apply plugin: 'maven'
-apply plugin: 'signing'
+apply plugin: 'bintray'
+apply plugin: 'maven-publish'
 
 group               = 'com.bloidonia'
-version             = '0.6.2'
+version             = '0.7.0'
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
-compileGroovy.options.compilerArgs << "-Xlint:unchecked"
+compileJava.options.compilerArgs << "-Xlint:unchecked"
 
 // In this section you declare where to find the dependencies of your project
 repositories {
     // Use 'maven central' for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     mavenCentral()
+    jcenter()
 }
-
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
-    compile     'org.codehaus.groovy:groovy-all:2.1.8'
+    compile     'org.codehaus.groovy:groovy-all:2.2.0'
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+    testCompile "junit:junit:4.11"
+    testCompile( "org.apache.ant:ant-junit:1.9.2" ) {
+        exclude(group: 'junit', module: 'junit')
+    }
     testRuntime fileTree( dir:'build/libs/', includes:[ "groovy-stream-${version}.jar".toString() ] )
 }
 
@@ -36,6 +49,11 @@ task generateModule << {
     }
 }
 
+task jbake( type:Exec ) {
+    commandLine 'jbake', 'docs', 'docs/output'
+}
+jbake.dependsOn( test )
+
 compileGroovy.dependsOn( generateModule )
 test.dependsOn( jar )
 uploadArchives.dependsOn( test )
@@ -46,9 +64,13 @@ jar {
     }
 }
 
-task groovydocJar( type: Jar, dependsOn: groovydoc ) {
+javadoc {
+    options.links = [ 'http://groovy.codehaus.org/api/', 'http://docs.oracle.com/javase/6/docs/api/' ]
+}
+
+task javadocJar( type: Jar, dependsOn: javadoc ) {
     classifier 'javadoc'
-    from groovydoc.destinationDir
+    from javadoc.destinationDir
 }
 
 task sourcesJar( type: Jar ) {
@@ -59,7 +81,7 @@ task sourcesJar( type: Jar ) {
 artifacts {
     archives jar
     archives sourcesJar
-    archives groovydocJar
+    archives javadocJar
 }
 
 if( !hasProperty( 'sonatypeUsername' ) ) {
@@ -70,54 +92,40 @@ if( !hasProperty( 'sonatypePassword' ) ) {
     ext.sonatypePassword = ''
 }
 
-ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
-
-signing {
-    required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
-    sign configurations.archives
+if( !hasProperty( 'bintrayUsername' ) ) {
+    ext.bintrayUsername = ''
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
- 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: sonatypeUsername, password: sonatypePassword)
+if( !hasProperty( 'bintrayKey' ) ) {
+    ext.bintrayKey = ''
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            artifact sourcesJar {
+                classifier "sources"
             }
 
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: sonatypeUsername, password: sonatypePassword)
-            }
-
-            pom.project {
-                name 'Groovy Stream'
-                description 'A collection of classes to give a fluent builder for Streams (Lazy Groovy Generators).'
-                url 'http://timyates.github.com/groovy-stream/'
-                inceptionYear '2012'
-
-                scm {
-                    url 'https://github.com/timyates/groovy-stream'
-                    connection 'scm:https://github.com/timyates/groovy-stream.git'
-                    developerConnection 'scm:git://github.com/timyates/groovy-stream.git'
-                }
-
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        distribution 'repo'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'tim_yates'
-                        name 'Tim Yates'
-                        email 'tim.yates@gmail.com'
-                    }
-                }
+            artifact javadocJar {
+                classifier "javadoc"
             }
         }
     }
+}
+
+bintray {
+    user = bintrayUsername
+    key = bintrayKey
+    publications = ['mavenJava'] // When uploading Maven-based publication files
+    pkg {
+        repo = 'groovy-stream'
+        name = 'groovy-stream'
+        desc = 'A collection of classes to give a fluent builder for Streams (Lazy Groovy Generators).'
+        licenses = ['Apache-2.0']
+        labels = ['groovy','lazy','iterators','stream']
+    }
+    dryRun = false
 }

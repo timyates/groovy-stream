@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,12 @@
 
 package groovy.stream
 
-public class ListTests extends spock.lang.Specification {
+class ListTests extends spock.lang.Specification {
     def "test index appender"() {
         setup:
+            def idx = 0
             def list = [ 1, 2, 3 ]
-            def stream = Stream.from list map { [ it, idx++ ] } using idx:0
+            def stream = Stream.from list map { [ it, idx++ ] }
 
         when:
             def result = stream.collect()
@@ -31,8 +32,9 @@ public class ListTests extends spock.lang.Specification {
 
     def "test arrays"() {
         setup:
+            def idx = 0
             int[] array = 1..3
-            def stream = Stream.from array map { [ it, idx++ ] } using idx:0
+            def stream = Stream.from array map { [ it, idx++ ] }
 
         when:
             def result = stream.collect()

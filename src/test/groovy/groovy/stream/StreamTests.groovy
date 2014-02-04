@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package groovy.stream
 
 import spock.lang.Unroll
 
-public class StreamTests extends spock.lang.Specification {
+class StreamTests extends spock.lang.Specification {
     def "test Streaming a List Stream"() {
         setup:
             def instream  = Stream.from 1..3
@@ -31,7 +31,7 @@ public class StreamTests extends spock.lang.Specification {
 
     def "Stream should respect Iterator API"() {
         setup:
-            def instream  = Stream.from 1..3
+            def instream  = Stream.from( [ 1, 2, 3 ].iterator() )
         when:
             instream.each {}
             boolean hasNext = instream.hasNext()
@@ -50,9 +50,10 @@ public class StreamTests extends spock.lang.Specification {
             stream.iterator().is( stream )
 
         where:
+            x = 1
             name << [ 'closure streams', 'map streams', 'range streams' ]
             stream << [
-                Stream.from( { x++ } ).using( [ x:1 ] ),
+                Stream.from( { x++ } ),
                 Stream.from( a:1..3, b:2..4 ).map { a + b },
                 Stream.from( 1..4 ).filter { it % 2 == 0 }
             ]

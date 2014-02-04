@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package groovy.stream
 
-public class ReadmeTests extends spock.lang.Specification {
+class ReadmeTests extends spock.lang.Specification {
     def "first example"() {
         setup:
             def s = Stream.from x:1..2, y:1..4 filter { x + y == 4 }
