@@ -50,9 +50,13 @@ jar {
     }
 }
 
-task groovydocJar( type: Jar, dependsOn: groovydoc ) {
+javadoc {
+    options.links = [ 'http://groovy.codehaus.org/api/', 'http://docs.oracle.com/javase/6/docs/api/' ]
+}
+
+task javadocJar( type: Jar, dependsOn: javadoc ) {
     classifier 'javadoc'
-    from groovydoc.destinationDir
+    from javadoc.destinationDir
 }
 
 task sourcesJar( type: Jar ) {
@@ -63,7 +67,7 @@ task sourcesJar( type: Jar ) {
 artifacts {
     archives jar
     archives sourcesJar
-    archives groovydocJar
+    archives javadocJar
 }
 
 if( !hasProperty( 'sonatypeUsername' ) ) {

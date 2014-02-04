@@ -141,8 +141,20 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     }
 
     /**
+     * Takes a {@code Closure} that returns a {@code Collection}.  Each element
+     * in this {@code Collection} is passed on in turn, before the next element is
+     * fetched from upstream, and the Closure executed again.
      *
-     * @param map
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..3 )
+     *                .flatMapWithIndex { it, index -> [ it ] * index }
+     *                .collect() == [ 2, 3, 3 ]
+     * </pre>
+     *
+     * @param map A two parameter closure to pass the element and it's index through,
+     *            returning a new Collection of elements to iterate.
      * @return A new {@code Stream} wrapping a {@link FlatMapIterator}
      */
     public Stream<T> flatMapWithIndex( Closure<Collection<T>> map ) { 
@@ -150,16 +162,38 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     }
 
     /**
+     * Inspect every value in the {@code Stream} and pass it on.
+     * 
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
      *
-     * @param output
+     *   def list = []
+     *   assert Stream.from( 1..3 )
+     *                .tap { list &lt;&lt; it }
+     *                .collect() == [ 1, 2, 3 ]
+     *   assert list == [ 1, 2, 3 ]
+     * </pre>
+     *
+     * @param output The {@code Closure} to be called for every element
      * @return A new {@code Stream} wrapping a {@link TapIterator}
      */
     public Stream<T> tap( Closure<Void> output ) { return tapEvery( 1, output ) ; }
 
     /**
+     * Inspect the every nth value in the {@code Stream} and pass it on.
+     * 
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
      *
-     * @param n
-     * @param output
+     *   def list = []
+     *   assert Stream.from( 1..3 )
+     *                .tap( 2 ) { list &lt;&lt; it }
+     *                .collect() == [ 1, 2, 3 ]
+     *   assert list == [ 2 ]
+     * </pre>
+     *
+     * @param n the elements to inspect
+     * @param output The {@code Closure} to be called for every nth element
      * @return A new {@code Stream} wrapping a {@link TapIterator}
      */
     public Stream<T> tapEvery( int n, Closure<Void> output ) {
@@ -167,6 +201,17 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     }
 
     /**
+     * Inspect every value in the {@code Stream} with its {@code index} and pass it on.
+     * 
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   def list = []
+     *   assert Stream.from( 1..3 )
+     *                .tapWithIndex { it, idx -&gt; list &lt;&lt; [ (it):idx ] }
+     *                .collect() == [ 1, 2, 3 ]
+     *   assert list == [ [ 1:0 ], [ 2:1 ], [ 3:2 ] ]
+     * </pre>
      *
      * @param output
      * @return A new {@code Stream} wrapping a {@link TapIterator}
@@ -174,9 +219,20 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     public Stream<T> tapWithIndex( Closure<Void> output ) { return tapEveryWithIndex( 1, output ) ; }
 
     /**
+     * Inspect the every nth value in the {@code Stream} with its index and pass it on.
+     * 
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
      *
-     * @param n
-     * @param output
+     *   def list = []
+     *   assert Stream.from( 1..3 )
+     *                .tapEveryWithIndex( 2 ) { it, index -&gt; list &lt;&lt; [ (it):index ] }
+     *                .collect() == [ 1, 2, 3 ]
+     *   assert list == [ [2:1] ]
+     * </pre>
+     *
+     * @param n the elements to inspect
+     * @param output The {@link Closure} to be called for every nth element
      * @return A new {@code Stream} wrapping a {@link TapIterator}
      */
     public Stream<T> tapEveryWithIndex( int n, Closure<Void> output ) {
@@ -222,34 +278,85 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     }
 
     /**
+     * Groups a the elements of a {@code Stream} into groups of length {@code size}.
      *
-     * @param size
-     * @return
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..9 )
+     *                .collate( 4 )
+     *                .collect() == [ [ 1, 2, 3, 4 ], [ 5, 6, 7, 8 ], [ 9 ] ]
+     * </pre>
+     *
+     * @param size the size of each collated group
+     * @return A new {@code Stream} wrapping an {@link CollatingIterator}
      */
     public Stream<Collection<T>> collate( int size ) { return collate( size, size, true ) ; }
 
     /**
+     * Groups a the elements of a {@code Stream} into groups of length {@code size}.
      *
-     * @param size
-     * @param keepRemainder
-     * @return
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..9 )
+     *                .collate( 4, false )
+     *                .collect() == [ [ 1, 2, 3, 4 ], [ 5, 6, 7, 8 ] ]
+     * </pre>
+     *
+     * @param size the size of each collated group
+     * @param keepRemainder Should any remaining objects be returned at the end
+     * @return A new {@code Stream} wrapping an {@link CollatingIterator}
      */
     public Stream<Collection<T>> collate( int size, boolean keepRemainder ) { return collate( size, size, keepRemainder ) ; }
 
     /**
+     * Groups a the elements of a {@code Stream} into groups of length {@code size}
+     * using a step-size of {@code step}.
      *
-     * @param size
-     * @param step
-     * @return
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..9 )
+     *                .collate( 4, 1 )
+     *                .collect() == [ [ 1, 2, 3, 4 ],
+     *                                [ 2, 3, 4, 5 ],
+     *                                [ 3, 4, 5, 6 ],
+     *                                [ 4, 5, 6, 7 ],
+     *                                [ 5, 6, 7, 8 ],
+     *                                [ 6, 7, 8, 9 ],
+     *                                [ 7, 8, 9 ],
+     *                                [ 8, 9 ],
+     *                                [ 9 ] ]
+     * </pre>
+     *
+     * @param size the size of each collated group
+     * @param step How many to increment the window by each turn
+     * @return A new {@code Stream} wrapping an {@link CollatingIterator}
      */
     public Stream<Collection<T>> collate( int size, int step ) { return collate( size, step, true ) ; }
 
     /**
+     * Groups a the elements of a {@code Stream} into groups of length {@code size}
+     * using a step-size of {@code step}.
      *
-     * @param size
-     * @param step
-     * @param keepRemainder
-     * @return
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..9 )
+     *                .collate( 4, 1, false )
+     *                .collect() == [ [ 1, 2, 3, 4 ],
+     *                                [ 2, 3, 4, 5 ],
+     *                                [ 3, 4, 5, 6 ],
+     *                                [ 4, 5, 6, 7 ],
+     *                                [ 5, 6, 7, 8 ],
+     *                                [ 6, 7, 8, 9 ] ]
+     * </pre>
+     *
+     * @param size the size of each collated group
+     * @param step How many to increment the window by each turn
+     * @param keepRemainder Should any remaining objects be returned at the end
+     * @return A new {@code Stream} wrapping an {@link CollatingIterator}
      */
     public Stream<Collection<T>> collate( int size, int step, boolean keepRemainder ) {
         return new Stream<Collection<T>>( new CollatingIterator<T>( this.iterator, size, step, keepRemainder ) ) ;
@@ -323,8 +430,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
 
     /**
      *
-     * @param <T>
-     * @param iterator
+     * @param reader
      * @return
      */
     public static       Stream<String>    from( BufferedReader reader            ) { return new Stream<String>( new BufferedReaderIterator( reader ) ) ;        }
