@@ -28,7 +28,7 @@ repositories {
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
-    compile     'org.codehaus.groovy:groovy-all:2.2.0'
+    compile     'org.codehaus.groovy:groovy-all:2.2.1'
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
     testCompile "junit:junit:4.11"
     testCompile( "org.apache.ant:ant-junit:1.9.2" ) {
