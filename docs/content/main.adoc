@@ -1,0 +1,91 @@
+Main Documentation
+==================
+Tim Yates
+2014-02-04
+:jbake-type: page
+:jbake-tags: documentation, manual
+:jbake-status: published
+
+https://github.com/timyates/groovy-stream[groovy-stream] is a library to simplify
+the generation of lazy Iterators across a mutitude of input data types, and the
+construction of finite Lazy Generators from a collection of inputs.
+
+== Table of Contents
+. xref:getting-started[Getting Started]
+.. xref:using-maven[Using Maven]
+.. xref:using-grab[Using `Grab`]
+.. xref:downloading[Downloading]
+.. xref:dependencies[Dependencies]
+. xref:quick-example[Quick Example]
+.. xref:lazy-generators[Lazy Generators]
+. xref:anatomy-of-a-stream[Anatomy of a Stream]
+.. xref:inputs[Inputs]
+.. xref:filters[Filters]
+.. xref:mappings[Mappings]
+.. xref:inspectors[Inspectors]
+.. xref:crossing-the-streams[Crossing the Streams]
+
+[[getting-started]]
+== Getting started
+
+[[using-maven]]
+=== Using Maven
+
+[source,xml]
+----
+<dependency>
+    <groupId>com.bloidonia</groupId>
+    <artifactId>groovy-stream</artifactId>
+    <version>0.7.0</version>
+</dependency>
+----
+
+[[using-gradle]]
+=== Using Gradle
+
+[source,groovy]
+----
+compile "com.bloidonia:groovy-stream:0.7.0"
+----
+
+[[using-grab]]
+=== Using Grab
+
+[source,groovy]
+----
+@Grab( "com.bloidonia:groovy-stream:0.7.0" )
+import groovy.stream.*
+----
+
+[[downloading]]
+=== Downloading
+
+Jar files can be directly downloaded from the `Files` tab on Bintray by
+https://bintray.com/timyates/groovy-stream/groovy-stream[following this link],
+and clicking on the version you require.
+
+[[dependencies]]
+=== Dependencies
+
+The only runtime dependency of `groovy-stream` is Groovy.  I track the current
+Groovy version, but it should work with all versions from 2.0+.
+
+[[quick-example]]
+== Quick Example
+
+[[lazy-generators]]
+=== Lazy Generators
+
+[[anatomy-of-a-stream]]
+== Anatomy of a Stream
+
+[[inputs]]
+=== Inputs
+[[filters]]
+=== Filters
+[[mappings]]
+=== Mappings
+[[inspectors]]
+=== Inspectors
+[[crossing-the-streams]]
+=== Crossing the Streams
