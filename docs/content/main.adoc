@@ -10,6 +10,17 @@ https://github.com/timyates/groovy-stream[groovy-stream] is a library to simplif
 the generation of lazy Iterators across a mutitude of input data types, and the
 construction of finite Lazy Generators from a collection of inputs.
 
+An instance of `groovy.stream.Stream` is an immutable wrapper around a chain of iterators.
+
+Each iterator in the chain takes the previous iterator's output as it's input, performs
+some task to it and passes this to the next Iterator *on request*.
+
+The head iterator of the chain is wrapped in a `Stream` class which allows simple
+creation of new iterators in the chain.
+
+When a `Stream` method is called to add a new step to the Stream, a new Stream is returned
+with the extra step added to the chain of underlying Iterators.
+
 == Table of Contents
 . xref:getting-started[Getting Started]
 .. xref:using-maven[Using Maven]
@@ -73,7 +84,17 @@ Groovy version, but it should work with all versions from 2.0+.
 [[quick-example]]
 == Quick Example
 
-As a simple example, lets create a `Stream` representing all positive integers:
+As a simple example, lets create a `Stream` representing all positive integers.
+
+Firstly, we need to import the `Stream` class:
+
+[source,groovy]
+----
+include::../../src/test/groovy/asciidoc/BriefExamples.groovy[tags=import,indent=0]
+----
+
+Then, we can call the Closure form of the static `Stream.from` method to generate our
+infinite Stream:
 
 [source,groovy]
 ----
@@ -115,13 +136,6 @@ include::../../src/test/groovy/asciidoc/BriefExamples.groovy[tags=faux_comprehen
 
 [[anatomy-of-a-stream]]
 == Anatomy of a Stream
-
-Streams can be thought of as a chain of Iterators.  Each iterator in the chain
-takes the previous iterator's output as it's input, performs some task to it and
-passes this to the next Iterator *on request*.
-
-The head iterator of the chain is wrapped in a `Stream` class which allows simple
-creation of new iterators in the chain.
 
 [[inputs]]
 === Inputs
