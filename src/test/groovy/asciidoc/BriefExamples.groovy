@@ -2,7 +2,7 @@ package asciidoc
 
 // tag::import[]
 import groovy.stream.Stream
-// end:import[]
+// end::import[]
 
 import org.junit.Test
 
