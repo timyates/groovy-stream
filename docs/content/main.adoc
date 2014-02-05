@@ -103,7 +103,6 @@ and passed to the result `first5`.
 
 We can use the Stream to mimic the behaviour of a list comprehension. Lets say we want to do the following:
 
-[NOTE]
 ===============================
 For all values of `x` from 1 to 5 and all values of `y` from 1 to 3;
 return `x + 1` if `( x + y ) % ( x + 2 ) == 0`
@@ -117,10 +116,62 @@ include::../../src/test/groovy/asciidoc/BriefExamples.groovy[tags=faux_comprehen
 [[anatomy-of-a-stream]]
 == Anatomy of a Stream
 
+Streams can be thought of as a chain of Iterators.  Each iterator in the chain
+takes the previous iterator's output as it's input, performs some task to it and
+passes this to the next Iterator *on request*.
+
+The head iterator of the chain is wrapped in a `Stream` class which allows simple
+creation of new iterators in the chain.
+
 [[inputs]]
 === Inputs
+
+To create a `Stream` class you can either use one of the many static `from` methods:
+
+[source,java]
+----
+    public static <K,V> Stream<Map<K,V>>  from( Map<K,? extends Iterable<V>> map )
+    public static <T>   Stream<T>         from( Stream<T> stream                 )
+    public static <T>   Stream<T>         from( Iterable<T> iterable             )
+    public static <T>   Stream<T>         from( Iterator<T> iterator             )
+    public static       Stream<String>    from( BufferedReader reader            )
+    public static <T>   Stream<T>         from( Closure<T> closure               )
+    public static <T>   Stream<T>         from( T[] array                        )
+    public static       Stream<Byte>      from( byte[] array                     )
+    public static       Stream<Character> from( char[] array                     )
+    public static       Stream<Short>     from( short[] array                    )
+    public static       Stream<Integer>   from( int[] array                      )
+    public static       Stream<Long>      from( long[] array                     )
+    public static       Stream<Float>     from( float[] array                    )
+    public static       Stream<Double>    from( double[] array                   )
+    public static       Stream<Boolean>   from( boolean[] array                  )
+----
+
+Or, you can make use of the Groovy Extension class which adds the `toStream()`
+method to:
+
+- `Closure`
+- `Iterator`
+- `Iterable<T>`
+- `BufferedReader`
+- `Map<K,? extends Iterable<V>>`
+- `Object[]`
+- `byte[]`
+- `char[]`
+- `short[]`
+- `int[]`
+- `long[]`
+- `float[]`
+- `double[]`
+- `boolean[]`
+
+Once you have this single Iterator `Stream`, you can then perform different operations
+to create a new filtered, transformed, limited or conjoined `Stream`
+
 [[filters]]
 === Filters
+
+
 [[mappings]]
 === Mappings
 [[inspectors]]
