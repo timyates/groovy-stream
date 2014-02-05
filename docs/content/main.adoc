@@ -73,8 +73,46 @@ Groovy version, but it should work with all versions from 2.0+.
 [[quick-example]]
 == Quick Example
 
+As a simple example, lets create a `Stream` representing all positive integers:
+
+[source,groovy]
+----
+include::../../src/test/groovy/asciidoc/BriefExamples.groovy[tags=part_one,indent=0]
+----
+
+We can then create a `Stream` that is fed from integers and returns a `Stream` of squares:
+
+[source,groovy]
+----
+include::../../src/test/groovy/asciidoc/BriefExamples.groovy[tags=part_two,indent=0]
+----
+
+And we can then take the first 5 elements from this stream with:
+
+[source,groovy]
+----
+include::../../src/test/groovy/asciidoc/BriefExamples.groovy[tags=part_three,indent=0]
+----
+
+It is only at the point where we call `collect()` that the original `integers`
+stream is executed five times, to produce five values which are squared in turn
+and passed to the result `first5`.
+
 [[lazy-generators]]
 === Lazy Generators
+
+We can use the Stream to mimic the behaviour of a list comprehension. Lets say we want to do the following:
+
+[NOTE]
+===============================
+For all values of `x` from 1 to 5 and all values of `y` from 1 to 3;
+return `x + 1` if `( x + y ) % ( x + 2 ) == 0`
+===============================
+
+[source,groovy]
+----
+include::../../src/test/groovy/asciidoc/BriefExamples.groovy[tags=faux_comprehension,indent=0]
+----
 
 [[anatomy-of-a-stream]]
 == Anatomy of a Stream
