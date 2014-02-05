@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Main Documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content"JBake">
+
+    <!-- Le styles -->
+    <link href="/groovy-stream/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/groovy-stream/css/asciidoctor.css" rel="stylesheet">
+    <link href="/groovy-stream/css/base.css" rel="stylesheet">
+    <link href="/groovy-stream/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/groovy-stream/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="favicon.ico">
+  </head>
+  <body>
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+      <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="/groovy-stream/">groovy-stream</a>
+            <div class="nav-collapse collapse">
+              <ul class="nav">
+                <li><a href="/groovy-stream/index.html">Home</a></li>
+                <li><a href="/groovy-stream/releases.html">Releases</a></li>
+
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Method docs (in progress) <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/groovy-stream/map.html">Mapping Functions</a></li>
+<!--
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li class="nav-header">Nav header</li>
+                    <li><a href="#">Separated link</a></li>
+                    <li><a href="#">One more separated link</a></li>
+-->
+                  </ul>
+                </li>
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div>
+        </div>
+      </div>
+      <div class="container">	
+	<div class="page-header">
+		<h1>Main Documentation</h1>
+	</div>
+<!--
+	<p><em>04 February 2014</em></p>
+-->
+	<p><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://github.com/timyates/groovy-stream">groovy-stream</a> is a library to simplify
+the generation of lazy Iterators across a mutitude of input data types, and the
+construction of finite Lazy Generators from a collection of inputs.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_table_of_contents">Table of Contents</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="#getting-started">Getting Started</a></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p><a href="#using-maven">Using Maven</a></p>
+</li>
+<li>
+<p><a href="#using-grab">Using <code>Grab</code></a></p>
+</li>
+<li>
+<p><a href="#downloading">Downloading</a></p>
+</li>
+<li>
+<p><a href="#dependencies">Dependencies</a></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><a href="#quick-example">Quick Example</a></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p><a href="#lazy-generators">Lazy Generators</a></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><a href="#anatomy-of-a-stream">Anatomy of a Stream</a></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p><a href="#inputs">Inputs</a></p>
+</li>
+<li>
+<p><a href="#filters">Filters</a></p>
+</li>
+<li>
+<p><a href="#mappings">Mappings</a></p>
+</li>
+<li>
+<p><a href="#inspectors">Inspectors</a></p>
+</li>
+<li>
+<p><a href="#crossing-the-streams">Crossing the Streams</a></p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="getting-started">Getting started</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="using-maven">Using Maven</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint xml language-xml"><code>&lt;dependency&gt;
+    &lt;groupId&gt;com.bloidonia&lt;/groupId&gt;
+    &lt;artifactId&gt;groovy-stream&lt;/artifactId&gt;
+    &lt;version&gt;0.7.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="using-gradle">Using Gradle</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint groovy language-groovy"><code>compile "com.bloidonia:groovy-stream:0.7.0"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="using-grab">Using Grab</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint groovy language-groovy"><code>@Grab( "com.bloidonia:groovy-stream:0.7.0" )
+import groovy.stream.*</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="downloading">Downloading</h3>
+<div class="paragraph">
+<p>Jar files can be directly downloaded from the <code>Files</code> tab on Bintray by
+<a href="https://bintray.com/timyates/groovy-stream/groovy-stream">following this link</a>,
+and clicking on the version you require.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="dependencies">Dependencies</h3>
+<div class="paragraph">
+<p>The only runtime dependency of <code>groovy-stream</code> is Groovy.  I track the current
+Groovy version, but it should work with all versions from 2.0+.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="quick-example">Quick Example</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="lazy-generators">Lazy Generators</h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="anatomy-of-a-stream">Anatomy of a Stream</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="inputs">Inputs</h3>
+
+</div>
+<div class="sect2">
+<h3 id="filters">Filters</h3>
+
+</div>
+<div class="sect2">
+<h3 id="mappings">Mappings</h3>
+
+</div>
+<div class="sect2">
+<h3 id="inspectors">Inspectors</h3>
+
+</div>
+<div class="sect2">
+<h3 id="crossing-the-streams">Crossing the Streams</h3>
+
+</div>
+</div>
+</div></p>
+
+	<hr>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2013 | Mixed with <a href="http://twitter.github.com/bootstrap/">Bootstrap v2.3.1</a> | Baked with <a href="http://jbake.org">JBake v2.2.1</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/groovy-stream/js/jquery-1.9.1.min.js"></script>
+    <script src="/groovy-stream/js/bootstrap.min.js"></script>
+    <script src="/groovy-stream/js/run_prettify.js"></script>
+    
+  </body>
+</html>
