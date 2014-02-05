@@ -228,20 +228,13 @@ and passed to the result <code>first5</code>.</p>
 <div class="paragraph">
 <p>We can use the Stream to mimic the behaviour of a list comprehension. Lets say we want to do the following:</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
+<div class="exampleblock">
+<div class="content">
 <div class="paragraph">
 <p>For all values of <code>x</code> from 1 to 5 and all values of <code>y</code> from 1 to 3;
 return <code>x + 1</code> if <code>( x + y ) % ( x + 2 ) == 0</code></p>
 </div>
-</td>
-</tr>
-</table>
+</div>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -264,9 +257,93 @@ assert s.collect() == [ 3, 4, 5, 6, 7 ]</code></pre>
 <div class="sect1">
 <h2 id="anatomy-of-a-stream">Anatomy of a Stream</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Streams can be thought of as a chain of Iterators.  Each iterator in the chain
+takes the previous iterator&#8217;s output as it&#8217;s input, performs some task to it and
+passes this to the next Iterator <strong>on request</strong>.</p>
+</div>
+<div class="paragraph">
+<p>The head iterator of the chain is wrapped in a <code>Stream</code> class which allows simple
+creation of new iterators in the chain.</p>
+</div>
 <div class="sect2">
 <h3 id="inputs">Inputs</h3>
-
+<div class="paragraph">
+<p>To create a <code>Stream</code> class you can either use one of the many static <code>from</code> methods:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint java language-java"><code>    public static &lt;K,V&gt; Stream&lt;Map&lt;K,V&gt;&gt;  from( Map&lt;K,? extends Iterable&lt;V&gt;&gt; map )
+    public static &lt;T&gt;   Stream&lt;T&gt;         from( Stream&lt;T&gt; stream                 )
+    public static &lt;T&gt;   Stream&lt;T&gt;         from( Iterable&lt;T&gt; iterable             )
+    public static &lt;T&gt;   Stream&lt;T&gt;         from( Iterator&lt;T&gt; iterator             )
+    public static       Stream&lt;String&gt;    from( BufferedReader reader            )
+    public static &lt;T&gt;   Stream&lt;T&gt;         from( Closure&lt;T&gt; closure               )
+    public static &lt;T&gt;   Stream&lt;T&gt;         from( T[] array                        )
+    public static       Stream&lt;Byte&gt;      from( byte[] array                     )
+    public static       Stream&lt;Character&gt; from( char[] array                     )
+    public static       Stream&lt;Short&gt;     from( short[] array                    )
+    public static       Stream&lt;Integer&gt;   from( int[] array                      )
+    public static       Stream&lt;Long&gt;      from( long[] array                     )
+    public static       Stream&lt;Float&gt;     from( float[] array                    )
+    public static       Stream&lt;Double&gt;    from( double[] array                   )
+    public static       Stream&lt;Boolean&gt;   from( boolean[] array                  )</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or, you can make use of the Groovy Extension class which adds the <code>toStream()</code>
+method to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Closure</code></p>
+</li>
+<li>
+<p><code>Iterator</code></p>
+</li>
+<li>
+<p><code>Iterable&lt;T&gt;</code></p>
+</li>
+<li>
+<p><code>BufferedReader</code></p>
+</li>
+<li>
+<p><code>Map&lt;K,? extends Iterable&lt;V&gt;&gt;</code></p>
+</li>
+<li>
+<p><code>Object[]</code></p>
+</li>
+<li>
+<p><code>byte[]</code></p>
+</li>
+<li>
+<p><code>char[]</code></p>
+</li>
+<li>
+<p><code>short[]</code></p>
+</li>
+<li>
+<p><code>int[]</code></p>
+</li>
+<li>
+<p><code>long[]</code></p>
+</li>
+<li>
+<p><code>float[]</code></p>
+</li>
+<li>
+<p><code>double[]</code></p>
+</li>
+<li>
+<p><code>boolean[]</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Once you have this single Iterator <code>Stream</code>, you can then perform different operations
+to create a new filtered, transformed, limited or conjoined <code>Stream</code></p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="filters">Filters</h3>
