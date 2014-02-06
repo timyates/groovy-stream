@@ -132,12 +132,13 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      *                .collect() == [ 1, 2, 2, 3, 3, 3 ]
      * </pre>
      *
+     * @param <U>
      * @param map A single parameter closure to pass the element through,
      *            returning a new Collection of elements to iterate.
      * @return A new {@code Stream} wrapping a {@link FlatMapIterator}
      */
-    public Stream<T> flatMap( Closure<Collection<T>> map ) { 
-        return new Stream<T>( new FlatMapIterator<T,Collection<T>>( iterator, map, false ) ) ;
+    public <U> Stream<U> flatMap( Closure<Collection<U>> map ) { 
+        return new Stream<U>( new FlatMapIterator<T,U>( iterator, map, false ) ) ;
     }
 
     /**
@@ -153,12 +154,13 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      *                .collect() == [ 2, 3, 3 ]
      * </pre>
      *
+     * @param <U>
      * @param map A two parameter closure to pass the element and it's index through,
      *            returning a new Collection of elements to iterate.
      * @return A new {@code Stream} wrapping a {@link FlatMapIterator}
      */
-    public Stream<T> flatMapWithIndex( Closure<Collection<T>> map ) { 
-        return new Stream<T>( new FlatMapIterator<T,Collection<T>>( iterator, map, true ) ) ;
+    public <U> Stream<U> flatMapWithIndex( Closure<Collection<U>> map ) { 
+        return new Stream<U>( new FlatMapIterator<T,U>( iterator, map, true ) ) ;
     }
 
     /**

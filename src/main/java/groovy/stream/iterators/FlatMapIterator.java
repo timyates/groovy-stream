@@ -23,18 +23,18 @@ import java.util.LinkedList ;
 import java.util.Queue ;
 import java.util.NoSuchElementException ;
 
-public class FlatMapIterator<T,U extends Collection<T>> implements Iterator<T> {
-    private final Queue<T>    pushback = new LinkedList<T>() ;
+public class FlatMapIterator<T,U> implements Iterator<U> {
+    private final Queue<U>    pushback = new LinkedList<U>() ;
     private final Iterator<T> iterator ;
     private final boolean     withIndex ;
 
-    Closure<Collection<T>> mapping ;
+    Closure<Collection<U>> mapping ;
     private int            index = 0 ;
     private boolean        exhausted ;
     private boolean        initialised ;
-    private T              current ;
+    private U              current ;
 
-    public FlatMapIterator( Iterator<T> iterator, Closure<Collection<T>> mapping, boolean withIndex ) {
+    public FlatMapIterator( Iterator<T> iterator, Closure<Collection<U>> mapping, boolean withIndex ) {
         this.mapping = mapping ;
         this.iterator = iterator ;
         this.withIndex = withIndex ;
@@ -51,9 +51,9 @@ public class FlatMapIterator<T,U extends Collection<T>> implements Iterator<T> {
         while( pushback.isEmpty() && iterator.hasNext() ) {
             T next = iterator.next() ;
             mapping.setDelegate( next ) ;
-            Collection<T> mapped = withIndex ? mapping.call( next, index ) : mapping.call( next ) ;
+            Collection<U> mapped = withIndex ? mapping.call( next, index ) : mapping.call( next ) ;
             index++ ;
-            for( T element : mapped ) {
+            for( U element : mapped ) {
                 pushback.offer( element ) ;
             }
         }
@@ -75,14 +75,14 @@ public class FlatMapIterator<T,U extends Collection<T>> implements Iterator<T> {
     }
 
     @Override
-    public synchronized T next() {
+    public synchronized U next() {
         if( !initialised ) {
             hasNext() ;
         }
         if( exhausted ) {
             throw new NoSuchElementException( "FlatMapIterator has been exhausted and contains no more elements" ) ;
         }
-        T ret = current ;
+        U ret = current ;
         loadNext() ;
         return ret ;
     }
