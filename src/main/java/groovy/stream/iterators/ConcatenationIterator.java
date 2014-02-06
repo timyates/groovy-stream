@@ -49,7 +49,7 @@ public class ConcatenationIterator<T> implements Iterator<T> {
         }
     }
 
-    public boolean hasNext() {
+    public synchronized boolean hasNext() {
         if( !initialised ) {
             loadNext() ;
             initialised = true ;
@@ -57,7 +57,7 @@ public class ConcatenationIterator<T> implements Iterator<T> {
         return !exhausted ;
     }
 
-    public T next() {
+    public synchronized T next() {
         if( !initialised ) {
             hasNext() ;
         }

@@ -66,7 +66,7 @@ public class FlatMapIterator<T,U extends Collection<T>> implements Iterator<T> {
     }
 
     @Override
-    public boolean hasNext() {
+    public synchronized boolean hasNext() {
         if( !initialised ) {
             loadNext() ;
             initialised = true ;
@@ -75,7 +75,7 @@ public class FlatMapIterator<T,U extends Collection<T>> implements Iterator<T> {
     }
 
     @Override
-    public T next() {
+    public synchronized T next() {
         if( !initialised ) {
             hasNext() ;
         }
