@@ -39,8 +39,37 @@ class ConcurrencyTests extends spock.lang.Specification {
             t*.join()
 
         then:
-
             c.size() == 100
             c.unique().size() == 100
+    }
+
+    def "Should allow multiple threads reading from previous streams"() {
+        setup:
+            def upper = 100
+            def counter = Stream.from 1..upper
+            def mapped = Stream.from counter map { it }
+
+            def result = []
+
+            def store = { value ->
+                synchronized( result ) {
+                    result << value
+                }
+            }
+
+            def generate = { name, stream ->
+                new Thread( { -> while( stream.hasNext() ) store( stream.next() ) } )
+            }
+
+            def threads = [ generate( 'a', mapped ),
+                            generate( 'b', counter ) ]
+
+        when:
+            threads*.start()
+            threads*.join()
+
+        then:
+            result.size() == upper
+            result.unique().size() == upper
     }
 }
