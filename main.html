@@ -78,6 +78,28 @@
 the generation of lazy Iterators across a mutitude of input data types, and the
 construction of finite Lazy Generators from a collection of inputs.</p>
 </div>
+<div class="paragraph">
+<p>An instance of <code>groovy.stream.Stream</code> is an immutable wrapper around a chain of iterators.</p>
+</div>
+<div class="paragraph">
+<p>Each iterator in the chain takes the previous iterator&#8217;s output as it&#8217;s input, performs
+some task to it and passes this to the next Iterator <strong>on request</strong>.</p>
+</div>
+<div class="paragraph">
+<p>The head iterator of the chain is wrapped in a <code>Stream</code> class which allows simple
+creation of new iterators in the chain.</p>
+</div>
+<div class="paragraph">
+<p>When a <code>Stream</code> method is called to add a new step to the Stream, a new Stream is
+created containing the specified iterator which in turn is set to get its input
+from the head iterator of the previous <code>Stream</code>.</p>
+</div>
+<div class="paragraph">
+<p>It should be noted that <code>Stream</code> (as with most if not all Iterators) is not
+thread-safe in itself, and any synchronization on reads should be done by the
+user should multiple read threads be required (including threads reading from
+intermediate Streams).</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -193,7 +215,19 @@ Groovy version, but it should work with all versions from 2.0+.</p>
 <h2 id="quick-example">Quick Example</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As a simple example, lets create a <code>Stream</code> representing all positive integers:</p>
+<p>As a simple example, lets create a <code>Stream</code> representing all positive integers.</p>
+</div>
+<div class="paragraph">
+<p>Firstly, we need to import the <code>Stream</code> class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint groovy language-groovy"><code>import groovy.stream.Stream</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then, we can call the Closure form of the static <code>Stream.from</code> method to generate our
+infinite Stream:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -257,15 +291,6 @@ assert s.collect() == [ 3, 4, 5, 6, 7 ]</code></pre>
 <div class="sect1">
 <h2 id="anatomy-of-a-stream">Anatomy of a Stream</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Streams can be thought of as a chain of Iterators.  Each iterator in the chain
-takes the previous iterator&#8217;s output as it&#8217;s input, performs some task to it and
-passes this to the next Iterator <strong>on request</strong>.</p>
-</div>
-<div class="paragraph">
-<p>The head iterator of the chain is wrapped in a <code>Stream</code> class which allows simple
-creation of new iterators in the chain.</p>
-</div>
 <div class="sect2">
 <h3 id="inputs">Inputs</h3>
 <div class="paragraph">
@@ -382,6 +407,17 @@ to create a new filtered, transformed, limited or conjoined <code>Stream</code><
     <script src="/groovy-stream/js/jquery-1.9.1.min.js"></script>
     <script src="/groovy-stream/js/bootstrap.min.js"></script>
     <script src="/groovy-stream/js/run_prettify.js"></script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-32866444-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
     
   </body>
 </html>
