@@ -1,6 +1,8 @@
 package asciidoc
 
-import groovy.stream.*
+// tag::import[]
+import groovy.stream.Stream
+// end::import[]
 
 import org.junit.Test
 
