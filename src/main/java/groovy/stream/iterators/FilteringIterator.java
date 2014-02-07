@@ -60,7 +60,7 @@ public class FilteringIterator<T> implements Iterator<T> {
     }
 
     @Override
-    public boolean hasNext() {
+    public synchronized boolean hasNext() {
         if( !initialised ) {
             loadNext() ;
             initialised = true ;
@@ -69,7 +69,7 @@ public class FilteringIterator<T> implements Iterator<T> {
     }
 
     @Override
-    public T next() {
+    public synchronized T next() {
         if( !initialised ) {
             hasNext() ;
         }

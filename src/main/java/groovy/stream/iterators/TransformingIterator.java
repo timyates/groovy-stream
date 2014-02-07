@@ -56,7 +56,7 @@ public class TransformingIterator<T,U> implements Iterator<U> {
     }
 
     @Override
-    public boolean hasNext() {
+    public synchronized boolean hasNext() {
         if( !initialised ) {
             loadNext() ;
             initialised = true ;
@@ -65,7 +65,7 @@ public class TransformingIterator<T,U> implements Iterator<U> {
     }
 
     @Override
-    public U next() {
+    public synchronized U next() {
         if( !initialised ) {
             hasNext() ;
         }

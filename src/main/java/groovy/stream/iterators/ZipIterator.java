@@ -65,7 +65,7 @@ public class ZipIterator<T,U,V> implements Iterator<V> {
     }
 
     @Override
-    public boolean hasNext() {
+    public synchronized boolean hasNext() {
         if( !initialised ) {
             loadNext() ;
             initialised = true ;
@@ -74,7 +74,7 @@ public class ZipIterator<T,U,V> implements Iterator<V> {
     }
 
     @Override
-    public V next() {
+    public synchronized V next() {
         if( !initialised ) {
             hasNext() ;
         }
