@@ -37,7 +37,7 @@ public class RepeatingClosureIterator<T> implements Iterator<T> {
     }
 
     @Override
-    public synchronized T next() {
+    public T next() {
         return value.call() ;
     }
 }

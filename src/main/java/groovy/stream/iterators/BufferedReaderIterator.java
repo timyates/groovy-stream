@@ -47,7 +47,7 @@ public class BufferedReaderIterator implements Iterator<String> {
     }
 
     @Override
-    public synchronized boolean hasNext() {
+    public boolean hasNext() {
         if( !initialised ) {
             loadNext() ;
             initialised = true ;
@@ -56,7 +56,7 @@ public class BufferedReaderIterator implements Iterator<String> {
     }
 
     @Override
-    public synchronized String next() {
+    public String next() {
         if( !initialised ) {
             hasNext() ;
         }

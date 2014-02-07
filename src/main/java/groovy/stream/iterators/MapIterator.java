@@ -77,7 +77,7 @@ public class MapIterator<T,U> implements Iterator<Map<T,U>> {
     }
 
     @Override
-    public synchronized boolean hasNext() {
+    public boolean hasNext() {
         if( !initialised ) {
             loadNext() ;
             initialised = true ;
@@ -86,7 +86,7 @@ public class MapIterator<T,U> implements Iterator<Map<T,U>> {
     }
 
     @Override
-    public synchronized Map<T,U> next() {
+    public Map<T,U> next() {
         if( !initialised ) {
             hasNext() ;
         }
