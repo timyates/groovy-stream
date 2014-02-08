@@ -28,13 +28,13 @@ public class FlatMapIterator<T,U> implements Iterator<U> {
     private final Iterator<T> iterator ;
     private final boolean     withIndex ;
 
-    Closure<Collection<U>> mapping ;
+    Closure<? extends Collection<U>> mapping ;
     private int            index = 0 ;
     private boolean        exhausted ;
     private boolean        initialised ;
     private U              current ;
 
-    public FlatMapIterator( Iterator<T> iterator, Closure<Collection<U>> mapping, boolean withIndex ) {
+    public FlatMapIterator( Iterator<T> iterator, Closure<? extends Collection<U>> mapping, boolean withIndex ) {
         this.mapping = mapping ;
         this.iterator = iterator ;
         this.withIndex = withIndex ;
