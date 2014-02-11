@@ -393,8 +393,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      * @param n
      * @return
      */
-    public Iterator<T> take( int n ) {
-        return DefaultGroovyMethods.take( (Iterator<T>)this, n ) ;
+    public Stream<T> take( int n ) {
+        return new Stream<T>( new LimitedIterator<T>( this.iterator, n ) ) ;
     }
 
     /**
