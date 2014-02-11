@@ -88,7 +88,7 @@ public class CollatingIterator<T> implements Iterator<Collection<T>> {
         }
     }
 
-    public synchronized boolean hasNext() {
+    public boolean hasNext() {
         if( !initialised ) {
             loadNext() ;
             initialised = true ;
@@ -96,7 +96,7 @@ public class CollatingIterator<T> implements Iterator<Collection<T>> {
         return !exhausted ;
     }
 
-    public synchronized Collection<T> next() {
+    public Collection<T> next() {
         if( !initialised ) {
             hasNext() ;
         }

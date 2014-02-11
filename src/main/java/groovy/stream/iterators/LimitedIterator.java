@@ -16,28 +16,31 @@
 
 package groovy.stream.iterators ;
 
-import groovy.lang.Closure ;
 import java.util.Iterator ;
 
-public class RepeatingClosureIterator<T> implements Iterator<T> {
-    private final Closure<T> value ;
+public class LimitedIterator<T> implements Iterator<T> {
+    private Iterator<T> delegate ;
+    private int limit ;
 
-    public RepeatingClosureIterator( Closure<T> value ) {
-        this.value = value ;
+    public LimitedIterator( Iterator<T> delegate, int limit ) {
+        this.delegate = delegate ;
+        this.limit = limit ;
     }
 
     @Override
     public boolean hasNext() {
-        return true ;
-    }
-
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException() ;
+        return delegate.hasNext() && limit > 0 ;
     }
 
     @Override
     public T next() {
-        return value.call() ;
+    	T ret = delegate.next() ;
+    	limit-- ;
+    	return ret ;
+    }
+
+    @Override
+    public void remove() {
+        delegate.remove() ;
     }
 }

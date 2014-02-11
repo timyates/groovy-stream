@@ -18,8 +18,14 @@ some task to it and passes this to the next Iterator *on request*.
 The head iterator of the chain is wrapped in a `Stream` class which allows simple
 creation of new iterators in the chain.
 
-When a `Stream` method is called to add a new step to the Stream, a new Stream is returned
-with the extra step added to the chain of underlying Iterators.
+When a `Stream` method is called to add a new step to the Stream, a new Stream is
+created containing the specified iterator which in turn is set to get its input
+from the head iterator of the previous `Stream`.
+
+It should be noted that `Stream` (as with most if not all Iterators) is not
+thread-safe in itself, and any synchronization on reads should be done by the
+user should multiple read threads be required (including threads reading from
+intermediate Streams).
 
 == Table of Contents
 . xref:getting-started[Getting Started]

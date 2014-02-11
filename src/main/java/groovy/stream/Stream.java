@@ -137,7 +137,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      *            returning a new Collection of elements to iterate.
      * @return A new {@code Stream} wrapping a {@link FlatMapIterator}
      */
-    public <U> Stream<U> flatMap( Closure<Collection<U>> map ) { 
+    public <U> Stream<U> flatMap( Closure<? extends Collection<U>> map ) { 
         return new Stream<U>( new FlatMapIterator<T,U>( iterator, map, false ) ) ;
     }
 
@@ -159,7 +159,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      *            returning a new Collection of elements to iterate.
      * @return A new {@code Stream} wrapping a {@link FlatMapIterator}
      */
-    public <U> Stream<U> flatMapWithIndex( Closure<Collection<U>> map ) { 
+    public <U> Stream<U> flatMapWithIndex( Closure<? extends Collection<U>> map ) { 
         return new Stream<U>( new FlatMapIterator<T,U>( iterator, map, true ) ) ;
     }
 
@@ -393,8 +393,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      * @param n
      * @return
      */
-    public Iterator<T> take( int n ) {
-        return DefaultGroovyMethods.take( (Iterator<T>)this, n ) ;
+    public Stream<T> take( int n ) {
+        return new Stream<T>( new LimitedIterator<T>( this.iterator, n ) ) ;
     }
 
     /**

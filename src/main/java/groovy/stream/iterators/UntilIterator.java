@@ -64,7 +64,7 @@ public class UntilIterator<T> implements Iterator<T> {
     }
 
     @Override
-    public synchronized boolean hasNext() {
+    public boolean hasNext() {
         if( !initialised ) {
             loadNext() ;
             initialised = true ;
@@ -73,7 +73,7 @@ public class UntilIterator<T> implements Iterator<T> {
     }
 
     @Override
-    public synchronized T next() {
+    public T next() {
         if( !initialised ) {
             hasNext() ;
         }
