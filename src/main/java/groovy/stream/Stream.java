@@ -30,6 +30,12 @@ import java.util.Iterator ;
 import java.util.List ;
 import java.util.Map ;
 
+import java.util.jar.JarEntry ;
+import java.util.jar.JarFile ;
+
+import java.util.zip.ZipEntry ;
+import java.util.zip.ZipFile ;
+
 import org.codehaus.groovy.runtime.DefaultGroovyMethods ;
 
 /**
@@ -436,6 +442,20 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      * @return
      */
     public static       Stream<String>    from( BufferedReader reader            ) { return new Stream<String>( new BufferedReaderIterator( reader ) ) ;        }
+
+    /**
+     *
+     * @param file
+     * @return
+     */
+    public static       Stream<ZipEntry>  from( ZipFile file                     ) { return new Stream<ZipEntry>( new EnumerationIterator<ZipEntry>( file.entries() ) ) ; }
+
+    /**
+     *
+     * @param file
+     * @return
+     */
+    public static       Stream<JarEntry>  from( JarFile file                     ) { return new Stream<JarEntry>( new EnumerationIterator<JarEntry>( file.entries() ) ) ; }
 
     /**
      *
