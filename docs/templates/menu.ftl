@@ -12,6 +12,7 @@
               <ul class="nav">
                 <li><a href="/groovy-stream/index.html">Home</a></li>
                 <li><a href="/groovy-stream/releases.html">Releases</a></li>
+                <li><a href="/groovy-stream/javadoc/">Latest Javadoc</a></li>
 
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Method docs (in progress) <b class="caret"></b></a>
