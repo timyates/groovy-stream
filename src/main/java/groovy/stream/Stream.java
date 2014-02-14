@@ -371,12 +371,24 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     }
 
     /**
+     * Takes another {@code Iterator} or {@code Stream} and calls the two arg {@code Closure}
+     * to zip the two together.
+     * 
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
      *
+     *   def numbers = Stream.from 1..3
+     *   def letters = Stream.from 'a'..'d'
+     *  
+     *   assert numbers.zip( letters ) { n, l -> "$n:$l" }
+     *                .collect() == [ "1:a", "2:b", "3:c" ]
+     * </pre>
+     * 
      * @param <U>
      * @param <V>
-     * @param other
-     * @param map
-     * @return
+     * @param other The other {@link Iterator}
+     * @param map The 2 arg {@link Closure} to call with each next element from the Stream
+     * @return A new {@code Stream} wrapping a {@link ZipIterator}
      */
     public <U,V> Stream<V> zip( Iterator<U> other, Closure<V> map ) {
         return new Stream<V>( new ZipIterator<T,U,V>( this.iterator, other, false, map ) ) ;
