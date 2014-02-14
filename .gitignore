@@ -6,3 +6,4 @@ src/main/groovy/META-INF
 *.iml
 .nb-gradle
 docs/output
+docs/assets/javadoc
