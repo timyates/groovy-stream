@@ -52,10 +52,15 @@ task generateModule << {
     }
 }
 
+task javadocCopy( type: Copy ) {
+    from javadoc
+    into 'docs/assets/javadoc'
+}
+
 task jbake( type:Exec ) {
     commandLine 'jbake', 'docs', 'docs/output'
 }
-jbake.dependsOn( test )
+jbake.dependsOn( test, javadocCopy )
 
 compileGroovy.dependsOn( generateModule )
 test.dependsOn( jar )
