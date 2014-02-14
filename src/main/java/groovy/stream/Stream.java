@@ -41,7 +41,7 @@ import org.codehaus.groovy.runtime.DefaultGroovyMethods ;
 /**
  *
  * @author Tim Yates
- * @param <T>
+ * @param <T> the type of each element returned from the Stream.
  */
 public class Stream<T> implements Iterator<T>, Iterable<T> {
     private final Iterator<T> iterator ;
@@ -76,7 +76,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      *   import groovy.stream.*
      *
      *   assert Stream.from( 1..3 )
-     *                .filterWithIndex { it, index -> index % 2 == 1 }
+     *                .filterWithIndex { it, index -&gt; index % 2 == 1 }
      *                .collect() == [ 2 ]
      * </pre>
      *
@@ -138,7 +138,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      *                .collect() == [ 1, 2, 2, 3, 3, 3 ]
      * </pre>
      *
-     * @param <U>
+     * @param <U> The type of the new Stream.
      * @param map A single parameter closure to pass the element through,
      *            returning a new Collection of elements to iterate.
      * @return A new {@code Stream} wrapping a {@link FlatMapIterator}
@@ -156,11 +156,11 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      *   import groovy.stream.*
      *
      *   assert Stream.from( 1..3 )
-     *                .flatMapWithIndex { it, index -> [ it ] * index }
+     *                .flatMapWithIndex { it, index -&gt; [ it ] * index }
      *                .collect() == [ 2, 3, 3 ]
      * </pre>
      *
-     * @param <U>
+     * @param <U> The type of the new Stream.
      * @param map A two parameter closure to pass the element and it's index through,
      *            returning a new Collection of elements to iterate.
      * @return A new {@code Stream} wrapping a {@link FlatMapIterator}
@@ -221,7 +221,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      *   assert list == [ [ 1:0 ], [ 2:1 ], [ 3:2 ] ]
      * </pre>
      *
-     * @param output
+     * @param output The closure to call for each element in the Stream.
      * @return A new {@code Stream} wrapping a {@link TapIterator}
      */
     public Stream<T> tapWithIndex( Closure<Void> output ) { return tapEveryWithIndex( 1, output ) ; }
@@ -249,8 +249,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
 
     /**
      *
-     * @param <U>
-     * @param map
+     * @param <U> The type of the new Stream.
+     * @param map The transforming Closure.
      * @return A new {@code Stream} wrapping a {@link TransformingIterator}
      */
     public <U> Stream<U> map( Closure<U> map ) {
@@ -259,8 +259,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
 
     /**
      *
-     * @param <U>
-     * @param map
+     * @param <U> The type of the new Stream.
+     * @param map The transforming Closure.
      * @return A new {@code Stream} wrapping a {@link TransformingIterator}
      */
     public <U> Stream<U> mapWithIndex( Closure<U> map ) {
@@ -269,7 +269,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
 
     /**
      *
-     * @param predicate
+     * @param predicate The Closure that stops the Stream when it returns {@code true}.
      * @return A new {@code Stream} wrapping an {@link UntilIterator}
      */
     public Stream<T> until( Closure<Boolean> predicate ) {
@@ -278,7 +278,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
 
     /**
      *
-     * @param predicate
+     * @param predicate The Closure that stops the Stream when it returns {@code true}.
      * @return A new {@code Stream} wrapping an {@link UntilIterator}
      */
     public Stream<T> untilWithIndex( Closure<Boolean> predicate ) {
@@ -380,12 +380,12 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      *   def numbers = Stream.from 1..3
      *   def letters = Stream.from 'a'..'d'
      *  
-     *   assert numbers.zip( letters ) { n, l -> "$n:$l" }
+     *   assert numbers.zip( letters ) { n, l -&gt; "$n:$l" }
      *                .collect() == [ "1:a", "2:b", "3:c" ]
      * </pre>
      * 
-     * @param <U>
-     * @param <V>
+     * @param <U> The type of the secondary Stream.
+     * @param <V> The type of the new Stream.
      * @param other The other {@link Iterator}
      * @param map The 2 arg {@link Closure} to call with each next element from the Stream
      * @return A new {@code Stream} wrapping a {@link ZipIterator}
@@ -404,12 +404,12 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      *   def numbers = Stream.from 1..3
      *   def letters = Stream.from 'a'..'d'
      *  
-     *   assert numbers.zipWithIndex( letters ) { n, l, i -> "$n:$l:$i" }
+     *   assert numbers.zipWithIndex( letters ) { n, l, i -&gt; "$n:$l:$i" }
      *                .collect() == [ "1:a:0", "2:b:1", "3:c:2" ]
      * </pre>
      * 
-     * @param <U>
-     * @param <V>
+     * @param <U> The type of the secondary Stream.
+     * @param <V> The type of the new Stream.
      * @param other The other {@link Iterator}
      * @param map The 3 arg {@link Closure} to call with each next element from the Stream and the current stream index
      * @return A new {@code Stream} wrapping a {@link ZipIterator}
@@ -454,8 +454,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      *                                [ a:3, b:'c' ] ]
      * </pre>
      *
-     * @param <K>
-     * @param <V>
+     * @param <K> They type of the Map keys.
+     * @param <V> The type of the Iterable value.
      * @param map The map of Iterables.
      * @return A new {@code Stream} wrapping a {@link MapIterator}.
      */
@@ -471,7 +471,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      *                .collect() == [ 1, 2, 3 ]
      * </pre>
      *
-     * @param <T>
+     * @param <T> The type of the Stream.
      * @param stream The other {@code Stream}.
      * @return A new {@code Stream} wrapping the iterator of the other {@code Stream}.
      */
@@ -487,8 +487,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      *                .collect() == [ 1, 2, 3 ]
      * </pre>
      *
-     * @param <T>
-     * @param iterable
+     * @param <T> The type of the Iterable.
+     * @param iterable The iterable to iterate.
      * @return A new {@code Stream} wrapping the {@code iterable.iterator()}.
      */
     public static <T>   Stream<T>         from( Iterable<T> iterable             ) { return new Stream<T>( iterable.iterator() ) ;                              }
@@ -503,8 +503,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      *                .collect() == [ 1, 2, 3 ]
      * </pre>
      *
-     * @param <T>
-     * @param iterator
+     * @param <T> The type of the Iterator.
+     * @param iterator The iterator to wrap.
      * @return A new {@code Stream} wrapping the iterator.
      */
     public static <T>   Stream<T>         from( Iterator<T> iterator             ) { return new Stream<T>( iterator ) ;                                         }
@@ -512,7 +512,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} from a {@link BufferedReader} that iterates the lines in it.
      *
-     * @param reader
+     * @param reader The Reader to iterate lines from
      * @return A new {@code Stream} wrapping a {@link BufferedReaderIterator}.
      */
     public static       Stream<String>    from( BufferedReader reader            ) { return new Stream<String>( new BufferedReaderIterator( reader ) ) ;        }
@@ -520,7 +520,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} from a {@link ZipFile} that iterates the {@link ZipEntry} objects contained within.
      * 
-     * @param file
+     * @param file the ZipFile to iterate ZipEntrys from.
      * @return A new {@code Stream} wrapping an {@link EnumerationIterator}.
      */
     public static       Stream<ZipEntry>  from( ZipFile file                     ) { return new Stream<ZipEntry>( new EnumerationIterator<ZipEntry>( file.entries() ) ) ; }
@@ -528,7 +528,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} from a {@link JarFile} that iterates the {@link JarEntry} objects contained within.
      *
-     * @param file
+     * @param file the JarFile to iterate JarEntrys from.
      * @return A new {@code Stream} wrapping an {@link EnumerationIterator}.
      */
     public static       Stream<JarEntry>  from( JarFile file                     ) { return new Stream<JarEntry>( new EnumerationIterator<JarEntry>( file.entries() ) ) ; }
@@ -536,8 +536,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} that for every element, returns the result of calling the {@link Closure}.
      *
-     * @param <T>
-     * @param closure
+     * @param <T> The type of the return value from the Closure.
+     * @param closure The closure to call each time an element is requested.
      * @return A new {@code Stream} wrapping an {@link RepeatingClosureIterator}.
      */
     public static <T>   Stream<T>         from( Closure<T> closure               ) { return new Stream<T>( new RepeatingClosureIterator<T>( closure ) ) ;       }
@@ -545,8 +545,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} that iterates every {@code Object} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
-     * @param <T>
-     * @param array
+     * @param <T> The type of the array.
+     * @param array An array of Object to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
@@ -555,7 +555,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} that iterates every {@code byte} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
-     * @param array
+     * @param array An array of byte to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
@@ -564,7 +564,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} that iterates every {@code Character} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
-     * @param array
+     * @param array An array of char to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
@@ -573,7 +573,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} that iterates every {@code Short} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
-     * @param array
+     * @param array An array of short to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
@@ -582,7 +582,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} that iterates every {@code Integer} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
-     * @param array
+     * @param array An array of int to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
@@ -591,7 +591,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} that iterates every {@code Long} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
-     * @param array
+     * @param array An array of long to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
@@ -600,7 +600,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} that iterates every {@code Float} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
-     * @param array
+     * @param array An array of float to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
@@ -609,7 +609,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} that iterates every {@code Double} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
-     * @param array
+     * @param array An array of double to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
@@ -618,7 +618,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} that iterates every {@code Boolean} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
-     * @param array
+     * @param array An array of boolean to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
