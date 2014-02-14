@@ -439,6 +439,21 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} from a {@link Map} of Iterables.
      * 
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( a:1..3, b:'a'..'c' )
+     *                .collect() == [ [ a:1, b:'a' ],
+     *                                [ a:1, b:'b' ],
+     *                                [ a:1, b:'c' ],
+     *                                [ a:2, b:'a' ],
+     *                                [ a:2, b:'b' ],
+     *                                [ a:2, b:'c' ],
+     *                                [ a:3, b:'a' ],
+     *                                [ a:3, b:'b' ],
+     *                                [ a:3, b:'c' ] ]
+     * </pre>
+     *
      * @param <K>
      * @param <V>
      * @param map The map of Iterables.
@@ -449,6 +464,13 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} from another {@code Stream}.
      * 
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( Stream.from( 1..3 ) )
+     *                .collect() == [ 1, 2, 3 ]
+     * </pre>
+     *
      * @param <T>
      * @param stream The other {@code Stream}.
      * @return A new {@code Stream} wrapping the iterator of the other {@code Stream}.
@@ -458,6 +480,13 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} from an {@link Iterable}.
      *
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( [ 1, 2, 3 ] )
+     *                .collect() == [ 1, 2, 3 ]
+     * </pre>
+     *
      * @param <T>
      * @param iterable
      * @return A new {@code Stream} wrapping the {@code iterable.iterator()}.
@@ -466,6 +495,13 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
 
     /**
      * Construct a {@code Stream} from an {@link Iterator}.
+     *
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( [ 1, 2, 3 ].iterator() )
+     *                .collect() == [ 1, 2, 3 ]
+     * </pre>
      *
      * @param <T>
      * @param iterator
