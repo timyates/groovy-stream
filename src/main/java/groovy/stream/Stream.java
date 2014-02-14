@@ -247,6 +247,21 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     }
 
     /**
+     * Maps the elements of a {@code Stream} to a new value as they are requested. Each
+     * element is passed in to a one arg closure, and the result of the {@link Closure}
+     * is returned as the next element in the {@code Stream}. The element is also
+     * set as the delegate of the {@link Closure}, so you can access map entries
+     * by name.
+     *
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( x:1..3, y:'a'..'c' )
+     *                .map { "$x:$y" }
+     *                .collect() == [ "1:a", "1:b", "1:c",
+     *                                "2:a", "2:b", "2:c",
+     *                                "3:a", "3:b", "3:c" ]
+     * </pre>
      *
      * @param <U> The type of the new Stream.
      * @param map The transforming Closure.
@@ -257,6 +272,21 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     }
 
     /**
+     * Maps the elements of a {@code Stream} to a new value as they are requested. Each
+     * element plus an index is passed in to a two arg closure, and the result of
+     * the {@link Closure} is returned as the next element in the {@code Stream}.
+     * The element is also set as the delegate of the {@link Closure}, so you can
+     * access map entries by name.
+     *
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( x:1..3, y:'a'..'c' )
+     *                .mapWithIndex { it, idx -&gt; "${x}:${it.y}:${idx}" }
+     *                .collect() == [ "1:a:0", "1:b:1", "1:c:2",
+     *                                "2:a:3", "2:b:4", "2:c:5",
+     *                                "3:a:6", "3:b:7", "3:c:8" ]
+     * </pre>
      *
      * @param <U> The type of the new Stream.
      * @param map The transforming Closure.
