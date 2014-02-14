@@ -395,157 +395,195 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     }
 
     /**
+     * Takes another {@code Iterator} or {@code Stream} and calls the three arg {@code Closure}
+     * to zip the two together along with the current index.
+     * 
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
      *
+     *   def numbers = Stream.from 1..3
+     *   def letters = Stream.from 'a'..'d'
+     *  
+     *   assert numbers.zipWithIndex( letters ) { n, l, i -> "$n:$l:$i" }
+     *                .collect() == [ "1:a:0", "2:b:1", "3:c:2" ]
+     * </pre>
+     * 
      * @param <U>
      * @param <V>
-     * @param other
-     * @param map
-     * @return
+     * @param other The other {@link Iterator}
+     * @param map The 3 arg {@link Closure} to call with each next element from the Stream and the current stream index
+     * @return A new {@code Stream} wrapping a {@link ZipIterator}
      */
     public <U,V> Stream<V> zipWithIndex( Iterator<U> other, Closure<V> map ) {
         return new Stream<V>( new ZipIterator<T,U,V>( this.iterator, other, true, map ) ) ;
     }
 
     /**
+     * Limits the {@code Stream} to {@code n} elements.
+     * 
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
      *
-     * @param n
-     * @return
+     *   assert Stream.from( 1..9 )
+     *                .take( 3 )
+     *                .collect() == [ 1, 2, 3 ]
+     * </pre>
+     *
+     * @param n The number of element to limit the {@code Stream} to.
+     * @return A new {@code Stream} wrapping a {@link LimitedIterator}
      */
     public Stream<T> take( int n ) {
         return new Stream<T>( new LimitedIterator<T>( this.iterator, n ) ) ;
     }
 
     /**
-     *
+     * Construct a {@code Stream} from a {@link Map} of Iterables.
+     * 
      * @param <K>
      * @param <V>
-     * @param map
-     * @return
+     * @param map The map of Iterables.
+     * @return A new {@code Stream} wrapping a {@link MapIterator}.
      */
     public static <K,V> Stream<Map<K,V>>  from( Map<K,? extends Iterable<V>> map ) { return new Stream<Map<K,V>>( new MapIterator<K,V>( map ) ) ;               }
 
     /**
-     *
+     * Construct a {@code Stream} from another {@code Stream}.
+     * 
      * @param <T>
-     * @param stream
-     * @return
+     * @param stream The other {@code Stream}.
+     * @return A new {@code Stream} wrapping the iterator of the other {@code Stream}.
      */
     public static <T>   Stream<T>         from( Stream<T> stream                 ) { return new Stream<T>( stream.iterator ) ;                                  }
 
     /**
+     * Construct a {@code Stream} from an {@link Iterable}.
      *
      * @param <T>
      * @param iterable
-     * @return
+     * @return A new {@code Stream} wrapping the {@code iterable.iterator()}.
      */
     public static <T>   Stream<T>         from( Iterable<T> iterable             ) { return new Stream<T>( iterable.iterator() ) ;                              }
 
     /**
+     * Construct a {@code Stream} from an {@link Iterator}.
      *
      * @param <T>
      * @param iterator
-     * @return
+     * @return A new {@code Stream} wrapping the iterator.
      */
     public static <T>   Stream<T>         from( Iterator<T> iterator             ) { return new Stream<T>( iterator ) ;                                         }
 
     /**
+     * Construct a {@code Stream} from a {@link BufferedReader} that iterates the lines in it.
      *
      * @param reader
-     * @return
+     * @return A new {@code Stream} wrapping a {@link BufferedReaderIterator}.
      */
     public static       Stream<String>    from( BufferedReader reader            ) { return new Stream<String>( new BufferedReaderIterator( reader ) ) ;        }
 
     /**
-     *
+     * Construct a {@code Stream} from a {@link ZipFile} that iterates the {@link ZipEntry} objects contained within.
+     * 
      * @param file
-     * @return
+     * @return A new {@code Stream} wrapping an {@link EnumerationIterator}.
      */
     public static       Stream<ZipEntry>  from( ZipFile file                     ) { return new Stream<ZipEntry>( new EnumerationIterator<ZipEntry>( file.entries() ) ) ; }
 
     /**
+     * Construct a {@code Stream} from a {@link JarFile} that iterates the {@link JarEntry} objects contained within.
      *
      * @param file
-     * @return
+     * @return A new {@code Stream} wrapping an {@link EnumerationIterator}.
      */
     public static       Stream<JarEntry>  from( JarFile file                     ) { return new Stream<JarEntry>( new EnumerationIterator<JarEntry>( file.entries() ) ) ; }
 
     /**
+     * Construct a {@code Stream} that for every element, returns the result of calling the {@link Closure}.
      *
      * @param <T>
      * @param closure
-     * @return
+     * @return A new {@code Stream} wrapping an {@link RepeatingClosureIterator}.
      */
     public static <T>   Stream<T>         from( Closure<T> closure               ) { return new Stream<T>( new RepeatingClosureIterator<T>( closure ) ) ;       }
 
     /**
+     * Construct a {@code Stream} that iterates every {@code Object} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
      * @param <T>
      * @param array
-     * @return
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
     public static <T>   Stream<T>         from( T[] array                        ) { return new Stream<T>(         primitiveArrayToList( array ).iterator() ) ; }
 
     /**
+     * Construct a {@code Stream} that iterates every {@code byte} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
      * @param array
-     * @return
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
     public static       Stream<Byte>      from( byte[] array                     ) { return new Stream<Byte>(      primitiveArrayToList( array ).iterator() ) ; }
 
     /**
+     * Construct a {@code Stream} that iterates every {@code Character} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
      * @param array
-     * @return
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
     public static       Stream<Character> from( char[] array                     ) { return new Stream<Character>( primitiveArrayToList( array ).iterator() ) ; }
 
     /**
+     * Construct a {@code Stream} that iterates every {@code Short} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
      * @param array
-     * @return
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
     public static       Stream<Short>     from( short[] array                    ) { return new Stream<Short>(     primitiveArrayToList( array ).iterator() ) ; }
 
     /**
+     * Construct a {@code Stream} that iterates every {@code Integer} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
      * @param array
-     * @return
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
     public static       Stream<Integer>   from( int[] array                      ) { return new Stream<Integer>(   primitiveArrayToList( array ).iterator() ) ; }
 
     /**
+     * Construct a {@code Stream} that iterates every {@code Long} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
      * @param array
-     * @return
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
     public static       Stream<Long>      from( long[] array                     ) { return new Stream<Long>(      primitiveArrayToList( array ).iterator() ) ; }
 
     /**
+     * Construct a {@code Stream} that iterates every {@code Float} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
      * @param array
-     * @return
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
     public static       Stream<Float>     from( float[] array                    ) { return new Stream<Float>(     primitiveArrayToList( array ).iterator() ) ; }
 
     /**
+     * Construct a {@code Stream} that iterates every {@code Double} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
      * @param array
-     * @return
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
     public static       Stream<Double>    from( double[] array                   ) { return new Stream<Double>(    primitiveArrayToList( array ).iterator() ) ; }
 
     /**
+     * Construct a {@code Stream} that iterates every {@code Boolean} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
      * @param array
-     * @return
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
     @SuppressWarnings("unchecked")
     public static       Stream<Boolean>   from( boolean[] array                  ) { return new Stream<Boolean>(   primitiveArrayToList( array ).iterator() ) ; }
