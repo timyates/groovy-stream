@@ -13,6 +13,7 @@ apply plugin: 'groovy'
 apply plugin: 'bintray'
 apply plugin: 'maven-publish'
 apply plugin: 'rest'
+apply plugin: 'jacoco'
 
 group               = 'com.bloidonia'
 version             = '0.7.3'
@@ -84,6 +85,12 @@ task javadocJar( type: Jar, dependsOn: javadoc ) {
 task sourcesJar( type: Jar ) {
     from sourceSets.main.allSource
     classifier = 'sources'
+}
+
+jacocoTestReport {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports after running tests."
+    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
 }
 
 artifacts {
