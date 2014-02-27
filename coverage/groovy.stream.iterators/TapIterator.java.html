@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TapIterator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">groovy-stream</a> &gt; <a href="index.html" class="el_package">groovy.stream.iterators</a> &gt; <span class="el_source">TapIterator.java</span></div><h1>TapIterator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2013-2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package groovy.stream.iterators ;
+
+import groovy.lang.Closure ;
+
+import java.util.Iterator ;
+import java.util.NoSuchElementException ;
+
+public class TapIterator&lt;T&gt; implements Iterator&lt;T&gt; {
+    private final Iterator&lt;T&gt;   parent ;
+    private final int           every ;
+    private final boolean       withIndex ;
+    private final Closure&lt;Void&gt; output ;
+
+    private int     index ;
+    private T       current ;
+    private boolean initialised ;
+    private boolean exhausted ;
+
+<span class="fc" id="L35">    public TapIterator( Iterator&lt;T&gt; parent, int every, boolean withIndex, Closure&lt;Void&gt; output ) {</span>
+<span class="fc" id="L36">        this.parent = parent ;</span>
+<span class="fc" id="L37">        this.every = every ;</span>
+<span class="fc" id="L38">        this.index = 0 ;</span>
+<span class="fc" id="L39">        this.withIndex = withIndex ;</span>
+<span class="fc" id="L40">        this.output = output ;</span>
+<span class="fc" id="L41">        this.initialised = false ;</span>
+<span class="fc" id="L42">        this.current = null ;</span>
+<span class="fc" id="L43">        this.exhausted = false ;</span>
+<span class="fc" id="L44">    }</span>
+
+    @Override
+    public void remove() {
+<span class="nc" id="L48">        throw new UnsupportedOperationException() ;</span>
+    }
+
+    private void loadNext() {
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if( parent.hasNext() ) {</span>
+<span class="fc" id="L53">            current = parent.next() ;</span>
+        }
+        else {
+<span class="fc" id="L56">            exhausted = true ;</span>
+        }
+<span class="fc" id="L58">    }</span>
+
+    @Override
+    public boolean hasNext() {
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if( !initialised ) {</span>
+<span class="fc" id="L63">            loadNext() ;</span>
+<span class="fc" id="L64">            initialised = true ;</span>
+        }
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        return !exhausted ;</span>
+    }
+
+    @Override
+    public T next() {
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if( !initialised ) {</span>
+<span class="nc" id="L72">            hasNext() ;</span>
+        }
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if( exhausted ) {</span>
+<span class="fc" id="L75">            throw new NoSuchElementException( &quot;TapIterator has been exhausted and contains no more elements&quot; ) ;</span>
+        }
+<span class="fc" id="L77">        T ret = current ;</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if( ++index % every == 0 ) {</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">            if( withIndex ) {</span>
+<span class="fc" id="L80">                output.call( ret, index - 1 ) ; </span>
+            }
+            else {
+<span class="fc" id="L83">                output.call( ret ) ;</span>
+            }
+        }
+<span class="fc" id="L86">        loadNext() ;</span>
+<span class="fc" id="L87">        return ret ;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CollatingIterator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">groovy-stream</a> &gt; <a href="index.html" class="el_package">groovy.stream.iterators</a> &gt; <span class="el_source">CollatingIterator.java</span></div><h1>CollatingIterator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2013-2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package groovy.stream.iterators ;
+
+import java.util.ArrayList ;
+import java.util.Collection ;
+import java.util.Iterator ;
+import java.util.LinkedList ;
+import java.util.List ;
+import java.util.Queue ;
+import java.util.NoSuchElementException ;
+
+public class CollatingIterator&lt;T&gt; implements Iterator&lt;Collection&lt;T&gt;&gt; {
+    private final Iterator&lt;T&gt;          parent ;
+<span class="fc" id="L29">    private final Queue&lt;Collection&lt;T&gt;&gt; cache = new LinkedList&lt;Collection&lt;T&gt;&gt;() ;</span>
+
+    private int           size ;
+    private int           step ;
+    private boolean       keepRemainder ;
+    private Collection&lt;T&gt; current ;
+<span class="fc" id="L35">    private boolean       initialised  = false ;</span>
+<span class="fc" id="L36">    private boolean       exhausted    = false ;</span>
+<span class="fc" id="L37">    private int           index        = 0 ;</span>
+
+    public CollatingIterator( Iterator&lt;T&gt; parent, int size ) {
+<span class="fc" id="L40">        this( parent, size, size, true ) ;</span>
+<span class="fc" id="L41">    }</span>
+
+    public CollatingIterator( Iterator&lt;T&gt; parent, int size, int step ) {
+<span class="fc" id="L44">        this( parent, size, step, true ) ;</span>
+<span class="fc" id="L45">    }</span>
+
+    public CollatingIterator( Iterator&lt;T&gt; parent, int size, boolean keepRemainder ) {
+<span class="fc" id="L48">        this( parent, size, size, keepRemainder ) ;</span>
+<span class="fc" id="L49">    }</span>
+
+<span class="fc" id="L51">    public CollatingIterator( Iterator&lt;T&gt; parent, int size, int step, boolean keepRemainder ) {</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if( size &lt; 1 ) {</span>
+<span class="fc" id="L53">            throw new IllegalArgumentException( &quot;Collation size must be &gt; 1&quot; ) ;</span>
+        }
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if( step &lt; 1 ) {</span>
+<span class="fc" id="L56">            throw new IllegalArgumentException( &quot;Step size must be &gt; 1&quot; ) ;</span>
+        }
+<span class="fc" id="L58">        this.parent = parent ;</span>
+<span class="fc" id="L59">        this.size = size ;</span>
+<span class="fc" id="L60">        this.step = step ;</span>
+<span class="fc" id="L61">        this.keepRemainder = keepRemainder ;</span>
+<span class="fc" id="L62">    }</span>
+
+    public void remove() {
+<span class="fc" id="L65">        throw new UnsupportedOperationException() ;</span>
+    }
+
+    private void addElementToEachCachedList( T next ) {
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        for( Collection&lt;T&gt; item : cache ) {</span>
+<span class="fc" id="L70">            item.add( next ) ;</span>
+<span class="fc" id="L71">        }</span>
+<span class="fc" id="L72">    }</span>
+
+    private boolean isFinished() {
+<span class="fc bfc" id="L75" title="All 6 branches covered.">        if( !keepRemainder &amp;&amp; ( current == null || current.size() &lt; size ) ) {</span>
+<span class="fc" id="L76">            return true ;</span>
+        }
+<span class="pc bpc" id="L78" title="1 of 4 branches missed.">        else if( current == null &amp;&amp; !parent.hasNext() ) {</span>
+<span class="fc" id="L79">            return true ;</span>
+        }
+        else {
+<span class="fc" id="L82">            return false ;</span>
+        }
+    }
+
+    private void loadNext() {
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        while( parent.hasNext() ) {</span>
+<span class="fc" id="L88">            T next = parent.next() ;</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">            if( index % step == 0 ) {</span>
+<span class="fc" id="L90">                cache.offer( new ArrayList&lt;T&gt;() ) ;</span>
+            }
+<span class="fc" id="L92">            index++ ;</span>
+<span class="fc" id="L93">            addElementToEachCachedList( next ) ;</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">            if( cache.peek().size() == size ) {</span>
+<span class="fc" id="L95">                break ;</span>
+            }
+<span class="fc" id="L97">        }</span>
+<span class="fc" id="L98">        current = cache.poll() ;</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if( isFinished() ) {</span>
+<span class="fc" id="L100">            exhausted = true ;</span>
+        }
+<span class="fc" id="L102">    }</span>
+
+    public boolean hasNext() {
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if( !initialised ) {</span>
+<span class="fc" id="L106">            loadNext() ;</span>
+<span class="fc" id="L107">            initialised = true ;</span>
+        }
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        return !exhausted ;</span>
+    }
+
+    public Collection&lt;T&gt; next() {
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        if( !initialised ) {</span>
+<span class="fc" id="L114">            hasNext() ;</span>
+        }
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        if( exhausted ) {</span>
+<span class="fc" id="L117">            throw new NoSuchElementException( &quot;CollatingIterator has been exhausted and contains no more elements&quot; ) ;</span>
+        }
+<span class="fc" id="L119">        List&lt;T&gt; ret = new ArrayList&lt;T&gt;( current ) ;</span>
+<span class="fc" id="L120">        loadNext() ;</span>
+<span class="fc" id="L121">        return ret ;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

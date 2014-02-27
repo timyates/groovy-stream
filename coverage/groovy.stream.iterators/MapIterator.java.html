@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MapIterator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">groovy-stream</a> &gt; <a href="index.html" class="el_package">groovy.stream.iterators</a> &gt; <span class="el_source">MapIterator.java</span></div><h1>MapIterator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2013-2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package groovy.stream.iterators ;
+
+import java.util.ArrayList ;
+import java.util.Iterator ;
+import java.util.LinkedHashMap ;
+import java.util.List ;
+import java.util.Map ;
+import java.util.NoSuchElementException ;
+
+public class MapIterator&lt;T,U&gt; implements Iterator&lt;Map&lt;T,U&gt;&gt; {
+    private final Map&lt;T,Iterable&lt;U&gt;&gt; iterables ;
+    private final Map&lt;T,Iterator&lt;U&gt;&gt; iterators ;
+    private final List&lt;T&gt;            keys ;
+
+    private boolean  exhausted ;
+    private boolean  initialised ;
+    private Map&lt;T,U&gt; current ;
+
+<span class="fc" id="L35">    public MapIterator( Map&lt;T,? extends Iterable&lt;U&gt;&gt; underlying ) {</span>
+<span class="fc" id="L36">        this.iterables = new LinkedHashMap&lt;T,Iterable&lt;U&gt;&gt;();</span>
+<span class="fc" id="L37">        this.iterators = new LinkedHashMap&lt;T,Iterator&lt;U&gt;&gt;();</span>
+<span class="fc" id="L38">        this.keys = new ArrayList&lt;T&gt;();</span>
+<span class="fc" id="L39">        this.exhausted = false;</span>
+<span class="fc" id="L40">        this.current = null;</span>
+<span class="fc" id="L41">        this.initialised = false;</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        for( Map.Entry&lt;T,? extends Iterable&lt;U&gt;&gt; entry : underlying.entrySet() ) {</span>
+<span class="fc" id="L43">            keys.add( entry.getKey() ) ;</span>
+<span class="fc" id="L44">            iterables.put( entry.getKey(), entry.getValue() ) ;</span>
+<span class="fc" id="L45">            iterators.put( entry.getKey(), entry.getValue().iterator() ) ;</span>
+<span class="fc" id="L46">        }</span>
+<span class="fc" id="L47">    }</span>
+
+    private void loadFirst() {
+<span class="fc" id="L50">        current = new LinkedHashMap&lt;T,U&gt;() ;</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        for( T key : keys ) {</span>
+<span class="fc" id="L52">            current.put( key, iterators.get( key ).next() ) ;</span>
+<span class="fc" id="L53">        }</span>
+<span class="fc" id="L54">    }</span>
+
+    private void loadNext() {
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if( current == null ) {</span>
+<span class="fc" id="L58">            loadFirst() ;</span>
+        }
+        else {
+<span class="fc" id="L61">            current = new LinkedHashMap&lt;T,U&gt;( current ) ;</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            for( int i = keys.size() - 1 ; i &gt;= 0 ; i-- ) {</span>
+<span class="fc" id="L63">                T key = keys.get( i ) ;</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">                if( iterators.get( key ).hasNext() ) {</span>
+<span class="fc" id="L65">                    current.put( key, iterators.get( key ).next() ) ;</span>
+<span class="fc" id="L66">                    break ;</span>
+                }
+<span class="fc bfc" id="L68" title="All 2 branches covered.">                else if( i &gt; 0 ) {</span>
+<span class="fc" id="L69">                    iterators.put( key, iterables.get( key ).iterator() ) ;</span>
+<span class="fc" id="L70">                    current.put( key, iterators.get( key ).next() ) ;</span>
+                }
+                else {
+<span class="fc" id="L73">                    exhausted = true ;</span>
+                }
+            }
+        }
+<span class="fc" id="L77">    }</span>
+
+    @Override
+    public boolean hasNext() {
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        if( !initialised ) {</span>
+<span class="fc" id="L82">            loadNext() ;</span>
+<span class="fc" id="L83">            initialised = true ;</span>
+        }
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        return !exhausted ;</span>
+    }
+
+    @Override
+    public Map&lt;T,U&gt; next() {
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        if( !initialised ) {</span>
+<span class="nc" id="L91">            hasNext() ;</span>
+        }
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        if( exhausted ) {</span>
+<span class="fc" id="L94">            throw new NoSuchElementException( &quot;MapIterator has been exhausted and contains no more elements&quot; ) ;</span>
+        }
+<span class="fc" id="L96">        Map&lt;T,U&gt; ret = new LinkedHashMap&lt;T,U&gt;( current ) ;</span>
+<span class="fc" id="L97">        loadNext() ;</span>
+<span class="fc" id="L98">        return ret ;</span>
+    }
+
+    @Override
+    public void remove() {
+<span class="nc" id="L103">        throw new UnsupportedOperationException() ;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

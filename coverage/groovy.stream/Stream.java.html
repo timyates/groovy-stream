@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Stream.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">groovy-stream</a> &gt; <a href="index.html" class="el_package">groovy.stream</a> &gt; <span class="el_source">Stream.java</span></div><h1>Stream.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2013-2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package groovy.stream ;
+
+import groovy.lang.Closure ;
+
+import groovy.stream.iterators.* ;
+
+import java.io.BufferedReader ;
+
+import java.lang.reflect.Array;
+
+import java.util.ArrayList ;
+import java.util.Collection ;
+import java.util.Iterator ;
+import java.util.List ;
+import java.util.Map ;
+
+import java.util.jar.JarEntry ;
+import java.util.jar.JarFile ;
+
+import java.util.zip.ZipEntry ;
+import java.util.zip.ZipFile ;
+
+
+/**
+ *
+ * @author Tim Yates
+ * @param &lt;T&gt; the type of each element returned from the Stream.
+ */
+public class Stream&lt;T&gt; implements Iterator&lt;T&gt;, Iterable&lt;T&gt; {
+    private final Iterator&lt;T&gt; iterator ;
+
+<span class="fc" id="L48">    private Stream( Iterator&lt;T&gt; iterator ) {</span>
+<span class="fc" id="L49">        this.iterator = iterator ;</span>
+<span class="fc" id="L50">    }</span>
+
+    /**
+     * Filter the current stream, passing each element through a predicate filter.
+     *
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..3 )
+     *                .filter { it % 2 == 1 }
+     *                .collect() == [ 1, 3 ]
+     * &lt;/pre&gt;
+     *
+     * @param predicate A single parameter closure to pass the element through,
+     *                   returning {@code true} if the element is to be included.
+     * @return A new {@code Stream} wrapping a {@link FilteringIterator}
+     */
+    public Stream&lt;T&gt; filter( Closure&lt;Boolean&gt; predicate ) {
+<span class="fc" id="L68">        return new Stream&lt;T&gt;( new FilteringIterator&lt;T&gt;( iterator, predicate, false ) ) ;</span>
+    }
+
+    /**
+     * Filter the current stream, passing each element and it's index through a predicate filter.
+     *
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..3 )
+     *                .filterWithIndex { it, index -&amp;gt; index % 2 == 1 }
+     *                .collect() == [ 2 ]
+     * &lt;/pre&gt;
+     *
+     * @param predicate A two parameter closure, the first parameter being the
+     *                   element in the {@code Stream}, the second the index (starting at 0).
+     * @return A new {@code Stream} wrapping a {@link FilteringIterator}
+     */
+    public Stream&lt;T&gt; filterWithIndex( Closure&lt;Boolean&gt; predicate ) {
+<span class="fc" id="L87">        return new Stream&lt;T&gt;( new FilteringIterator&lt;T&gt;( iterator, predicate, true ) ) ;</span>
+    }
+
+    /**
+     * Returns a new {@code Stream} which will iterate the elements in the current {@code Stream},
+     * followed by the elements in the {@code other} {@code Stream}.
+     *
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   def a = Stream.from( 1..3 )
+     *   def b = Stream.from( 'a'..'c' )
+     *
+     *   assert a.concat( b ).collect() == [ 1, 2, 3, 'a', 'b', 'c' ]
+     * &lt;/pre&gt;
+     *
+     * @param other The {@code Stream} to iterate after the current one is exhausted.
+     * @return A new {@code Stream} wrapping a {@link ConcatenationIterator}
+     */
+    public Stream&lt;T&gt; concat( Iterator&lt;? extends T&gt; other ) {
+<span class="fc" id="L107">        return new Stream&lt;T&gt;( new ConcatenationIterator&lt;T&gt;( iterator, other ) ) ;</span>
+    }
+
+    /**
+     * Skip {@code n} elements.
+     *
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..10 )
+     *                .skip( 6 ).collect() == [ 7, 8, 9, 10 ]
+     * &lt;/pre&gt;
+     *
+     * @param n the number of elements to skip
+     * @return A new {@code Stream} wrapping a {@link SkipIterator}
+     */
+    public Stream&lt;T&gt; skip( int n ) {
+<span class="fc" id="L124">        return new Stream&lt;T&gt;( new SkipIterator&lt;T&gt;( iterator, n ) ) ;</span>
+    }
+
+    /**
+     * Takes a {@code Closure} that returns a {@code Collection}.  Each element
+     * in this {@code Collection} is passed on in turn, before the next element is
+     * fetched from upstream, and the Closure executed again.
+     *
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..3 )
+     *                .flatMap { [ it ] * it }
+     *                .collect() == [ 1, 2, 2, 3, 3, 3 ]
+     * &lt;/pre&gt;
+     *
+     * @param &lt;U&gt; The type of the new Stream.
+     * @param map A single parameter closure to pass the element through,
+     *            returning a new Collection of elements to iterate.
+     * @return A new {@code Stream} wrapping a {@link FlatMapIterator}
+     */
+    public &lt;U&gt; Stream&lt;U&gt; flatMap( Closure&lt;? extends Collection&lt;U&gt;&gt; map ) { 
+<span class="fc" id="L146">        return new Stream&lt;U&gt;( new FlatMapIterator&lt;T,U&gt;( iterator, map, false ) ) ;</span>
+    }
+
+    /**
+     * Takes a {@code Closure} that returns a {@code Collection}.  Each element
+     * in this {@code Collection} is passed on in turn, before the next element is
+     * fetched from upstream, and the Closure executed again.
+     *
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..3 )
+     *                .flatMapWithIndex { it, index -&amp;gt; [ it ] * index }
+     *                .collect() == [ 2, 3, 3 ]
+     * &lt;/pre&gt;
+     *
+     * @param &lt;U&gt; The type of the new Stream.
+     * @param map A two parameter closure to pass the element and it's index through,
+     *            returning a new Collection of elements to iterate.
+     * @return A new {@code Stream} wrapping a {@link FlatMapIterator}
+     */
+    public &lt;U&gt; Stream&lt;U&gt; flatMapWithIndex( Closure&lt;? extends Collection&lt;U&gt;&gt; map ) { 
+<span class="fc" id="L168">        return new Stream&lt;U&gt;( new FlatMapIterator&lt;T,U&gt;( iterator, map, true ) ) ;</span>
+    }
+
+    /**
+     * Inspect every value in the {@code Stream} and pass it on.
+     * 
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   def list = []
+     *   assert Stream.from( 1..3 )
+     *                .tap { list &amp;lt;&amp;lt; it }
+     *                .collect() == [ 1, 2, 3 ]
+     *   assert list == [ 1, 2, 3 ]
+     * &lt;/pre&gt;
+     *
+     * @param output The {@code Closure} to be called for every element
+     * @return A new {@code Stream} wrapping a {@link TapIterator}
+     */
+<span class="fc" id="L187">    public Stream&lt;T&gt; tap( Closure&lt;Void&gt; output ) { return tapEvery( 1, output ) ; }</span>
+
+    /**
+     * Inspect the every nth value in the {@code Stream} and pass it on.
+     * 
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   def list = []
+     *   assert Stream.from( 1..3 )
+     *                .tapEvery( 2 ) { list &amp;lt;&amp;lt; it }
+     *                .collect() == [ 1, 2, 3 ]
+     *   assert list == [ 2 ]
+     * &lt;/pre&gt;
+     *
+     * @param n the elements to inspect
+     * @param output The {@code Closure} to be called for every nth element
+     * @return A new {@code Stream} wrapping a {@link TapIterator}
+     */
+    public Stream&lt;T&gt; tapEvery( int n, Closure&lt;Void&gt; output ) {
+<span class="fc" id="L207">        return new Stream&lt;T&gt;( new TapIterator&lt;T&gt;( iterator, n, false, output ) ) ;</span>
+    }
+
+    /**
+     * Inspect every value in the {@code Stream} with its {@code index} and pass it on.
+     * 
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   def list = []
+     *   assert Stream.from( 1..3 )
+     *                .tapWithIndex { it, idx -&amp;gt; list &amp;lt;&amp;lt; [ (it):idx ] }
+     *                .collect() == [ 1, 2, 3 ]
+     *   assert list == [ [ 1:0 ], [ 2:1 ], [ 3:2 ] ]
+     * &lt;/pre&gt;
+     *
+     * @param output The closure to call for each element in the Stream.
+     * @return A new {@code Stream} wrapping a {@link TapIterator}
+     */
+<span class="fc" id="L226">    public Stream&lt;T&gt; tapWithIndex( Closure&lt;Void&gt; output ) { return tapEveryWithIndex( 1, output ) ; }</span>
+
+    /**
+     * Inspect the every nth value in the {@code Stream} with its index and pass it on.
+     * 
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   def list = []
+     *   assert Stream.from( 1..3 )
+     *                .tapEveryWithIndex( 2 ) { it, index -&amp;gt; list &amp;lt;&amp;lt; [ (it):index ] }
+     *                .collect() == [ 1, 2, 3 ]
+     *   assert list == [ [2:1] ]
+     * &lt;/pre&gt;
+     *
+     * @param n the elements to inspect
+     * @param output The {@link Closure} to be called for every nth element
+     * @return A new {@code Stream} wrapping a {@link TapIterator}
+     */
+    public Stream&lt;T&gt; tapEveryWithIndex( int n, Closure&lt;Void&gt; output ) {
+<span class="fc" id="L246">        return new Stream&lt;T&gt;( new TapIterator&lt;T&gt;( iterator, n, true, output ) ) ;</span>
+    }
+
+    /**
+     * Maps the elements of a {@code Stream} to a new value as they are requested. Each
+     * element is passed in to a one arg closure, and the result of the {@link Closure}
+     * is returned as the next element in the {@code Stream}. The element is also
+     * set as the delegate of the {@link Closure}, so you can access map entries
+     * by name.
+     *
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( x:1..3, y:'a'..'c' )
+     *                .map { &quot;$x:$y&quot; }
+     *                .collect() == [ &quot;1:a&quot;, &quot;1:b&quot;, &quot;1:c&quot;,
+     *                                &quot;2:a&quot;, &quot;2:b&quot;, &quot;2:c&quot;,
+     *                                &quot;3:a&quot;, &quot;3:b&quot;, &quot;3:c&quot; ]
+     * &lt;/pre&gt;
+     *
+     * @param &lt;U&gt; The type of the new Stream.
+     * @param map The transforming Closure.
+     * @return A new {@code Stream} wrapping a {@link TransformingIterator}
+     */
+    public &lt;U&gt; Stream&lt;U&gt; map( Closure&lt;U&gt; map ) {
+<span class="fc" id="L271">        return new Stream&lt;U&gt;( new TransformingIterator&lt;T,U&gt;( iterator, map, false ) ) ;</span>
+    }
+
+    /**
+     * Maps the elements of a {@code Stream} to a new value as they are requested. Each
+     * element plus an index is passed in to a two arg closure, and the result of
+     * the {@link Closure} is returned as the next element in the {@code Stream}.
+     * The element is also set as the delegate of the {@link Closure}, so you can
+     * access map entries by name.
+     *
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( x:1..3, y:'a'..'c' )
+     *                .mapWithIndex { it, idx -&amp;gt; &quot;${x}:${it.y}:${idx}&quot; }
+     *                .collect() == [ &quot;1:a:0&quot;, &quot;1:b:1&quot;, &quot;1:c:2&quot;,
+     *                                &quot;2:a:3&quot;, &quot;2:b:4&quot;, &quot;2:c:5&quot;,
+     *                                &quot;3:a:6&quot;, &quot;3:b:7&quot;, &quot;3:c:8&quot; ]
+     * &lt;/pre&gt;
+     *
+     * @param &lt;U&gt; The type of the new Stream.
+     * @param map The transforming Closure.
+     * @return A new {@code Stream} wrapping a {@link TransformingIterator}
+     */
+    public &lt;U&gt; Stream&lt;U&gt; mapWithIndex( Closure&lt;U&gt; map ) {
+<span class="fc" id="L296">        return new Stream&lt;U&gt;( new TransformingIterator&lt;T,U&gt;( iterator, map, true ) ) ;</span>
+    }
+
+    /**
+     *
+     * @param predicate The Closure that stops the Stream when it returns {@code true}.
+     * @return A new {@code Stream} wrapping an {@link UntilIterator}
+     */
+    public Stream&lt;T&gt; until( Closure&lt;Boolean&gt; predicate ) {
+<span class="fc" id="L305">        return new Stream&lt;T&gt;( new UntilIterator&lt;T&gt;( iterator, predicate, false ) ) ;</span>
+    }
+
+    /**
+     *
+     * @param predicate The Closure that stops the Stream when it returns {@code true}.
+     * @return A new {@code Stream} wrapping an {@link UntilIterator}
+     */
+    public Stream&lt;T&gt; untilWithIndex( Closure&lt;Boolean&gt; predicate ) {
+<span class="fc" id="L314">        return new Stream&lt;T&gt;( new UntilIterator&lt;T&gt;( iterator, predicate, true ) ) ;</span>
+    }
+
+    /**
+     * Groups a the elements of a {@code Stream} into groups of length {@code size}.
+     *
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..9 )
+     *                .collate( 4 )
+     *                .collect() == [ [ 1, 2, 3, 4 ], [ 5, 6, 7, 8 ], [ 9 ] ]
+     * &lt;/pre&gt;
+     *
+     * @param size the size of each collated group
+     * @return A new {@code Stream} wrapping an {@link CollatingIterator}
+     */
+<span class="fc" id="L331">    public Stream&lt;Collection&lt;T&gt;&gt; collate( int size ) { return collate( size, size, true ) ; }</span>
+
+    /**
+     * Groups a the elements of a {@code Stream} into groups of length {@code size}.
+     *
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..9 )
+     *                .collate( 4, false )
+     *                .collect() == [ [ 1, 2, 3, 4 ], [ 5, 6, 7, 8 ] ]
+     * &lt;/pre&gt;
+     *
+     * @param size the size of each collated group
+     * @param keepRemainder Should any remaining objects be returned at the end
+     * @return A new {@code Stream} wrapping an {@link CollatingIterator}
+     */
+<span class="fc" id="L348">    public Stream&lt;Collection&lt;T&gt;&gt; collate( int size, boolean keepRemainder ) { return collate( size, size, keepRemainder ) ; }</span>
+
+    /**
+     * Groups a the elements of a {@code Stream} into groups of length {@code size}
+     * using a step-size of {@code step}.
+     *
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..9 )
+     *                .collate( 4, 1 )
+     *                .collect() == [ [ 1, 2, 3, 4 ],
+     *                                [ 2, 3, 4, 5 ],
+     *                                [ 3, 4, 5, 6 ],
+     *                                [ 4, 5, 6, 7 ],
+     *                                [ 5, 6, 7, 8 ],
+     *                                [ 6, 7, 8, 9 ],
+     *                                [ 7, 8, 9 ],
+     *                                [ 8, 9 ],
+     *                                [ 9 ] ]
+     * &lt;/pre&gt;
+     *
+     * @param size the size of each collated group
+     * @param step How many to increment the window by each turn
+     * @return A new {@code Stream} wrapping an {@link CollatingIterator}
+     */
+<span class="fc" id="L374">    public Stream&lt;Collection&lt;T&gt;&gt; collate( int size, int step ) { return collate( size, step, true ) ; }</span>
+
+    /**
+     * Groups a the elements of a {@code Stream} into groups of length {@code size}
+     * using a step-size of {@code step}.
+     *
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..9 )
+     *                .collate( 4, 1, false )
+     *                .collect() == [ [ 1, 2, 3, 4 ],
+     *                                [ 2, 3, 4, 5 ],
+     *                                [ 3, 4, 5, 6 ],
+     *                                [ 4, 5, 6, 7 ],
+     *                                [ 5, 6, 7, 8 ],
+     *                                [ 6, 7, 8, 9 ] ]
+     * &lt;/pre&gt;
+     *
+     * @param size the size of each collated group
+     * @param step How many to increment the window by each turn
+     * @param keepRemainder Should any remaining objects be returned at the end
+     * @return A new {@code Stream} wrapping an {@link CollatingIterator}
+     */
+    public Stream&lt;Collection&lt;T&gt;&gt; collate( int size, int step, boolean keepRemainder ) {
+<span class="fc" id="L399">        return new Stream&lt;Collection&lt;T&gt;&gt;( new CollatingIterator&lt;T&gt;( this.iterator, size, step, keepRemainder ) ) ;</span>
+    }
+
+    /**
+     * Takes another {@code Iterator} or {@code Stream} and calls the two arg {@code Closure}
+     * to zip the two together.
+     * 
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   def numbers = Stream.from 1..3
+     *   def letters = Stream.from 'a'..'d'
+     *  
+     *   assert numbers.zip( letters ) { n, l -&amp;gt; &quot;$n:$l&quot; }
+     *                .collect() == [ &quot;1:a&quot;, &quot;2:b&quot;, &quot;3:c&quot; ]
+     * &lt;/pre&gt;
+     * 
+     * @param &lt;U&gt; The type of the secondary Stream.
+     * @param &lt;V&gt; The type of the new Stream.
+     * @param other The other {@link Iterator}
+     * @param map The 2 arg {@link Closure} to call with each next element from the Stream
+     * @return A new {@code Stream} wrapping a {@link ZipIterator}
+     */
+    public &lt;U,V&gt; Stream&lt;V&gt; zip( Iterator&lt;U&gt; other, Closure&lt;V&gt; map ) {
+<span class="fc" id="L423">        return new Stream&lt;V&gt;( new ZipIterator&lt;T,U,V&gt;( this.iterator, other, false, map ) ) ;</span>
+    }
+
+    /**
+     * Takes another {@code Iterator} or {@code Stream} and calls the three arg {@code Closure}
+     * to zip the two together along with the current index.
+     * 
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   def numbers = Stream.from 1..3
+     *   def letters = Stream.from 'a'..'d'
+     *  
+     *   assert numbers.zipWithIndex( letters ) { n, l, i -&amp;gt; &quot;$n:$l:$i&quot; }
+     *                .collect() == [ &quot;1:a:0&quot;, &quot;2:b:1&quot;, &quot;3:c:2&quot; ]
+     * &lt;/pre&gt;
+     * 
+     * @param &lt;U&gt; The type of the secondary Stream.
+     * @param &lt;V&gt; The type of the new Stream.
+     * @param other The other {@link Iterator}
+     * @param map The 3 arg {@link Closure} to call with each next element from the Stream and the current stream index
+     * @return A new {@code Stream} wrapping a {@link ZipIterator}
+     */
+    public &lt;U,V&gt; Stream&lt;V&gt; zipWithIndex( Iterator&lt;U&gt; other, Closure&lt;V&gt; map ) {
+<span class="fc" id="L447">        return new Stream&lt;V&gt;( new ZipIterator&lt;T,U,V&gt;( this.iterator, other, true, map ) ) ;</span>
+    }
+
+    /**
+     * Limits the {@code Stream} to {@code n} elements.
+     * 
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..9 )
+     *                .take( 3 )
+     *                .collect() == [ 1, 2, 3 ]
+     * &lt;/pre&gt;
+     *
+     * @param n The number of element to limit the {@code Stream} to.
+     * @return A new {@code Stream} wrapping a {@link LimitedIterator}
+     */
+    public Stream&lt;T&gt; take( int n ) {
+<span class="fc" id="L465">        return new Stream&lt;T&gt;( new LimitedIterator&lt;T&gt;( this.iterator, n ) ) ;</span>
+    }
+
+    /**
+     * Construct a {@code Stream} from a {@link Map} of Iterables.
+     * 
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( a:1..3, b:'a'..'c' )
+     *                .collect() == [ [ a:1, b:'a' ],
+     *                                [ a:1, b:'b' ],
+     *                                [ a:1, b:'c' ],
+     *                                [ a:2, b:'a' ],
+     *                                [ a:2, b:'b' ],
+     *                                [ a:2, b:'c' ],
+     *                                [ a:3, b:'a' ],
+     *                                [ a:3, b:'b' ],
+     *                                [ a:3, b:'c' ] ]
+     * &lt;/pre&gt;
+     *
+     * @param &lt;K&gt; They type of the Map keys.
+     * @param &lt;V&gt; The type of the Iterable value.
+     * @param map The map of Iterables.
+     * @return A new {@code Stream} wrapping a {@link MapIterator}.
+     */
+<span class="fc" id="L491">    public static &lt;K,V&gt; Stream&lt;Map&lt;K,V&gt;&gt;  from( Map&lt;K,? extends Iterable&lt;V&gt;&gt; map ) { return new Stream&lt;Map&lt;K,V&gt;&gt;( new MapIterator&lt;K,V&gt;( map ) ) ;               }</span>
+
+    /**
+     * Construct a {@code Stream} from another {@code Stream}.
+     * 
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( Stream.from( 1..3 ) )
+     *                .collect() == [ 1, 2, 3 ]
+     * &lt;/pre&gt;
+     *
+     * @param &lt;T&gt; The type of the Stream.
+     * @param stream The other {@code Stream}.
+     * @return A new {@code Stream} wrapping the iterator of the other {@code Stream}.
+     */
+<span class="fc" id="L507">    public static &lt;T&gt;   Stream&lt;T&gt;         from( Stream&lt;T&gt; stream                 ) { return new Stream&lt;T&gt;( stream.iterator ) ;                                  }</span>
+
+    /**
+     * Construct a {@code Stream} from an {@link Iterable}.
+     *
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( [ 1, 2, 3 ] )
+     *                .collect() == [ 1, 2, 3 ]
+     * &lt;/pre&gt;
+     *
+     * @param &lt;T&gt; The type of the Iterable.
+     * @param iterable The iterable to iterate.
+     * @return A new {@code Stream} wrapping the {@code iterable.iterator()}.
+     */
+<span class="fc" id="L523">    public static &lt;T&gt;   Stream&lt;T&gt;         from( Iterable&lt;T&gt; iterable             ) { return new Stream&lt;T&gt;( iterable.iterator() ) ;                              }</span>
+
+    /**
+     * Construct a {@code Stream} from an {@link Iterator}.
+     *
+     * &lt;pre class=&quot;groovyTestCase&quot;&gt;
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( [ 1, 2, 3 ].iterator() )
+     *                .collect() == [ 1, 2, 3 ]
+     * &lt;/pre&gt;
+     *
+     * @param &lt;T&gt; The type of the Iterator.
+     * @param iterator The iterator to wrap.
+     * @return A new {@code Stream} wrapping the iterator.
+     */
+<span class="fc" id="L539">    public static &lt;T&gt;   Stream&lt;T&gt;         from( Iterator&lt;T&gt; iterator             ) { return new Stream&lt;T&gt;( iterator ) ;                                         }</span>
+
+    /**
+     * Construct a {@code Stream} from a {@link BufferedReader} that iterates the lines in it.
+     *
+     * @param reader The Reader to iterate lines from
+     * @return A new {@code Stream} wrapping a {@link BufferedReaderIterator}.
+     */
+<span class="fc" id="L547">    public static       Stream&lt;String&gt;    from( BufferedReader reader            ) { return new Stream&lt;String&gt;( new BufferedReaderIterator( reader ) ) ;        }</span>
+
+    /**
+     * Construct a {@code Stream} from a {@link ZipFile} that iterates the {@link ZipEntry} objects contained within.
+     * 
+     * @param file the ZipFile to iterate ZipEntrys from.
+     * @return A new {@code Stream} wrapping an {@link EnumerationIterator}.
+     */
+<span class="fc" id="L555">    public static       Stream&lt;ZipEntry&gt;  from( ZipFile file                     ) { return new Stream&lt;ZipEntry&gt;( new EnumerationIterator&lt;ZipEntry&gt;( file.entries() ) ) ; }</span>
+
+    /**
+     * Construct a {@code Stream} from a {@link JarFile} that iterates the {@link JarEntry} objects contained within.
+     *
+     * @param file the JarFile to iterate JarEntrys from.
+     * @return A new {@code Stream} wrapping an {@link EnumerationIterator}.
+     */
+<span class="nc" id="L563">    public static       Stream&lt;JarEntry&gt;  from( JarFile file                     ) { return new Stream&lt;JarEntry&gt;( new EnumerationIterator&lt;JarEntry&gt;( file.entries() ) ) ; }</span>
+
+    /**
+     * Construct a {@code Stream} that for every element, returns the result of calling the {@link Closure}.
+     *
+     * @param &lt;T&gt; The type of the return value from the Closure.
+     * @param closure The closure to call each time an element is requested.
+     * @return A new {@code Stream} wrapping an {@link RepeatingClosureIterator}.
+     */
+<span class="fc" id="L572">    public static &lt;T&gt;   Stream&lt;T&gt;         from( Closure&lt;T&gt; closure               ) { return new Stream&lt;T&gt;( new RepeatingClosureIterator&lt;T&gt;( closure ) ) ;       }</span>
+
+    /**
+     * Construct a {@code Stream} that iterates every {@code Object} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
+     *
+     * @param &lt;T&gt; The type of the array.
+     * @param array An array of Object to iterate
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L582">    public static &lt;T&gt;   Stream&lt;T&gt;         from( T[] array                        ) { return new Stream&lt;T&gt;(         primitiveArrayToList( array ).iterator() ) ; }</span>
+
+    /**
+     * Construct a {@code Stream} that iterates every {@code byte} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
+     *
+     * @param array An array of byte to iterate
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L591">    public static       Stream&lt;Byte&gt;      from( byte[] array                     ) { return new Stream&lt;Byte&gt;(      primitiveArrayToList( array ).iterator() ) ; }</span>
+
+    /**
+     * Construct a {@code Stream} that iterates every {@code Character} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
+     *
+     * @param array An array of char to iterate
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L600">    public static       Stream&lt;Character&gt; from( char[] array                     ) { return new Stream&lt;Character&gt;( primitiveArrayToList( array ).iterator() ) ; }</span>
+
+    /**
+     * Construct a {@code Stream} that iterates every {@code Short} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
+     *
+     * @param array An array of short to iterate
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L609">    public static       Stream&lt;Short&gt;     from( short[] array                    ) { return new Stream&lt;Short&gt;(     primitiveArrayToList( array ).iterator() ) ; }</span>
+
+    /**
+     * Construct a {@code Stream} that iterates every {@code Integer} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
+     *
+     * @param array An array of int to iterate
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L618">    public static       Stream&lt;Integer&gt;   from( int[] array                      ) { return new Stream&lt;Integer&gt;(   primitiveArrayToList( array ).iterator() ) ; }</span>
+
+    /**
+     * Construct a {@code Stream} that iterates every {@code Long} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
+     *
+     * @param array An array of long to iterate
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L627">    public static       Stream&lt;Long&gt;      from( long[] array                     ) { return new Stream&lt;Long&gt;(      primitiveArrayToList( array ).iterator() ) ; }</span>
+
+    /**
+     * Construct a {@code Stream} that iterates every {@code Float} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
+     *
+     * @param array An array of float to iterate
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L636">    public static       Stream&lt;Float&gt;     from( float[] array                    ) { return new Stream&lt;Float&gt;(     primitiveArrayToList( array ).iterator() ) ; }</span>
+
+    /**
+     * Construct a {@code Stream} that iterates every {@code Double} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
+     *
+     * @param array An array of double to iterate
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L645">    public static       Stream&lt;Double&gt;    from( double[] array                   ) { return new Stream&lt;Double&gt;(    primitiveArrayToList( array ).iterator() ) ; }</span>
+
+    /**
+     * Construct a {@code Stream} that iterates every {@code Boolean} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
+     *
+     * @param array An array of boolean to iterate
+     * @return A new {@code Stream} wrapping the iterator for the array as a List.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L654">    public static       Stream&lt;Boolean&gt;   from( boolean[] array                  ) { return new Stream&lt;Boolean&gt;(   primitiveArrayToList( array ).iterator() ) ; }</span>
+
+    /* Iterator and Iterable Methods */
+<span class="nc" id="L657">    @Override public Iterator&lt;T&gt; iterator() { return this ; }</span>
+<span class="fc" id="L658">    @Override public T next()               { return iterator.next() ; }</span>
+<span class="fc" id="L659">    @Override public boolean hasNext()      { return iterator.hasNext() ; }</span>
+<span class="nc" id="L660">    @Override public void remove()          { iterator.remove() ; }</span>
+
+    /* Utilities */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private static List primitiveArrayToList( Object array ) {
+<span class="fc" id="L665">        int size = Array.getLength( array ) ;</span>
+<span class="fc" id="L666">        List list = new ArrayList( size ) ;</span>
+<span class="fc bfc" id="L667" title="All 2 branches covered.">        for( int i = 0 ; i &lt; size ; i++ ) {</span>
+<span class="fc" id="L668">            Object item = Array.get( array, i ) ;</span>
+<span class="pc bpc" id="L669" title="4 of 6 branches missed.">            if( item != null &amp;&amp; item.getClass().isArray() &amp;&amp; item.getClass().getComponentType().isPrimitive() ) {</span>
+<span class="nc" id="L670">                item = primitiveArrayToList( item ) ;</span>
+            }
+<span class="fc" id="L672">            list.add( item ) ;</span>
+        }
+<span class="fc" id="L674">        return list ;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>
