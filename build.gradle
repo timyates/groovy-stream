@@ -58,10 +58,24 @@ task javadocCopy( type: Copy ) {
     into 'docs/assets/javadoc'
 }
 
+jacocoTestReport {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports after running tests."
+    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
+}
+jacocoTestReport.dependsOn( test )
+
+task jacocoCopy( type: Copy ) {
+    println "${project.buildDir}/reports/jacoco/test/html"
+    from "${project.buildDir}/reports/jacoco/test/html"
+    into 'docs/assets/coverage'
+}
+jacocoCopy.dependsOn( jacocoTestReport )
+
 task jbake( type:Exec ) {
     commandLine 'jbake', 'docs', 'docs/output'
 }
-jbake.dependsOn( test, javadocCopy )
+jbake.dependsOn( javadocCopy, jacocoCopy )
 
 compileGroovy.dependsOn( generateModule )
 test.dependsOn( jar )
@@ -85,12 +99,6 @@ task javadocJar( type: Jar, dependsOn: javadoc ) {
 task sourcesJar( type: Jar ) {
     from sourceSets.main.allSource
     classifier = 'sources'
-}
-
-jacocoTestReport {
-    group = "Reporting"
-    description = "Generate Jacoco coverage reports after running tests."
-    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
 }
 
 artifacts {

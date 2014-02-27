@@ -7,3 +7,4 @@ src/main/groovy/META-INF
 .nb-gradle
 docs/output
 docs/assets/javadoc
+docs/assets/coverage
