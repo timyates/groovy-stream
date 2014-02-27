@@ -65,6 +65,24 @@ public class CollatingIterator<T> implements Iterator<Collection<T>> {
         throw new UnsupportedOperationException() ;
     }
 
+    private void addElementToEachCachedList( T next ) {
+        for( Collection<T> item : cache ) {
+            item.add( next ) ;
+        }
+    }
+
+    private boolean isFinished() {
+        if( !keepRemainder && ( current == null || current.size() < size ) ) {
+            return true ;
+        }
+        else if( current == null && !parent.hasNext() ) {
+            return true ;
+        }
+        else {
+            return false ;
+        }
+    }
+
     private void loadNext() {
         while( parent.hasNext() ) {
             T next = parent.next() ;
@@ -72,18 +90,13 @@ public class CollatingIterator<T> implements Iterator<Collection<T>> {
                 cache.offer( new ArrayList<T>() ) ;
             }
             index++ ;
-            for( Collection<T> item : cache ) {
-                item.add( next ) ;
-            }
+            addElementToEachCachedList( next ) ;
             if( cache.peek().size() == size ) {
                 break ;
             }
         }
         current = cache.poll() ;
-        if( !keepRemainder && ( current == null || current.size() < size ) ) {
-            exhausted = true ;
-        }
-        else if( current == null && !parent.hasNext() ) {
+        if( isFinished() ) {
             exhausted = true ;
         }
     }
