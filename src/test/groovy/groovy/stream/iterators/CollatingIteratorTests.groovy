@@ -17,37 +17,75 @@
 package groovy.stream.iterators
 
 class CollatingIteratorTests extends spock.lang.Specification {
-    @spock.lang.Unroll( "Collation on #input with len:#len, step:#step and keep:#keep should == #result" )
-    def "test collating iterator"() {
-        setup:
-            def i = new CollatingIterator( input.iterator(), len, step, keep )
+    CollatingIterator iter
 
-        expect:
-            i.collect() == result
-
-        where:
-            input                   | len | step | keep  | result
-            [ 1, null, 2, 3, null ] | 1   | 1    | true  | [ [ 1 ], [ null ], [ 2 ], [ 3 ], [ null ] ]
-            [ 1, null, 2, 3, null ] | 2   | 2    | true  | [ [ 1, null ], [ 2, 3 ], [ null ] ]
-            [ 1, null, 2, 3, null ] | 3   | 3    | true  | [ [ 1, null, 2 ], [ 3, null ] ]
-            [ 1, null, 2, 3, null ] | 3   | 3    | false | [ [ 1, null, 2 ] ]
-            [ 1, null, 2, 3, null ] | 2   | 1    | false | [ [ 1, null ], [ null, 2 ], [ 2, 3 ], [ 3, null ] ]
+    def setup() {
+        iter = new CollatingIterator( [ 1, 2, null ].iterator(), 2 )
     }
 
-    def "Test NoSuchElementException"() {
-        setup:
-            def i = new CollatingIterator( [ 1, 2, null ].iterator(), 2 )
-
+    def "collect should return values"() {
         when:
-            def result = i.collect()
-
+            def result = iter.collect()
         then:
             result == [ [ 1, 2 ], [ null ] ]
+    }
 
+    def "call to next with no hasNext should work"() {
+        expect:
+            iter.next() == [ 1, 2 ]
+    }
+
+    def "remove should throw UnsupportedOperationException"() {
         when:
-            i.next()
-
+            iter.remove()
         then:
-            thrown java.util.NoSuchElementException
+            UnsupportedOperationException ex = thrown()
+    }
+
+    def "Exhausted iterator should show hasNext = false"() {
+        when:
+            def result = iter.collect()
+        then:
+            iter.hasNext() == false
+    }
+
+    def "Call to next on Exhausted iterator should throw NoSuchElementException"() {
+        when:
+            def result = iter.collect()
+            iter.next()
+        then:
+            NoSuchElementException ex = thrown()
+    }
+
+    def "check illegal size"() {
+        when:
+            def iter = new CollatingIterator( [ 1, null, 2 ].iterator(), -1 )
+        then:
+            IllegalArgumentException ex = thrown()
+
+    }
+
+    def "check illegal step"() {
+        when:
+            def iter = new CollatingIterator( [ 1, null, 2 ].iterator(), 1, 0 )
+        then:
+            IllegalArgumentException ex = thrown()
+
+    }
+
+    def "check size and step"() {
+        when:
+            def iter = new CollatingIterator( [ 1, null, 2 ].iterator(), 2, 1 )
+            def result = iter.collect()
+        then:
+            result == [ [ 1, null ], [ null, 2 ], [ 2 ] ]
+    }
+
+    def "check size and keep"() {
+        when:
+            def iter = new CollatingIterator( [ 1, null, 2 ].iterator(), 2, false )
+            def result = iter.collect()
+        then:
+            result == [ [ 1, null ] ]
     }
 }
