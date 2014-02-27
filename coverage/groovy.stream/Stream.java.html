@@ -654,7 +654,7 @@ public class Stream&lt;T&gt; implements Iterator&lt;T&gt;, Iterable&lt;T&gt; {
 <span class="nc" id="L654">    public static       Stream&lt;Boolean&gt;   from( boolean[] array                  ) { return new Stream&lt;Boolean&gt;(   primitiveArrayToList( array ).iterator() ) ; }</span>
 
     /* Iterator and Iterable Methods */
-<span class="nc" id="L657">    @Override public Iterator&lt;T&gt; iterator() { return this ; }</span>
+<span class="fc" id="L657">    @Override public Iterator&lt;T&gt; iterator() { return this ; }</span>
 <span class="fc" id="L658">    @Override public T next()               { return iterator.next() ; }</span>
 <span class="fc" id="L659">    @Override public boolean hasNext()      { return iterator.hasNext() ; }</span>
 <span class="nc" id="L660">    @Override public void remove()          { iterator.remove() ; }</span>
