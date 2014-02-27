@@ -43,8 +43,7 @@ public class ZipIterator<T,U,V> implements Iterator<V> {
 
     @Override
     public void remove() {
-        iter1.remove() ;
-        iter2.remove() ;
+        throw new UnsupportedOperationException() ;
     }
 
     private void loadNext() {
