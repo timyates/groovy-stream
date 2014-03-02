@@ -17,22 +17,42 @@
 package groovy.stream.iterators
 
 class TapIteratorTests extends spock.lang.Specification {
+    def inputList = [ 1, 2, null, 4, 5 ]
+    def list = []
+    TapIterator iter
+
+    def setup() {
+        iter = new TapIterator( inputList.iterator(), 1, true, { object, index -> list << [ index, object ] } )
+    }
+
+    def "collect should return values"() {
+        when:
+            def result = iter.collect()
+        then:
+            result == [ 1, 2, null, 4, 5 ]
+            list   == [ [ 0, 1 ], [ 1, 2 ], [ 2, null ], [ 3, 4 ], [ 4, 5 ] ]
+    }
+
+    def "call to next with no hasNext should work"() {
+        expect:
+            iter.next() == 1
+            iter.hasNext() == true
+            list == [ [ 0, 1 ] ]
+    }
+
+    def "remove should throw UnsupportedOperationException"() {
+        when:
+            iter.remove()
+        then:
+            UnsupportedOperationException ex = thrown()
+    }
+
     def "Test NoSuchElementException"() {
-        setup:
-            def list = []
-            def i = new TapIterator( [ 1, 2, null ].iterator(), 2, true, { object, index -> list << [ index, object ] } )
-
         when:
-            def result = i.collect()
+            def result = iter.collect()
+            iter.next()
 
         then:
-            result == [ 1, 2, null ]
-            list   == [ [ 1, 2 ] ]
-
-        when:
-            i.next()
-
-        then:
-            thrown java.util.NoSuchElementException
-  }
+            NoSuchElementException ex = thrown()
+    }
 }
