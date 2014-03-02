@@ -18,7 +18,7 @@ package groovy.stream.iterators
 
 class UntilIteratorTests extends spock.lang.Specification {
 
-    def list  = [ 1, 2, 3, 4, 5 ]
+    def list  = [ 1, 2, null, 4, 5 ]
     UntilIterator iter
 
     def setup() {
@@ -29,7 +29,7 @@ class UntilIteratorTests extends spock.lang.Specification {
         when:
             def result = iter.collect()
         then:
-            result == [ 1, 2, 3 ]
+            result == [ 1, 2, null ]
     }
 
     def "call to next with no hasNext should work"() {
@@ -52,5 +52,15 @@ class UntilIteratorTests extends spock.lang.Specification {
 
         then:
             NoSuchElementException ex = thrown()
+    }
+
+    def "Test UntilIterator which never passes predicate"() {
+        when:
+            def iter = new UntilIterator( list.iterator(), { it -> it == 'NOTFOUND' }, false )
+            def result = iter.collect()
+            iter.next()
+        then:
+            NoSuchElementException ex = thrown()
+            result == [ 1, 2, null, 4, 5 ]
     }
 }
