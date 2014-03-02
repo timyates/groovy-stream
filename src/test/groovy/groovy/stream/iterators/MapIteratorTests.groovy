@@ -17,12 +17,15 @@
 package groovy.stream.iterators
 
 class MapIteratorTests extends spock.lang.Specification {
-    def "test map iterator"() {
-        setup:
-            def i = new MapIterator( [ tim:1..3, alice:4..6 ] )
+    MapIterator iter
 
+    def setup() {
+        iter = new MapIterator( [ tim:1..3, alice:4..6 ] )
+    }
+
+    def "test map iterator"() {
         when:
-            def result = i.collect()
+            def result = iter.collect()
 
         then:
             result == [ [tim:1, alice:4], [tim:1, alice:5], [tim:1, alice:6],
@@ -30,21 +33,25 @@ class MapIteratorTests extends spock.lang.Specification {
                                     [tim:3, alice:4], [tim:3, alice:5], [tim:3, alice:6] ]
     }
 
+    def "call to next with no hasNext should work"() {
+        expect:
+            iter.next() == [ tim:1, alice:4 ]
+            iter.hasNext() == true
+    }
+
+    def "remove should throw UnsupportedOperationException"() {
+        when:
+            iter.remove()
+        then:
+            UnsupportedOperationException ex = thrown()
+    }
+
     def "Test NoSuchElementException"() {
-        setup:
-            def i = new MapIterator( [ tim:1..3, alice:4..6 ] )
-
         when:
-            def result = i.collect()
+            def result = iter.collect()
+            iter.next()
 
         then:
-            result == [ [tim:1, alice:4], [tim:1, alice:5], [tim:1, alice:6],
-                                    [tim:2, alice:4], [tim:2, alice:5], [tim:2, alice:6],
-                                    [tim:3, alice:4], [tim:3, alice:5], [tim:3, alice:6] ]
-        when:
-            i.next()
-
-        then:
-            thrown java.util.NoSuchElementException
+            NoSuchElementException ex = thrown()
     }
 }
