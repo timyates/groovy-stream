@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CollatingIterator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">groovy-stream</a> &gt; <a href="index.html" class="el_package">groovy.stream.iterators</a> &gt; <span class="el_source">CollatingIterator.java</span></div><h1>CollatingIterator.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CollatingIterator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">groovy-stream</a> &gt; <a href="index.source.html" class="el_package">groovy.stream.iterators</a> &gt; <span class="el_source">CollatingIterator.java</span></div><h1>CollatingIterator.java</h1><pre class="source lang-java linenums">/*
  * Copyright 2013-2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -32,7 +32,7 @@ public class CollatingIterator&lt;T&gt; implements Iterator&lt;Collection&lt;T&g
     private int           step ;
     private boolean       keepRemainder ;
     private Collection&lt;T&gt; current ;
-<span class="fc" id="L35">    private boolean       initialised  = false ;</span>
+<span class="fc" id="L35">    private boolean       loaded       = false ;</span>
 <span class="fc" id="L36">    private boolean       exhausted    = false ;</span>
 <span class="fc" id="L37">    private int           index        = 0 ;</span>
 
@@ -75,50 +75,46 @@ public class CollatingIterator&lt;T&gt; implements Iterator&lt;Collection&lt;T&g
 <span class="fc bfc" id="L75" title="All 6 branches covered.">        if( !keepRemainder &amp;&amp; ( current == null || current.size() &lt; size ) ) {</span>
 <span class="fc" id="L76">            return true ;</span>
         }
-<span class="pc bpc" id="L78" title="1 of 4 branches missed.">        else if( current == null &amp;&amp; !parent.hasNext() ) {</span>
+<span class="pc bpc" id="L78" title="1 of 4 branches missed.">        if( current == null &amp;&amp; !parent.hasNext() ) {</span>
 <span class="fc" id="L79">            return true ;</span>
         }
-        else {
-<span class="fc" id="L82">            return false ;</span>
-        }
+<span class="fc" id="L81">        return false ;</span>
     }
 
     private void loadNext() {
-<span class="fc bfc" id="L87" title="All 2 branches covered.">        while( parent.hasNext() ) {</span>
-<span class="fc" id="L88">            T next = parent.next() ;</span>
-<span class="fc bfc" id="L89" title="All 2 branches covered.">            if( index % step == 0 ) {</span>
-<span class="fc" id="L90">                cache.offer( new ArrayList&lt;T&gt;() ) ;</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        while( parent.hasNext() ) {</span>
+<span class="fc" id="L86">            T next = parent.next() ;</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">            if( index % step == 0 ) {</span>
+<span class="fc" id="L88">                cache.offer( new ArrayList&lt;T&gt;() ) ;</span>
             }
-<span class="fc" id="L92">            index++ ;</span>
-<span class="fc" id="L93">            addElementToEachCachedList( next ) ;</span>
-<span class="fc bfc" id="L94" title="All 2 branches covered.">            if( cache.peek().size() == size ) {</span>
-<span class="fc" id="L95">                break ;</span>
+<span class="fc" id="L90">            index++ ;</span>
+<span class="fc" id="L91">            addElementToEachCachedList( next ) ;</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">            if( cache.peek().size() == size ) {</span>
+<span class="fc" id="L93">                break ;</span>
             }
-<span class="fc" id="L97">        }</span>
-<span class="fc" id="L98">        current = cache.poll() ;</span>
-<span class="fc bfc" id="L99" title="All 2 branches covered.">        if( isFinished() ) {</span>
-<span class="fc" id="L100">            exhausted = true ;</span>
+<span class="fc" id="L95">        }</span>
+<span class="fc" id="L96">        current = cache.poll() ;</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        if( isFinished() ) {</span>
+<span class="fc" id="L98">            exhausted = true ;</span>
         }
-<span class="fc" id="L102">    }</span>
+<span class="fc" id="L100">    }</span>
 
     public boolean hasNext() {
-<span class="fc bfc" id="L105" title="All 2 branches covered.">        if( !initialised ) {</span>
-<span class="fc" id="L106">            loadNext() ;</span>
-<span class="fc" id="L107">            initialised = true ;</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        if( !loaded ) {</span>
+<span class="fc" id="L104">            loadNext() ;</span>
+<span class="fc" id="L105">            loaded = true ;</span>
         }
-<span class="fc bfc" id="L109" title="All 2 branches covered.">        return !exhausted ;</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        return !exhausted ;</span>
     }
 
     public Collection&lt;T&gt; next() {
-<span class="fc bfc" id="L113" title="All 2 branches covered.">        if( !initialised ) {</span>
-<span class="fc" id="L114">            hasNext() ;</span>
+<span class="fc" id="L111">        hasNext() ;</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        if( exhausted ) {</span>
+<span class="fc" id="L113">            throw new NoSuchElementException( &quot;CollatingIterator has been exhausted and contains no more elements&quot; ) ;</span>
         }
-<span class="fc bfc" id="L116" title="All 2 branches covered.">        if( exhausted ) {</span>
-<span class="fc" id="L117">            throw new NoSuchElementException( &quot;CollatingIterator has been exhausted and contains no more elements&quot; ) ;</span>
-        }
-<span class="fc" id="L119">        List&lt;T&gt; ret = new ArrayList&lt;T&gt;( current ) ;</span>
-<span class="fc" id="L120">        loadNext() ;</span>
-<span class="fc" id="L121">        return ret ;</span>
+<span class="fc" id="L115">        List&lt;T&gt; ret = new ArrayList&lt;T&gt;( current ) ;</span>
+<span class="fc" id="L116">        loaded = false ;</span>
+<span class="fc" id="L117">        return ret ;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.4.201312101107</span></div></body></html>

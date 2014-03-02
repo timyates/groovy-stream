@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ConcatenationIterator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">groovy-stream</a> &gt; <a href="index.html" class="el_package">groovy.stream.iterators</a> &gt; <span class="el_source">ConcatenationIterator.java</span></div><h1>ConcatenationIterator.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ConcatenationIterator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">groovy-stream</a> &gt; <a href="index.source.html" class="el_package">groovy.stream.iterators</a> &gt; <span class="el_source">ConcatenationIterator.java</span></div><h1>ConcatenationIterator.java</h1><pre class="source lang-java linenums">/*
  * Copyright 2013-2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -24,8 +24,8 @@ public class ConcatenationIterator&lt;T&gt; implements Iterator&lt;T&gt; {
     private final Iterator&lt;? extends T&gt; last ;
 
     private T       current ;
-<span class="fc" id="L27">    private boolean initialised  = false ;</span>
-<span class="fc" id="L28">    private boolean exhausted    = false ;</span>
+<span class="fc" id="L27">    private boolean loaded    = false ;</span>
+<span class="fc" id="L28">    private boolean exhausted = false ;</span>
 
     public ConcatenationIterator( Iterator&lt;? extends T&gt; first,
 <span class="fc" id="L31">                                  Iterator&lt;? extends T&gt; last ) {</span>
@@ -50,23 +50,21 @@ public class ConcatenationIterator&lt;T&gt; implements Iterator&lt;T&gt; {
 <span class="fc" id="L50">    }</span>
 
     public boolean hasNext() {
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        if( !initialised ) {</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if( !loaded   ) {</span>
 <span class="fc" id="L54">            loadNext() ;</span>
-<span class="fc" id="L55">            initialised = true ;</span>
+<span class="fc" id="L55">            loaded   = true ;</span>
         }
 <span class="fc bfc" id="L57" title="All 2 branches covered.">        return !exhausted ;</span>
     }
 
     public T next() {
-<span class="fc bfc" id="L61" title="All 2 branches covered.">        if( !initialised ) {</span>
-<span class="fc" id="L62">            hasNext() ;</span>
+<span class="fc" id="L61">        hasNext() ;</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if( exhausted ) {</span>
+<span class="fc" id="L63">            throw new NoSuchElementException( &quot;ConcatenationIterator has been exhausted and contains no more elements&quot; ) ;</span>
         }
-<span class="fc bfc" id="L64" title="All 2 branches covered.">        if( exhausted ) {</span>
-<span class="fc" id="L65">            throw new NoSuchElementException( &quot;ConcatenationIterator has been exhausted and contains no more elements&quot; ) ;</span>
-        }
-<span class="fc" id="L67">        T ret = current ;</span>
-<span class="fc" id="L68">        loadNext() ;</span>
-<span class="fc" id="L69">        return ret ;</span>
+<span class="fc" id="L65">        T ret = current ;</span>
+<span class="fc" id="L66">        loaded = false ;</span>
+<span class="fc" id="L67">        return ret ;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.4.201312101107</span></div></body></html>
