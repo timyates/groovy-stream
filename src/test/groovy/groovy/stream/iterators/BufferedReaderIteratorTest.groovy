@@ -19,12 +19,13 @@ package groovy.stream.iterators
 import spock.lang.*
 
 class BufferedReaderIteratorTest extends Specification {
+    String text
     BufferedReader reader
     BufferedReaderIterator iter
     def setup() {
-        String text = '''Line 1
-                        |Line 2
-                        |Line 3'''.stripMargin()
+        text = '''Line 1
+                 |Line 2
+                 |Line 3'''.stripMargin()
         reader = new BufferedReader( new StringReader( text ) )
         iter = new BufferedReaderIterator( reader )
     }
@@ -61,5 +62,21 @@ class BufferedReaderIteratorTest extends Specification {
             iter.next()
         then:
             NoSuchElementException ex = thrown()
+    }
+
+    def "Failing reader should just stop"() {
+        setup:
+            int idx = 1
+            def reader = new BufferedReader( new StringReader( text ) ) {
+                String readLine() {
+                    if( idx++ > 1 ) throw new IOException( 'End' )
+                    super.readLine() ;       
+                }
+            }
+            def iter = new BufferedReaderIterator( reader )
+        when:
+            def result = iter.collect()
+        then:
+            result == [ 'Line 1' ]
     }
 }
