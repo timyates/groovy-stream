@@ -25,13 +25,13 @@ public class BufferedReaderIterator implements Iterator<String> {
     private String current ;
     private BufferedReader reader ;
     private boolean  exhausted ;
-    private boolean  initialised ;
+    private boolean  loaded ;
 
     public BufferedReaderIterator( BufferedReader r ) {
         this.reader = r ;
         this.exhausted = false;
         this.current = null;
-        this.initialised = false;
+        this.loaded = false;
     }
 
     private void loadNext() {
@@ -48,23 +48,23 @@ public class BufferedReaderIterator implements Iterator<String> {
 
     @Override
     public boolean hasNext() {
-        if( !initialised ) {
+        if( !loaded ) {
             loadNext() ;
-            initialised = true ;
+            loaded = true ;
         }
         return !exhausted ;
     }
 
     @Override
     public String next() {
-        if( !initialised ) {
+        if( !loaded ) {
             hasNext() ;
         }
         if( exhausted ) {
             throw new NoSuchElementException( "BufferedReaderIterator has been exhausted and contains no more elements" ) ;
         }
         String ret = current ;
-        loadNext() ;
+        loaded = false ;
         return ret ;
     }
 

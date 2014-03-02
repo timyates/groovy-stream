@@ -29,7 +29,7 @@ public class TapIterator<T> implements Iterator<T> {
 
     private int     index ;
     private T       current ;
-    private boolean initialised ;
+    private boolean loaded ;
     private boolean exhausted ;
 
     public TapIterator( Iterator<T> parent, int every, boolean withIndex, Closure<Void> output ) {
@@ -38,7 +38,7 @@ public class TapIterator<T> implements Iterator<T> {
         this.index = 0 ;
         this.withIndex = withIndex ;
         this.output = output ;
-        this.initialised = false ;
+        this.loaded = false ;
         this.current = null ;
         this.exhausted = false ;
     }
@@ -59,16 +59,16 @@ public class TapIterator<T> implements Iterator<T> {
 
     @Override
     public boolean hasNext() {
-        if( !initialised ) {
+        if( !loaded ) {
             loadNext() ;
-            initialised = true ;
+            loaded = true ;
         }
         return !exhausted ;
     }
 
     @Override
     public T next() {
-        if( !initialised ) {
+        if( !loaded ) {
             hasNext() ;
         }
         if( exhausted ) {
@@ -83,7 +83,7 @@ public class TapIterator<T> implements Iterator<T> {
                 output.call( ret ) ;
             }
         }
-        loadNext() ;
+        loaded = false ;
         return ret ;
     }
 }

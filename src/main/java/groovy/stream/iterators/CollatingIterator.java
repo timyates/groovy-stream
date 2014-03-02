@@ -32,7 +32,7 @@ public class CollatingIterator<T> implements Iterator<Collection<T>> {
     private int           step ;
     private boolean       keepRemainder ;
     private Collection<T> current ;
-    private boolean       initialised  = false ;
+    private boolean       loaded       = false ;
     private boolean       exhausted    = false ;
     private int           index        = 0 ;
 
@@ -102,22 +102,22 @@ public class CollatingIterator<T> implements Iterator<Collection<T>> {
     }
 
     public boolean hasNext() {
-        if( !initialised ) {
+        if( !loaded ) {
             loadNext() ;
-            initialised = true ;
+            loaded = true ;
         }
         return !exhausted ;
     }
 
     public Collection<T> next() {
-        if( !initialised ) {
+        if( !loaded ) {
             hasNext() ;
         }
         if( exhausted ) {
             throw new NoSuchElementException( "CollatingIterator has been exhausted and contains no more elements" ) ;
         }
         List<T> ret = new ArrayList<T>( current ) ;
-        loadNext() ;
+        loaded = false ;
         return ret ;
     }
 }

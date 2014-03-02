@@ -24,8 +24,8 @@ public class ConcatenationIterator<T> implements Iterator<T> {
     private final Iterator<? extends T> last ;
 
     private T       current ;
-    private boolean initialised  = false ;
-    private boolean exhausted    = false ;
+    private boolean loaded    = false ;
+    private boolean exhausted = false ;
 
     public ConcatenationIterator( Iterator<? extends T> first,
                                   Iterator<? extends T> last ) {
@@ -50,22 +50,22 @@ public class ConcatenationIterator<T> implements Iterator<T> {
     }
 
     public boolean hasNext() {
-        if( !initialised ) {
+        if( !loaded   ) {
             loadNext() ;
-            initialised = true ;
+            loaded   = true ;
         }
         return !exhausted ;
     }
 
     public T next() {
-        if( !initialised ) {
+        if( !loaded   ) {
             hasNext() ;
         }
         if( exhausted ) {
             throw new NoSuchElementException( "ConcatenationIterator has been exhausted and contains no more elements" ) ;
         }
         T ret = current ;
-        loadNext() ;
+        loaded = false ;
         return ret ;
     }
 }

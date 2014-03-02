@@ -29,7 +29,7 @@ public class MapIterator<T,U> implements Iterator<Map<T,U>> {
     private final List<T>            keys ;
 
     private boolean  exhausted ;
-    private boolean  initialised ;
+    private boolean  loaded ;
     private Map<T,U> current ;
 
     public MapIterator( Map<T,? extends Iterable<U>> underlying ) {
@@ -38,7 +38,7 @@ public class MapIterator<T,U> implements Iterator<Map<T,U>> {
         this.keys = new ArrayList<T>();
         this.exhausted = false;
         this.current = null;
-        this.initialised = false;
+        this.loaded = false;
         for( Map.Entry<T,? extends Iterable<U>> entry : underlying.entrySet() ) {
             keys.add( entry.getKey() ) ;
             iterables.put( entry.getKey(), entry.getValue() ) ;
@@ -78,23 +78,23 @@ public class MapIterator<T,U> implements Iterator<Map<T,U>> {
 
     @Override
     public boolean hasNext() {
-        if( !initialised ) {
+        if( !loaded ) {
             loadNext() ;
-            initialised = true ;
+            loaded = true ;
         }
         return !exhausted ;
     }
 
     @Override
     public Map<T,U> next() {
-        if( !initialised ) {
+        if( !loaded ) {
             hasNext() ;
         }
         if( exhausted ) {
             throw new NoSuchElementException( "MapIterator has been exhausted and contains no more elements" ) ;
         }
         Map<T,U> ret = new LinkedHashMap<T,U>( current ) ;
-        loadNext() ;
+        loaded = false ;
         return ret ;
     }
 

@@ -24,13 +24,13 @@ public class SkipIterator<T> implements Iterator<T> {
 
     private int     numberToSkip ;
     private T       current ;
-    private boolean initialised ;
+    private boolean loaded ;
     private boolean exhausted ;
 
     public SkipIterator( Iterator<T> parent, int numberToSkip ) {
         this.parent = parent ;
         this.numberToSkip = numberToSkip ;
-        this.initialised = false ;
+        this.loaded = false ;
         this.current = null ;
         this.exhausted = false ;
     }
@@ -59,23 +59,23 @@ public class SkipIterator<T> implements Iterator<T> {
 
     @Override
     public boolean hasNext() {
-        if( !initialised ) {
+        if( !loaded ) {
             loadNext() ;
-            initialised = true ;
+            loaded = true ;
         }
         return !exhausted ;
     }
 
     @Override
     public T next() {
-        if( !initialised ) {
+        if( !loaded ) {
             hasNext() ;
         }
         if( exhausted ) {
             throw new NoSuchElementException( "SkipIterator has been exhausted and contains no more elements" ) ;
         }
         T ret = current ;
-        loadNext() ;
+        loaded = false ;
         return ret ;
     }
 }

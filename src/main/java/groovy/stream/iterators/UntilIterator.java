@@ -31,14 +31,14 @@ public class UntilIterator<T> implements Iterator<T> {
     private T       current ;
     private int     index = 0 ;
     private boolean exhausted ;
-    private boolean initialised ;
+    private boolean loaded ;
 
     public UntilIterator( Iterator<T> iterator, Closure<Boolean> predicate, boolean withIndex ) {
         this.iterator = iterator ;
         this.predicate = predicate ;
         this.withIndex = withIndex ;
         this.exhausted = false ;
-        this.initialised = false ;
+        this.loaded = false ;
     }
 
     @Override
@@ -65,23 +65,23 @@ public class UntilIterator<T> implements Iterator<T> {
 
     @Override
     public boolean hasNext() {
-        if( !initialised ) {
+        if( !loaded ) {
             loadNext() ;
-            initialised = true ;
+            loaded = true ;
         }
         return !exhausted ;
     }
 
     @Override
     public T next() {
-        if( !initialised ) {
+        if( !loaded ) {
             hasNext() ;
         }
         if( exhausted ) {
             throw new NoSuchElementException( "FilterIterator has been exhausted and contains no more elements" ) ;
         }
         T ret = current ;
-        loadNext() ;
+        loaded = false ;
         return ret ;
     }
 }

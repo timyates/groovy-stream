@@ -26,7 +26,7 @@ public class ZipIterator<T,U,V> implements Iterator<V> {
     private final Closure<V>  method ;
     private final boolean     withIndex ;
 
-    private boolean initialised ;
+    private boolean loaded ;
     private boolean exhausted ;
     private int     index ;
     private V       current ;
@@ -36,7 +36,7 @@ public class ZipIterator<T,U,V> implements Iterator<V> {
         this.iter2 = iter2 ;
         this.method = method ;
         this.withIndex = withIndex ;
-        this.initialised = false ;
+        this.loaded = false ;
         this.exhausted = false ;
         this.index = 0 ;
     }
@@ -65,23 +65,23 @@ public class ZipIterator<T,U,V> implements Iterator<V> {
 
     @Override
     public boolean hasNext() {
-        if( !initialised ) {
+        if( !loaded ) {
             loadNext() ;
-            initialised = true ;
+            loaded = true ;
         }
         return !exhausted ;
     }
 
     @Override
     public V next() {
-        if( !initialised ) {
+        if( !loaded ) {
             hasNext() ;
         }
         if( exhausted ) {
             throw new NoSuchElementException( "TransformingIterator has been exhausted and contains no more elements" ) ;
         }
         V ret = current ;
-        loadNext() ;
+        loaded = false ;
         return ret ;
     }
 

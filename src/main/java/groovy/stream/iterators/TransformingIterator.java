@@ -28,14 +28,14 @@ public class TransformingIterator<T,U> implements Iterator<U> {
     private U       current ;
     private int     index = 0 ;
     private boolean exhausted ;
-    private boolean initialised ;
+    private boolean loaded ;
 
     public TransformingIterator( Iterator<T> iterator, Closure<U> mapping, boolean withIndex ) {
         this.iterator = iterator ;
         this.mapping = mapping ;
         this.withIndex = withIndex ;
         this.exhausted = false ;
-        this.initialised = false ;
+        this.loaded = false ;
     }
 
     @Override
@@ -57,23 +57,23 @@ public class TransformingIterator<T,U> implements Iterator<U> {
 
     @Override
     public boolean hasNext() {
-        if( !initialised ) {
+        if( !loaded ) {
             loadNext() ;
-            initialised = true ;
+            loaded = true ;
         }
         return !exhausted ;
     }
 
     @Override
     public U next() {
-        if( !initialised ) {
+        if( !loaded ) {
             hasNext() ;
         }
         if( exhausted ) {
             throw new NoSuchElementException( "TransformingIterator has been exhausted and contains no more elements" ) ;
         }
         U ret = current ;
-        loadNext() ;
+        loaded = false ;
         return ret ;
     }
 }

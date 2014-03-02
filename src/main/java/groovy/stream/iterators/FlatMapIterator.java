@@ -31,7 +31,7 @@ public class FlatMapIterator<T,U> implements Iterator<U> {
     Closure<? extends Collection<U>> mapping ;
     private int            index = 0 ;
     private boolean        exhausted ;
-    private boolean        initialised ;
+    private boolean        loaded ;
     private U              current ;
 
     public FlatMapIterator( Iterator<T> iterator, Closure<? extends Collection<U>> mapping, boolean withIndex ) {
@@ -39,7 +39,7 @@ public class FlatMapIterator<T,U> implements Iterator<U> {
         this.iterator = iterator ;
         this.withIndex = withIndex ;
         this.exhausted = false ;
-        this.initialised = false ;
+        this.loaded = false ;
     }
 
     @Override
@@ -67,23 +67,23 @@ public class FlatMapIterator<T,U> implements Iterator<U> {
 
     @Override
     public boolean hasNext() {
-        if( !initialised ) {
+        if( !loaded ) {
             loadNext() ;
-            initialised = true ;
+            loaded = true ;
         }
         return !exhausted ;
     }
 
     @Override
     public U next() {
-        if( !initialised ) {
+        if( !loaded ) {
             hasNext() ;
         }
         if( exhausted ) {
             throw new NoSuchElementException( "FlatMapIterator has been exhausted and contains no more elements" ) ;
         }
         U ret = current ;
-        loadNext() ;
+        loaded = false ;
         return ret ;
     }
 }
