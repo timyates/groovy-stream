@@ -66,6 +66,9 @@ task javadocCopy( type: Copy ) {
     into 'docs/assets/javadoc'
 }
 
+jacoco {
+    toolVersion = "0.6.4.201312101107"
+}
 jacocoTestReport {
     group = "Reporting"
     description = "Generate Jacoco coverage reports after running tests."
