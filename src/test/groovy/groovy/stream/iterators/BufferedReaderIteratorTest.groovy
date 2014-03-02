@@ -20,32 +20,29 @@ import spock.lang.*
 
 class BufferedReaderIteratorTest extends Specification {
     BufferedReader reader
-
+    BufferedReaderIterator iter
     def setup() {
         String text = '''Line 1
                         |Line 2
                         |Line 3'''.stripMargin()
         reader = new BufferedReader( new StringReader( text ) )
+        iter = new BufferedReaderIterator( reader )
     }
 
     def "collect should return lines"() {
         when:
-            def iter = new BufferedReaderIterator( reader )
             def result = iter.collect()
         then:
             result == [ 'Line 1', 'Line 2', 'Line 3' ]
     }
 
     def "call to next with no hasNext should work"() {
-        when:
-            def iter = new BufferedReaderIterator( reader )
-        then:
+        expect:
             iter.next() == 'Line 1'
     }
 
     def "remove should throw UnsupportedOperationException"() {
         when:
-            def iter = new BufferedReaderIterator( reader )
             iter.remove()
         then:
             UnsupportedOperationException ex = thrown()
@@ -53,7 +50,6 @@ class BufferedReaderIteratorTest extends Specification {
 
     def "Exhausted iterator should show hasNext = false"() {
         when:
-            def iter = new BufferedReaderIterator( reader )
             def result = iter.collect()
         then:
             iter.hasNext() == false
@@ -61,7 +57,6 @@ class BufferedReaderIteratorTest extends Specification {
 
     def "Call to next on Exhausted iterator should throw NoSuchElementException"() {
         when:
-            def iter = new BufferedReaderIterator( reader )
             def result = iter.collect()
             iter.next()
         then:
