@@ -44,4 +44,13 @@ class SkipIteratorTests extends spock.lang.Specification {
         then:
             UnsupportedOperationException ex = thrown()
     }
+
+    def "Test NoSuchElementException"() {
+        when:
+            def result = iter.collect()
+            iter.next()
+
+        then:
+            NoSuchElementException ex = thrown()
+    }
 }
