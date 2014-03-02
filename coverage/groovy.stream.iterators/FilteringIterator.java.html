@@ -43,8 +43,8 @@ public class FilteringIterator&lt;T&gt; implements Iterator&lt;T&gt; {
 
     @Override
     public void remove() {
-<span class="nc" id="L46">        iterator.remove() ;</span>
-<span class="nc" id="L47">    }</span>
+<span class="fc" id="L46">        throw new UnsupportedOperationException() ;</span>
+    }
 
     private void loadNext() {
 <span class="fc bfc" id="L50" title="All 2 branches covered.">        while( iterator.hasNext() ) {</span>
@@ -70,11 +70,11 @@ public class FilteringIterator&lt;T&gt; implements Iterator&lt;T&gt; {
 
     @Override
     public T next() {
-<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        if( !initialised ) {</span>
-<span class="nc" id="L74">            hasNext() ;</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if( !initialised ) {</span>
+<span class="fc" id="L74">            hasNext() ;</span>
         }
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if( exhausted ) {</span>
-<span class="nc" id="L77">            throw new NoSuchElementException( &quot;FilterIterator has been exhausted and contains no more elements&quot; ) ;</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if( exhausted ) {</span>
+<span class="fc" id="L77">            throw new NoSuchElementException( &quot;FilterIterator has been exhausted and contains no more elements&quot; ) ;</span>
         }
 <span class="fc" id="L79">        T ret = current ;</span>
 <span class="fc" id="L80">        loadNext() ;</span>

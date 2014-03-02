@@ -87,8 +87,8 @@ public class MapIterator&lt;T,U&gt; implements Iterator&lt;Map&lt;T,U&gt;&gt; {
 
     @Override
     public Map&lt;T,U&gt; next() {
-<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        if( !initialised ) {</span>
-<span class="nc" id="L91">            hasNext() ;</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if( !initialised ) {</span>
+<span class="fc" id="L91">            hasNext() ;</span>
         }
 <span class="fc bfc" id="L93" title="All 2 branches covered.">        if( exhausted ) {</span>
 <span class="fc" id="L94">            throw new NoSuchElementException( &quot;MapIterator has been exhausted and contains no more elements&quot; ) ;</span>
@@ -100,7 +100,7 @@ public class MapIterator&lt;T,U&gt; implements Iterator&lt;Map&lt;T,U&gt;&gt; {
 
     @Override
     public void remove() {
-<span class="nc" id="L103">        throw new UnsupportedOperationException() ;</span>
+<span class="fc" id="L103">        throw new UnsupportedOperationException() ;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

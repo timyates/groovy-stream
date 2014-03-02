@@ -37,8 +37,8 @@ public class SkipIterator&lt;T&gt; implements Iterator&lt;T&gt; {
 
     @Override
     public void remove() {
-<span class="nc" id="L40">        parent.remove() ;</span>
-<span class="nc" id="L41">    }</span>
+<span class="fc" id="L40">        throw new UnsupportedOperationException() ;</span>
+    }
 
     private void loadNext() {
 <span class="pc bpc" id="L44" title="1 of 4 branches missed.">        while( numberToSkip-- &gt; 0 &amp;&amp; !exhausted ) {</span>
@@ -68,11 +68,11 @@ public class SkipIterator&lt;T&gt; implements Iterator&lt;T&gt; {
 
     @Override
     public T next() {
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if( !initialised ) {</span>
-<span class="nc" id="L72">            hasNext() ;</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if( !initialised ) {</span>
+<span class="fc" id="L72">            hasNext() ;</span>
         }
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if( exhausted ) {</span>
-<span class="nc" id="L75">            throw new NoSuchElementException( &quot;SkipIterator has been exhausted and contains no more elements&quot; ) ;</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if( exhausted ) {</span>
+<span class="fc" id="L75">            throw new NoSuchElementException( &quot;SkipIterator has been exhausted and contains no more elements&quot; ) ;</span>
         }
 <span class="fc" id="L77">        T ret = current ;</span>
 <span class="fc" id="L78">        loadNext() ;</span>

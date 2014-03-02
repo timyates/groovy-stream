@@ -40,8 +40,8 @@ public class TransformingIterator&lt;T,U&gt; implements Iterator&lt;U&gt; {
 
     @Override
     public void remove() {
-<span class="nc" id="L43">        iterator.remove() ;</span>
-<span class="nc" id="L44">    }</span>
+<span class="fc" id="L43">        throw new UnsupportedOperationException() ;</span>
+    }
 
     private void loadNext() {
 <span class="fc bfc" id="L47" title="All 2 branches covered.">        if( iterator.hasNext() ) {</span>
@@ -66,11 +66,11 @@ public class TransformingIterator&lt;T,U&gt; implements Iterator&lt;U&gt; {
 
     @Override
     public U next() {
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if( !initialised ) {</span>
-<span class="nc" id="L70">            hasNext() ;</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if( !initialised ) {</span>
+<span class="fc" id="L70">            hasNext() ;</span>
         }
-<span class="pc bpc" id="L72" title="1 of 2 branches missed.">        if( exhausted ) {</span>
-<span class="nc" id="L73">            throw new NoSuchElementException( &quot;TransformingIterator has been exhausted and contains no more elements&quot; ) ;</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if( exhausted ) {</span>
+<span class="fc" id="L73">            throw new NoSuchElementException( &quot;TransformingIterator has been exhausted and contains no more elements&quot; ) ;</span>
         }
 <span class="fc" id="L75">        U ret = current ;</span>
 <span class="fc" id="L76">        loadNext() ;</span>

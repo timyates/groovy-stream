@@ -34,7 +34,7 @@ public class ConcatenationIterator&lt;T&gt; implements Iterator&lt;T&gt; {
 <span class="fc" id="L34">    }</span>
 
     public void remove() {
-<span class="nc" id="L37">        throw new UnsupportedOperationException() ;</span>
+<span class="fc" id="L37">        throw new UnsupportedOperationException() ;</span>
     }
 
     private void loadNext() {
@@ -58,11 +58,11 @@ public class ConcatenationIterator&lt;T&gt; implements Iterator&lt;T&gt; {
     }
 
     public T next() {
-<span class="pc bpc" id="L61" title="1 of 2 branches missed.">        if( !initialised ) {</span>
-<span class="nc" id="L62">            hasNext() ;</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        if( !initialised ) {</span>
+<span class="fc" id="L62">            hasNext() ;</span>
         }
-<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if( exhausted ) {</span>
-<span class="nc" id="L65">            throw new NoSuchElementException( &quot;ConcatenationIterator has been exhausted and contains no more elements&quot; ) ;</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        if( exhausted ) {</span>
+<span class="fc" id="L65">            throw new NoSuchElementException( &quot;ConcatenationIterator has been exhausted and contains no more elements&quot; ) ;</span>
         }
 <span class="fc" id="L67">        T ret = current ;</span>
 <span class="fc" id="L68">        loadNext() ;</span>
