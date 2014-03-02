@@ -75,12 +75,10 @@ public class CollatingIterator<T> implements Iterator<Collection<T>> {
         if( !keepRemainder && ( current == null || current.size() < size ) ) {
             return true ;
         }
-        else if( current == null && !parent.hasNext() ) {
+        if( current == null && !parent.hasNext() ) {
             return true ;
         }
-        else {
-            return false ;
-        }
+        return false ;
     }
 
     private void loadNext() {
@@ -110,9 +108,7 @@ public class CollatingIterator<T> implements Iterator<Collection<T>> {
     }
 
     public Collection<T> next() {
-        if( !loaded ) {
-            hasNext() ;
-        }
+        hasNext() ;
         if( exhausted ) {
             throw new NoSuchElementException( "CollatingIterator has been exhausted and contains no more elements" ) ;
         }

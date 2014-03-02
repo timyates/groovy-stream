@@ -41,8 +41,11 @@ public class SkipIterator<T> implements Iterator<T> {
     }
 
     private void loadNext() {
-        while( numberToSkip-- > 0 && !exhausted ) {
-            if( parent.hasNext() ) {
+        while( !exhausted ) {
+            if( numberToSkip-- <= 0 ) {
+                break ;
+            }
+            else if( parent.hasNext() ) {
                 current = parent.next() ;
             }
             else {
@@ -68,9 +71,7 @@ public class SkipIterator<T> implements Iterator<T> {
 
     @Override
     public T next() {
-        if( !loaded ) {
-            hasNext() ;
-        }
+        hasNext() ;
         if( exhausted ) {
             throw new NoSuchElementException( "SkipIterator has been exhausted and contains no more elements" ) ;
         }

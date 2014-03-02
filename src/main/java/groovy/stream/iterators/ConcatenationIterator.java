@@ -58,9 +58,7 @@ public class ConcatenationIterator<T> implements Iterator<T> {
     }
 
     public T next() {
-        if( !loaded   ) {
-            hasNext() ;
-        }
+        hasNext() ;
         if( exhausted ) {
             throw new NoSuchElementException( "ConcatenationIterator has been exhausted and contains no more elements" ) ;
         }

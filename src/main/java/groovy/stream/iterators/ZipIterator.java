@@ -74,9 +74,7 @@ public class ZipIterator<T,U,V> implements Iterator<V> {
 
     @Override
     public V next() {
-        if( !loaded ) {
-            hasNext() ;
-        }
+        hasNext() ;
         if( exhausted ) {
             throw new NoSuchElementException( "TransformingIterator has been exhausted and contains no more elements" ) ;
         }
