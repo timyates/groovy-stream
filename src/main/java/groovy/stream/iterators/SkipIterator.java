@@ -37,7 +37,7 @@ public class SkipIterator<T> implements Iterator<T> {
 
     @Override
     public void remove() {
-        parent.remove() ;
+        throw new UnsupportedOperationException() ;
     }
 
     private void loadNext() {
