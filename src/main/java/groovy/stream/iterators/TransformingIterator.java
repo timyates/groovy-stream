@@ -40,7 +40,7 @@ public class TransformingIterator<T,U> implements Iterator<U> {
 
     @Override
     public void remove() {
-        iterator.remove() ;
+        throw new UnsupportedOperationException() ;
     }
 
     private void loadNext() {
