@@ -43,7 +43,7 @@ public class UntilIterator<T> implements Iterator<T> {
 
     @Override
     public void remove() {
-        iterator.remove() ;
+        throw new UnsupportedOperationException() ;
     }
 
     private void loadNext() {
