@@ -469,6 +469,19 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<T>( new LimitedIterator<T>( this.iterator, n ), lock ) ;
     }
 
+    public boolean isSynchronized() {
+        return lock != null ;
+    }
+
+    public Stream<T> asSynchronized() {
+        if( lock != null ) {
+            return this ;
+        }
+        else {
+            return new Stream<T>( this.iterator, new ReentrantLock() ) ;
+        }
+    }
+
     /**
      * Construct a {@code Stream} from a {@link Map} of Iterables.
      * 
