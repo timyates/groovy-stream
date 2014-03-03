@@ -19,7 +19,7 @@ package groovy.stream
 class SynchronizedStreamTests extends spock.lang.Specification {
     def "Streams derived from a synchronized stream should be synchronized"() {
         setup:
-            def s = Stream.from( 1 )
+            def s = Stream.from( 1 ).asSynchronized()
         when:
             def t = s.map { it * 2 }
         then:
