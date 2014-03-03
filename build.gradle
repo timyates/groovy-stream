@@ -16,7 +16,7 @@ apply plugin: 'rest'
 apply plugin: 'jacoco'
 
 group               = 'com.bloidonia'
-version             = '0.7.3'
+version             = '0.7.4'
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
