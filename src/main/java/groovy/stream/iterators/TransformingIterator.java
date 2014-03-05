@@ -17,13 +17,17 @@
 package groovy.stream.iterators ;
 
 import groovy.lang.Closure ;
+
+import groovy.stream.functions.StreamFunction ;
+
 import java.util.Iterator ;
 import java.util.NoSuchElementException ;
 
 public class TransformingIterator<T,U> implements Iterator<U> {
-    private final Iterator<T> iterator ;
-    private final Closure<U>  mapping ;
-    private final boolean     withIndex ;
+    private final Iterator<T>         iterator ;
+    private final Closure<U>          mapping ;
+    private final StreamFunction<T,U> mappingFn ;
+    private final boolean             withIndex ;
 
     private U       current ;
     private int     index = 0 ;
@@ -33,6 +37,16 @@ public class TransformingIterator<T,U> implements Iterator<U> {
     public TransformingIterator( Iterator<T> iterator, Closure<U> mapping, boolean withIndex ) {
         this.iterator = iterator ;
         this.mapping = mapping ;
+        this.mappingFn = null ;
+        this.withIndex = withIndex ;
+        this.exhausted = false ;
+        this.loaded = false ;
+    }
+
+    public TransformingIterator( Iterator<T> iterator, StreamFunction<T,U> mapping, boolean withIndex ) {
+        this.iterator = iterator ;
+        this.mapping = null ;
+        this.mappingFn = mapping ;
         this.withIndex = withIndex ;
         this.exhausted = false ;
         this.loaded = false ;
@@ -46,8 +60,13 @@ public class TransformingIterator<T,U> implements Iterator<U> {
     private void loadNext() {
         if( iterator.hasNext() ) {
             T next = iterator.next() ;
-            mapping.setDelegate( next ) ;
-            current = withIndex ? mapping.call( next, index ) : mapping.call( next ) ;
+            if( mapping != null) {
+                mapping.setDelegate( next ) ;
+                current = withIndex ? mapping.call( next, index ) : mapping.call( next ) ;
+            }
+            else {
+                current = mappingFn.call( next ) ;
+            }
             index++ ;
         }
         else {

@@ -19,6 +19,7 @@ package groovy.stream ;
 import groovy.lang.Closure ;
 
 import groovy.stream.iterators.* ;
+import groovy.stream.functions.StreamFunction ;
 
 import java.io.BufferedReader ;
 
@@ -272,6 +273,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      * @return A new {@code Stream} wrapping a {@link TransformingIterator}
      */
     public <U> Stream<U> map( Closure<U> map ) {
+        return new Stream<U>( new TransformingIterator<T,U>( iterator, map, false ), lock ) ;
+    }
+
+    public <U> Stream<U> map( StreamFunction<T,U> map ) {
         return new Stream<U>( new TransformingIterator<T,U>( iterator, map, false ), lock ) ;
     }
 
