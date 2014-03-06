@@ -14,56 +14,36 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators ;
+package groovy.stream.iterators.groovy ;
 
 import groovy.lang.Closure ;
-
+import groovy.stream.iterators.AbstractIterator ;
 import java.util.Iterator ;
 import java.util.NoSuchElementException ;
 
-public class TapIterator<T> implements Iterator<T> {
-    private final Iterator<T>   parent ;
+public class TapIterator<T> extends AbstractIterator<T> {
     private final int           every ;
     private final boolean       withIndex ;
     private final Closure<Void> output ;
 
     private int     index ;
-    private T       current ;
-    private boolean loaded ;
-    private boolean exhausted ;
 
     public TapIterator( Iterator<T> parent, int every, boolean withIndex, Closure<Void> output ) {
-        this.parent = parent ;
+        super( parent ) ;
         this.every = every ;
         this.index = 0 ;
         this.withIndex = withIndex ;
         this.output = output ;
-        this.loaded = false ;
-        this.current = null ;
-        this.exhausted = false ;
     }
 
     @Override
-    public void remove() {
-        throw new UnsupportedOperationException() ;
-    }
-
-    private void loadNext() {
-        if( parent.hasNext() ) {
-            current = parent.next() ;
+    protected void loadNext() {
+        if( iterator.hasNext() ) {
+            current = iterator.next() ;
         }
         else {
             exhausted = true ;
         }
-    }
-
-    @Override
-    public boolean hasNext() {
-        if( !loaded ) {
-            loadNext() ;
-            loaded = true ;
-        }
-        return !exhausted ;
     }
 
     @Override

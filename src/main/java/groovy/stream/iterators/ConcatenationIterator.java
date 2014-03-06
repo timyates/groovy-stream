@@ -17,53 +17,26 @@
 package groovy.stream.iterators ;
 
 import java.util.Iterator ;
-import java.util.NoSuchElementException ;
 
-public class ConcatenationIterator<T> implements Iterator<T> {
-    private final Iterator<? extends T> first ;
+public class ConcatenationIterator<T> extends AbstractIterator<T> {
     private final Iterator<? extends T> last ;
 
-    private T       current ;
-    private boolean loaded    = false ;
-    private boolean exhausted = false ;
-
-    public ConcatenationIterator( Iterator<? extends T> first,
+    public ConcatenationIterator( Iterator<T> first,
                                   Iterator<? extends T> last ) {
-        this.first = first ;
+        super( first ) ;
         this.last = last ;
     }
 
-    public void remove() {
-        throw new UnsupportedOperationException() ;
-    }
-
-    private void loadNext() {
-        if( !first.hasNext() && !last.hasNext() ) {
+    @Override
+    protected void loadNext() {
+        if( !iterator.hasNext() && !last.hasNext() ) {
             exhausted = true ;
         }
-        else if( first.hasNext() ) {
-            current = first.next() ;
+        else if( iterator.hasNext() ) {
+            current = iterator.next() ;
         }
         else {
             current = last.next() ;
         }
-    }
-
-    public boolean hasNext() {
-        if( !loaded   ) {
-            loadNext() ;
-            loaded   = true ;
-        }
-        return !exhausted ;
-    }
-
-    public T next() {
-        hasNext() ;
-        if( exhausted ) {
-            throw new NoSuchElementException( "ConcatenationIterator has been exhausted and contains no more elements" ) ;
-        }
-        T ret = current ;
-        loaded = false ;
-        return ret ;
     }
 }

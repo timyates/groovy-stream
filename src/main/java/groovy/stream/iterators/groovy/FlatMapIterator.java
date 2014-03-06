@@ -14,42 +14,34 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators ;
+package groovy.stream.iterators.groovy ;
 
 import groovy.lang.Closure ;
+import groovy.stream.iterators.AbstractIterator ;
 import java.util.Collection ;
 import java.util.Iterator ;
 import java.util.LinkedList ;
 import java.util.Queue ;
 import java.util.NoSuchElementException ;
 
-public class FlatMapIterator<T,U> implements Iterator<U> {
-    private final Queue<U>    pushback = new LinkedList<U>() ;
-    private final Iterator<T> iterator ;
-    private final boolean     withIndex ;
-
-    Closure<? extends Collection<U>> mapping ;
-    private int            index = 0 ;
-    private boolean        exhausted ;
-    private boolean        loaded ;
-    private U              current ;
+public class FlatMapIterator<T,U> extends AbstractIterator<U> {
+    protected final Queue<U>    pushback = new LinkedList<U>() ;
+    protected final Iterator<T> inputIterator ;
+    private   final boolean     withIndex ;
+    protected int            index = 0 ;
+    private Closure<? extends Collection<U>> mapping ;
 
     public FlatMapIterator( Iterator<T> iterator, Closure<? extends Collection<U>> mapping, boolean withIndex ) {
+        super( null ) ;
         this.mapping = mapping ;
-        this.iterator = iterator ;
+        this.inputIterator = iterator ;
         this.withIndex = withIndex ;
-        this.exhausted = false ;
-        this.loaded = false ;
     }
 
     @Override
-    public void remove() {
-        throw new UnsupportedOperationException() ;
-    }
-
-    private void loadNext() {
-        while( pushback.isEmpty() && iterator.hasNext() ) {
-            T next = iterator.next() ;
+    protected void loadNext() {
+        while( pushback.isEmpty() && inputIterator.hasNext() ) {
+            T next = inputIterator.next() ;
             mapping.setDelegate( next ) ;
             Collection<U> mapped = withIndex ? mapping.call( next, index ) : mapping.call( next ) ;
             index++ ;
@@ -63,25 +55,5 @@ public class FlatMapIterator<T,U> implements Iterator<U> {
         else {
             exhausted = true ;
         }
-    }
-
-    @Override
-    public boolean hasNext() {
-        if( !loaded ) {
-            loadNext() ;
-            loaded = true ;
-        }
-        return !exhausted ;
-    }
-
-    @Override
-    public U next() {
-        hasNext() ;
-        if( exhausted ) {
-            throw new NoSuchElementException( "FlatMapIterator has been exhausted and contains no more elements" ) ;
-        }
-        U ret = current ;
-        loaded = false ;
-        return ret ;
     }
 }

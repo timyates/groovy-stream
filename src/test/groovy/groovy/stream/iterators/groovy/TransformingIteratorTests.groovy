@@ -14,30 +14,28 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators
+package groovy.stream.iterators.groovy
 
-class TapIteratorTests extends spock.lang.Specification {
-    def inputList = [ 1, 2, null, 4, 5 ]
-    def list = []
-    TapIterator iter
+class TransformingIteratorTests extends spock.lang.Specification {
+
+    def list = [ 1, 2, null, 4, 5 ]
+    TransformingIterator iter
 
     def setup() {
-        iter = new TapIterator( inputList.iterator(), 1, true, { object, index -> list << [ index, object ] } )
+        iter = new TransformingIterator( list.iterator(), { it -> "A$it" }, false )
     }
 
     def "collect should return values"() {
         when:
             def result = iter.collect()
         then:
-            result == [ 1, 2, null, 4, 5 ]
-            list   == [ [ 0, 1 ], [ 1, 2 ], [ 2, null ], [ 3, 4 ], [ 4, 5 ] ]
+            result == [ "A1", "A2", "Anull", "A4", "A5" ]
     }
 
     def "call to next with no hasNext should work"() {
         expect:
-            iter.next() == 1
+            iter.next() == "A1"
             iter.hasNext() == true
-            list == [ [ 0, 1 ] ]
     }
 
     def "remove should throw UnsupportedOperationException"() {

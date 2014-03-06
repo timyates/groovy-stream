@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators
+package groovy.stream.iterators.groovy
 
-class TransformingIteratorTests extends spock.lang.Specification {
+class FilteringIteratorTests extends spock.lang.Specification {
 
     def list = [ 1, 2, null, 4, 5 ]
-    TransformingIterator iter
+    FilteringIterator iter
 
     def setup() {
-        iter = new TransformingIterator( list.iterator(), { it -> "A$it" }, false )
+        iter = new FilteringIterator( list.iterator(), { it -> ( it ?: 0 ) % 2 }, false )
     }
 
     def "collect should return values"() {
         when:
             def result = iter.collect()
         then:
-            result == [ "A1", "A2", "Anull", "A4", "A5" ]
+            result == [ 1, 5 ]
     }
 
     def "call to next with no hasNext should work"() {
         expect:
-            iter.next() == "A1"
+            iter.next() == 1
             iter.hasNext() == true
     }
 

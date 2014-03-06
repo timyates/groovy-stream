@@ -14,39 +14,26 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators ;
+package groovy.stream.iterators.groovy ;
 
 import groovy.lang.Closure ;
-
+import groovy.stream.iterators.AbstractIterator ;
 import java.util.Iterator ;
-import java.util.NoSuchElementException ;
-
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation ;
 
-public class FilteringIterator<T> implements Iterator<T> {
-    private final Iterator<T>      iterator ;
-    private final Closure<Boolean> predicate ;
-    private final boolean          withIndex ;
-
-    private int     index = 0 ;
-    private T       current ;
-    private boolean exhausted ;
-    private boolean loaded ;
+public class FilteringIterator<T> extends AbstractIterator<T> {
+    private   final Closure<Boolean> predicate ;
+    private   final boolean withIndex ;
+    protected int     index = 0 ;
 
     public FilteringIterator( Iterator<T> iterator, Closure<Boolean> predicate, boolean withIndex ) {
-        this.iterator = iterator ;
+        super( iterator ) ;
         this.predicate = predicate ;
         this.withIndex = withIndex ;
-        this.exhausted = false ;
-        this.loaded = false ;
     }
 
     @Override
-    public void remove() {
-        throw new UnsupportedOperationException() ;
-    }
-
-    private void loadNext() {
+    protected void loadNext() {
         while( iterator.hasNext() ) {
             current = iterator.next() ;
             predicate.setDelegate( current ) ;
@@ -57,25 +44,5 @@ public class FilteringIterator<T> implements Iterator<T> {
             if( result ) return ;
         }
         exhausted = true ;
-    }
-
-    @Override
-    public boolean hasNext() {
-        if( !loaded ) {
-            loadNext() ;
-            loaded = true ;
-        }
-        return !exhausted ;
-    }
-
-    @Override
-    public T next() {
-        hasNext() ;
-        if( exhausted ) {
-            throw new NoSuchElementException( "FilterIterator has been exhausted and contains no more elements" ) ;
-        }
-        T ret = current ;
-        loaded = false ;
-        return ret ;
     }
 }

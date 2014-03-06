@@ -24,17 +24,13 @@ import java.util.List ;
 import java.util.Queue ;
 import java.util.NoSuchElementException ;
 
-public class CollatingIterator<T> implements Iterator<Collection<T>> {
-    private final Iterator<T>          parent ;
+public class CollatingIterator<T> extends AbstractIterator<Collection<T>> {
     private final Queue<Collection<T>> cache = new LinkedList<Collection<T>>() ;
-
-    private int           size ;
-    private int           step ;
-    private boolean       keepRemainder ;
-    private Collection<T> current ;
-    private boolean       loaded       = false ;
-    private boolean       exhausted    = false ;
-    private int           index        = 0 ;
+    private Iterator<T> parent ;
+    private int         size ;
+    private int         step ;
+    private boolean     keepRemainder ;
+    private int         index = 0 ;
 
     public CollatingIterator( Iterator<T> parent, int size ) {
         this( parent, size, size, true ) ;
@@ -49,6 +45,7 @@ public class CollatingIterator<T> implements Iterator<Collection<T>> {
     }
 
     public CollatingIterator( Iterator<T> parent, int size, int step, boolean keepRemainder ) {
+        super( null ) ;
         if( size < 1 ) {
             throw new IllegalArgumentException( "Collation size must be > 1" ) ;
         }
@@ -59,10 +56,6 @@ public class CollatingIterator<T> implements Iterator<Collection<T>> {
         this.size = size ;
         this.step = step ;
         this.keepRemainder = keepRemainder ;
-    }
-
-    public void remove() {
-        throw new UnsupportedOperationException() ;
     }
 
     private void addElementToEachCachedList( T next ) {
@@ -81,7 +74,8 @@ public class CollatingIterator<T> implements Iterator<Collection<T>> {
         return false ;
     }
 
-    private void loadNext() {
+    @Override
+    protected void loadNext() {
         while( parent.hasNext() ) {
             T next = parent.next() ;
             if( index % step == 0 ) {
@@ -99,14 +93,7 @@ public class CollatingIterator<T> implements Iterator<Collection<T>> {
         }
     }
 
-    public boolean hasNext() {
-        if( !loaded ) {
-            loadNext() ;
-            loaded = true ;
-        }
-        return !exhausted ;
-    }
-
+    @Override
     public Collection<T> next() {
         hasNext() ;
         if( exhausted ) {

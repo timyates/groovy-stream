@@ -19,7 +19,12 @@ package groovy.stream ;
 import groovy.lang.Closure ;
 
 import groovy.stream.iterators.* ;
+import groovy.stream.iterators.java.* ;
+import groovy.stream.iterators.groovy.* ;
 import groovy.stream.functions.StreamFunction ;
+import groovy.stream.functions.StreamPredicate ;
+import groovy.stream.functions.StreamWithIndexFunction ;
+import groovy.stream.functions.StreamWithIndexPredicate ;
 
 import java.io.BufferedReader ;
 
@@ -73,6 +78,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<T>( new FilteringIterator<T>( iterator, predicate, false ), lock ) ;
     }
 
+    public Stream<T> filter( StreamPredicate<T> predicate ) {
+        return new Stream<T>( new FilteringPredicateIterator<T>( iterator, predicate ), lock ) ;
+    }
+
     /**
      * Filter the current stream, passing each element and it's index through a predicate filter.
      *
@@ -90,6 +99,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      */
     public Stream<T> filterWithIndex( Closure<Boolean> predicate ) {
         return new Stream<T>( new FilteringIterator<T>( iterator, predicate, true ), lock ) ;
+    }
+
+    public Stream<T> filterWithIndex( StreamWithIndexPredicate<T> predicate ) {
+        return new Stream<T>( new FilteringPredicateIndexIterator<T>( iterator, predicate ), lock ) ;
     }
 
     /**
@@ -151,6 +164,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<U>( new FlatMapIterator<T,U>( iterator, map, false ), lock ) ;
     }
 
+    public <U> Stream<U> flatMap( StreamFunction<T,? extends Collection<U>> map ) { 
+        return new Stream<U>( new FlatMapFnIterator<T,U>( iterator, map ), lock ) ;
+    }
+
     /**
      * Takes a {@code Closure} that returns a {@code Collection}.  Each element
      * in this {@code Collection} is passed on in turn, before the next element is
@@ -171,6 +188,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      */
     public <U> Stream<U> flatMapWithIndex( Closure<? extends Collection<U>> map ) { 
         return new Stream<U>( new FlatMapIterator<T,U>( iterator, map, true ), lock ) ;
+    }
+
+    public <U> Stream<U> flatMap( StreamWithIndexFunction<T,? extends Collection<U>> map ) { 
+        return new Stream<U>( new FlatMapFnIndexIterator<T,U>( iterator, map ), lock ) ;
     }
 
     /**
@@ -277,7 +298,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     }
 
     public <U> Stream<U> map( StreamFunction<T,U> map ) {
-        return new Stream<U>( new TransformingIterator<T,U>( iterator, map, false ), lock ) ;
+        return new Stream<U>( new TransformingFnIterator<T,U>( iterator, map ), lock ) ;
     }
 
     /**
@@ -305,6 +326,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<U>( new TransformingIterator<T,U>( iterator, map, true ), lock ) ;
     }
 
+    public <U> Stream<U> mapWithIndex( StreamWithIndexFunction<T,U> map ) {
+        return new Stream<U>( new TransformingFnIndexIterator<T,U>( iterator, map ), lock ) ;
+    }
+
     /**
      *
      * @param predicate The Closure that stops the Stream when it returns {@code true}.
@@ -314,6 +339,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<T>( new UntilIterator<T>( iterator, predicate, false ), lock ) ;
     }
 
+    public Stream<T> until( StreamPredicate<T> predicate ) {
+        return new Stream<T>( new UntilFnIterator<T>( iterator, predicate ), lock ) ;
+    }
+
     /**
      *
      * @param predicate The Closure that stops the Stream when it returns {@code true}.
@@ -321,6 +350,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      */
     public Stream<T> untilWithIndex( Closure<Boolean> predicate ) {
         return new Stream<T>( new UntilIterator<T>( iterator, predicate, true ), lock ) ;
+    }
+
+    public Stream<T> untilWithIndex( StreamWithIndexPredicate<T> predicate ) {
+        return new Stream<T>( new UntilFnIndexIterator<T>( iterator, predicate ), lock ) ;
     }
 
     /**

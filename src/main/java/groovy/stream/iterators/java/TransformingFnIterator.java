@@ -14,36 +14,31 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators ;
+package groovy.stream.iterators.java ;
+
+import groovy.stream.functions.StreamFunction ;
+import groovy.stream.iterators.groovy.TransformingIterator ;
 
 import java.util.Iterator ;
 
-public class SkipIterator<T> extends AbstractIterator<T> {
-    private int     numberToSkip ;
+public class TransformingFnIterator<T,U> extends TransformingIterator<T,U> {
+    private final StreamFunction<T,U> mappingFn ;
 
-    public SkipIterator( Iterator<T> parentIterator, int numberToSkip ) {
-        super( parentIterator ) ;
-        this.numberToSkip = numberToSkip ;
+    public TransformingFnIterator( Iterator<T> iterator, StreamFunction<T,U> mapping ) {
+        super( iterator, null, false ) ;
+        this.mappingFn = mapping ;
     }
 
     @Override
     protected void loadNext() {
-        while( !exhausted ) {
-            if( numberToSkip-- <= 0 ) {
-                break ;
-            }
-            else if( iterator.hasNext() ) {
-                current = iterator.next() ;
-            }
-            else {
-                exhausted = true ;
-            }
-        }
-        if( iterator.hasNext() ) {
-            current = iterator.next() ;
+        if( inputIterator.hasNext() ) {
+            T next = inputIterator.next() ;
+            current = mappingFn.call( next ) ;
+            index++ ;
         }
         else {
             exhausted = true ;
         }
     }
+
 }

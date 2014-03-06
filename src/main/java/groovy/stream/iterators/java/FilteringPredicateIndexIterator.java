@@ -14,36 +14,29 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators ;
+package groovy.stream.iterators.java ;
+
+import groovy.stream.functions.StreamWithIndexPredicate ;
+import groovy.stream.iterators.groovy.FilteringIterator ;
 
 import java.util.Iterator ;
 
-public class SkipIterator<T> extends AbstractIterator<T> {
-    private int     numberToSkip ;
+public class FilteringPredicateIndexIterator<T> extends FilteringIterator<T> {
+    private final StreamWithIndexPredicate<T> predicateFn ;
 
-    public SkipIterator( Iterator<T> parentIterator, int numberToSkip ) {
-        super( parentIterator ) ;
-        this.numberToSkip = numberToSkip ;
+    public FilteringPredicateIndexIterator( Iterator<T> iterator, StreamWithIndexPredicate<T> predicate ) {
+        super( iterator, null, true ) ;
+        this.predicateFn = predicate ;
     }
 
     @Override
     protected void loadNext() {
-        while( !exhausted ) {
-            if( numberToSkip-- <= 0 ) {
-                break ;
-            }
-            else if( iterator.hasNext() ) {
-                current = iterator.next() ;
-            }
-            else {
-                exhausted = true ;
-            }
-        }
-        if( iterator.hasNext() ) {
+        while( iterator.hasNext() ) {
             current = iterator.next() ;
+            boolean result = predicateFn.call( current, index ) ;
+            index++ ;
+            if( result ) return ;
         }
-        else {
-            exhausted = true ;
-        }
+        exhausted = true ;
     }
 }
