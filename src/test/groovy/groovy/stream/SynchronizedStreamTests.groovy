@@ -54,12 +54,18 @@ class SynchronizedStreamTests extends spock.lang.Specification {
 
     def "Should allow multiple threads reading from previous streams"() {
         setup:
-            def upper = 100
+            def upper = 10000
             def counter = Stream.from( 1..upper ).asSynchronized()
             def mapped = Stream.from counter map { it }
 
+        when:
             def result = []
 
+        then:
+            counter.synchronized == true
+            mapped.synchronized == true
+
+        and:
             def store = { value ->
                 synchronized( result ) {
                     result << value
@@ -73,7 +79,6 @@ class SynchronizedStreamTests extends spock.lang.Specification {
             def threads = [ generate( 'a', mapped ),
                             generate( 'b', counter ) ]
 
-        when:
             threads*.start()
             threads*.join()
 
