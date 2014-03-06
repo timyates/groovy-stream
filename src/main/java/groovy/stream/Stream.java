@@ -562,7 +562,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      * @return A new {@code Stream} wrapping the iterator of the other {@code Stream}.
      */
     public static <T> Stream<T> from( Stream<T> stream ) {
-        return new Stream<T>( stream.iterator, null ) ;
+        return new Stream<T>( stream.iterator, stream.lock ) ;
     }
 
     /**
