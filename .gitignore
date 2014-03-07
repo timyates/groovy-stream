@@ -4,6 +4,8 @@ gradle.properties
 src/main/groovy/META-INF
 .idea
 *.iml
+*.iws
+*.ipr
 .nb-gradle
 docs/output
 docs/assets/javadoc
