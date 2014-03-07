@@ -21,10 +21,10 @@ import groovy.lang.Closure ;
 import groovy.stream.iterators.* ;
 import groovy.stream.iterators.java.* ;
 import groovy.stream.iterators.groovy.* ;
-import groovy.stream.functions.StreamFunction ;
-import groovy.stream.functions.StreamPredicate ;
-import groovy.stream.functions.StreamWithIndexFunction ;
-import groovy.stream.functions.StreamWithIndexPredicate ;
+import groovy.stream.functions.Function;
+import groovy.stream.functions.Predicate;
+import groovy.stream.functions.IndexedFunction;
+import groovy.stream.functions.IndexedPredicate;
 
 import java.io.BufferedReader ;
 
@@ -78,8 +78,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<T>( new FilteringIterator<T>( iterator, predicate, false ), lock ) ;
     }
 
-    public Stream<T> filter( StreamPredicate<T> predicate ) {
-        return new Stream<T>( new FilteringPredicateIterator<T>( iterator, predicate ), lock ) ;
+    public Stream<T> filter( Predicate<T> predicate ) {
+        return new Stream<T>( new FilteringIteratorForPredicate<T>( iterator, predicate ), lock ) ;
     }
 
     /**
@@ -101,8 +101,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<T>( new FilteringIterator<T>( iterator, predicate, true ), lock ) ;
     }
 
-    public Stream<T> filterWithIndex( StreamWithIndexPredicate<T> predicate ) {
-        return new Stream<T>( new FilteringPredicateIndexIterator<T>( iterator, predicate ), lock ) ;
+    public Stream<T> filterWithIndex( IndexedPredicate<T> predicate ) {
+        return new Stream<T>( new FilteringIteratorForIndexedPredicate<T>( iterator, predicate ), lock ) ;
     }
 
     /**
@@ -164,8 +164,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<U>( new FlatMapIterator<T,U>( iterator, map, false ), lock ) ;
     }
 
-    public <U> Stream<U> flatMap( StreamFunction<T,? extends Collection<U>> map ) { 
-        return new Stream<U>( new FlatMapFnIterator<T,U>( iterator, map ), lock ) ;
+    public <U> Stream<U> flatMap( Function<T,? extends Collection<U>> map ) {
+        return new Stream<U>( new FlatMapIteratorForFunction<T,U>( iterator, map ), lock ) ;
     }
 
     /**
@@ -190,8 +190,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<U>( new FlatMapIterator<T,U>( iterator, map, true ), lock ) ;
     }
 
-    public <U> Stream<U> flatMap( StreamWithIndexFunction<T,? extends Collection<U>> map ) { 
-        return new Stream<U>( new FlatMapFnIndexIterator<T,U>( iterator, map ), lock ) ;
+    public <U> Stream<U> flatMap( IndexedFunction<T,? extends Collection<U>> map ) {
+        return new Stream<U>( new FlatMapIteratorForIndexedFunction<T,U>( iterator, map ), lock ) ;
     }
 
     /**
@@ -297,8 +297,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<U>( new TransformingIterator<T,U>( iterator, map, false ), lock ) ;
     }
 
-    public <U> Stream<U> map( StreamFunction<T,U> map ) {
-        return new Stream<U>( new TransformingFnIterator<T,U>( iterator, map ), lock ) ;
+    public <U> Stream<U> map( Function<T,U> map ) {
+        return new Stream<U>( new TransformingIteratorForFunction<T,U>( iterator, map ), lock ) ;
     }
 
     /**
@@ -326,8 +326,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<U>( new TransformingIterator<T,U>( iterator, map, true ), lock ) ;
     }
 
-    public <U> Stream<U> mapWithIndex( StreamWithIndexFunction<T,U> map ) {
-        return new Stream<U>( new TransformingFnIndexIterator<T,U>( iterator, map ), lock ) ;
+    public <U> Stream<U> mapWithIndex( IndexedFunction<T,U> map ) {
+        return new Stream<U>( new TransformingIteratorForIndexedFunction<T,U>( iterator, map ), lock ) ;
     }
 
     /**
@@ -339,8 +339,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<T>( new UntilIterator<T>( iterator, predicate, false ), lock ) ;
     }
 
-    public Stream<T> until( StreamPredicate<T> predicate ) {
-        return new Stream<T>( new UntilFnIterator<T>( iterator, predicate ), lock ) ;
+    public Stream<T> until( Predicate<T> predicate ) {
+        return new Stream<T>( new UntilIteratorForPredicate<T>( iterator, predicate ), lock ) ;
     }
 
     /**
@@ -352,8 +352,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<T>( new UntilIterator<T>( iterator, predicate, true ), lock ) ;
     }
 
-    public Stream<T> untilWithIndex( StreamWithIndexPredicate<T> predicate ) {
-        return new Stream<T>( new UntilFnIndexIterator<T>( iterator, predicate ), lock ) ;
+    public Stream<T> untilWithIndex( IndexedPredicate<T> predicate ) {
+        return new Stream<T>( new UntilIteratorForIndexedPredicate<T>( iterator, predicate ), lock ) ;
     }
 
     /**

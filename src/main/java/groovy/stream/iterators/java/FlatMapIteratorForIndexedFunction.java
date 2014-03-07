@@ -16,29 +16,34 @@
 
 package groovy.stream.iterators.java ;
 
-import groovy.stream.functions.StreamFunction ;
-import groovy.stream.iterators.groovy.TransformingIterator ;
-
+import groovy.stream.functions.IndexedFunction;
+import groovy.stream.iterators.groovy.FlatMapIterator ;
+import java.util.Collection ;
 import java.util.Iterator ;
 
-public class TransformingFnIterator<T,U> extends TransformingIterator<T,U> {
-    private final StreamFunction<T,U> mappingFn ;
+public class FlatMapIteratorForIndexedFunction<T,U> extends FlatMapIterator<T,U> {
+    private final IndexedFunction<T,? extends Collection<U>> mappingFn ;
 
-    public TransformingFnIterator( Iterator<T> iterator, StreamFunction<T,U> mapping ) {
-        super( iterator, null, false ) ;
+    public FlatMapIteratorForIndexedFunction( Iterator<T> iterator, IndexedFunction<T, ? extends Collection<U>> mapping ) {
+        super( iterator, null, true ) ;
         this.mappingFn = mapping ;
     }
 
     @Override
     protected void loadNext() {
-        if( inputIterator.hasNext() ) {
+        while( pushback.isEmpty() && inputIterator.hasNext() ) {
             T next = inputIterator.next() ;
-            current = mappingFn.call( next ) ;
+            Collection<U> mapped = mappingFn.call( next, index ) ;
             index++ ;
+            for( U element : mapped ) {
+                pushback.offer( element ) ;
+            }
+        }
+        if( !pushback.isEmpty() ) {
+            current = pushback.poll() ;
         }
         else {
             exhausted = true ;
         }
     }
-
 }

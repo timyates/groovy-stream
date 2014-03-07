@@ -19,7 +19,6 @@ package groovy.stream.iterators.groovy ;
 import groovy.lang.Closure ;
 import groovy.stream.iterators.AbstractIterator ;
 import java.util.Iterator ;
-import java.util.NoSuchElementException ;
 
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation ;
 

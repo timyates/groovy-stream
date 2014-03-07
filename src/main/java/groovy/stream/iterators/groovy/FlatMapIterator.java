@@ -22,7 +22,6 @@ import java.util.Collection ;
 import java.util.Iterator ;
 import java.util.LinkedList ;
 import java.util.Queue ;
-import java.util.NoSuchElementException ;
 
 public class FlatMapIterator<T,U> extends AbstractIterator<U> {
     protected final Queue<U>    pushback = new LinkedList<U>() ;

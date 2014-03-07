@@ -16,29 +16,30 @@
 
 package groovy.stream.iterators.java ;
 
-import groovy.stream.functions.StreamWithIndexFunction ;
-import groovy.stream.iterators.groovy.TransformingIterator ;
+import groovy.stream.functions.Predicate;
+import groovy.stream.iterators.groovy.UntilIterator ;
 
 import java.util.Iterator ;
 
-public class TransformingFnIndexIterator<T,U> extends TransformingIterator<T,U> {
-    private final StreamWithIndexFunction<T,U> mappingFn ;
+public class UntilIteratorForPredicate<T> extends UntilIterator<T> {
+    private final Predicate<T> predicateFn ;
 
-    public TransformingFnIndexIterator( Iterator<T> iterator, StreamWithIndexFunction<T,U> mapping ) {
-        super( iterator, null, true ) ;
-        this.mappingFn = mapping ;
+    public UntilIteratorForPredicate( Iterator<T> iterator, Predicate<T> predicateFn ) {
+        super( iterator, null, false ) ;
+        this.predicateFn = predicateFn ;
     }
 
     @Override
     protected void loadNext() {
-        if( inputIterator.hasNext() ) {
-            T next = inputIterator.next() ;
-            current = mappingFn.call( next, index ) ;
-            index++ ;
+        if( iterator.hasNext() ) {
+            current = iterator.next() ;
+            boolean check = predicateFn.call( current ) ;
+            if( check ) {
+                exhausted = true ;
+            }
         }
         else {
             exhausted = true ;
         }
     }
-
 }

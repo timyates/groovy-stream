@@ -7,11 +7,11 @@ import java.util.* ;
 
 public class FilteringPredicateIndexIteratorUnitTests {
     List<Integer> list = Arrays.asList( 1, 2, null, 4, 5 ) ;
-    FilteringPredicateIndexIterator<Integer> iter ;
+    FilteringIteratorForIndexedPredicate<Integer> iter ;
 
     @Before
     public void setUp() {
-        iter = new FilteringPredicateIndexIterator<Integer>( list.iterator(), new StreamWithIndexPredicate<Integer>() {
+        iter = new FilteringIteratorForIndexedPredicate<Integer>( list.iterator(), new IndexedPredicate<Integer>() {
             @Override
             public boolean call( Integer i, Integer index ) {
                 return i == null ? false : ( i + index ) % 2 == 1 ;

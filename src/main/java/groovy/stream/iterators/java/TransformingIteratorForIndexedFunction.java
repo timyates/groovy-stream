@@ -16,26 +16,29 @@
 
 package groovy.stream.iterators.java ;
 
-import groovy.stream.functions.StreamPredicate ;
-import groovy.stream.iterators.groovy.FilteringIterator ;
+import groovy.stream.functions.IndexedFunction;
+import groovy.stream.iterators.groovy.TransformingIterator ;
 
 import java.util.Iterator ;
 
-public class FilteringPredicateIterator<T> extends FilteringIterator<T> {
-    private final StreamPredicate<T> predicateFn ;
+public class TransformingIteratorForIndexedFunction<T,U> extends TransformingIterator<T,U> {
+    private final IndexedFunction<T,U> mappingFn ;
 
-    public FilteringPredicateIterator( Iterator<T> iterator, StreamPredicate<T> predicate ) {
-        super( iterator, null, false ) ;
-        this.predicateFn = predicate ;
+    public TransformingIteratorForIndexedFunction( Iterator<T> iterator, IndexedFunction<T, U> mapping ) {
+        super( iterator, null, true ) ;
+        this.mappingFn = mapping ;
     }
 
     @Override
     protected void loadNext() {
-        while( iterator.hasNext() ) {
-            current = iterator.next() ;
-            boolean result = predicateFn.call( current ) ;
-            if( result ) return ;
+        if( inputIterator.hasNext() ) {
+            T next = inputIterator.next() ;
+            current = mappingFn.call( next, index ) ;
+            index++ ;
         }
-        exhausted = true ;
+        else {
+            exhausted = true ;
+        }
     }
+
 }

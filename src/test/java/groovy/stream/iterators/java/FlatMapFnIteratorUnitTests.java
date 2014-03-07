@@ -7,11 +7,11 @@ import java.util.* ;
 
 public class FlatMapFnIteratorUnitTests {
     List<Integer> list = Arrays.asList( 1, 2, null, 4, 5 ) ;
-    FlatMapFnIterator<Integer,Integer> iter ;
+    FlatMapIteratorForFunction<Integer,Integer> iter ;
 
     @Before
     public void setUp() {
-        iter = new FlatMapFnIterator<Integer,Integer>( list.iterator(), new StreamFunction<Integer,Collection<Integer>>() {
+        iter = new FlatMapIteratorForFunction<Integer,Integer>( list.iterator(), new Function<Integer,Collection<Integer>>() {
             @Override
             public Collection<Integer> call( Integer i ) {
                 return Arrays.asList( i, i ) ;

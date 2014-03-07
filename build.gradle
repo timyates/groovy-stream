@@ -12,6 +12,7 @@ buildscript {
 apply plugin: 'groovy'
 apply plugin: 'bintray'
 apply plugin: 'maven-publish'
+apply plugin: 'idea'
 apply plugin: 'rest'
 apply plugin: 'jacoco'
 

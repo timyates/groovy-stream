@@ -16,6 +16,6 @@
 
 package groovy.stream.functions ;
 
-public interface StreamWithIndexFunction<T,S> {
-    S call( T value, Integer index ) ;
+public interface Function<T,S> {
+    S call( T value ) ;
 }

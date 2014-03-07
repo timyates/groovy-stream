@@ -16,6 +16,6 @@
 
 package groovy.stream.functions ;
 
-public interface StreamPredicate<T> {
-    boolean call( T value ) ;
+public interface IndexedPredicate<T> {
+    boolean call( T value, Integer index ) ;
 }

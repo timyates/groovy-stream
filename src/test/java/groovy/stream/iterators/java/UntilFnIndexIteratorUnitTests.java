@@ -7,11 +7,11 @@ import java.util.* ;
 
 public class UntilFnIndexIteratorUnitTests {
     List<Integer> list = Arrays.asList( 1, 2, null, 4, 5 ) ;
-    UntilFnIndexIterator<Integer> iter ;
+    UntilIteratorForIndexedPredicate<Integer> iter ;
 
     @Before
     public void setUp() {
-        iter = new UntilFnIndexIterator<Integer>( list.iterator(), new StreamWithIndexPredicate<Integer>() {
+        iter = new UntilIteratorForIndexedPredicate<Integer>( list.iterator(), new IndexedPredicate<Integer>() {
             @Override
             public boolean call( Integer i, Integer index ) {
                 return index == 3 ;

@@ -16,16 +16,16 @@
 
 package groovy.stream.iterators.java ;
 
-import groovy.stream.functions.StreamWithIndexPredicate ;
+import groovy.stream.functions.Predicate;
 import groovy.stream.iterators.groovy.FilteringIterator ;
 
 import java.util.Iterator ;
 
-public class FilteringPredicateIndexIterator<T> extends FilteringIterator<T> {
-    private final StreamWithIndexPredicate<T> predicateFn ;
+public class FilteringIteratorForPredicate<T> extends FilteringIterator<T> {
+    private final Predicate<T> predicateFn ;
 
-    public FilteringPredicateIndexIterator( Iterator<T> iterator, StreamWithIndexPredicate<T> predicate ) {
-        super( iterator, null, true ) ;
+    public FilteringIteratorForPredicate( Iterator<T> iterator, Predicate<T> predicate ) {
+        super( iterator, null, false ) ;
         this.predicateFn = predicate ;
     }
 
@@ -33,8 +33,7 @@ public class FilteringPredicateIndexIterator<T> extends FilteringIterator<T> {
     protected void loadNext() {
         while( iterator.hasNext() ) {
             current = iterator.next() ;
-            boolean result = predicateFn.call( current, index ) ;
-            index++ ;
+            boolean result = predicateFn.call( current ) ;
             if( result ) return ;
         }
         exhausted = true ;

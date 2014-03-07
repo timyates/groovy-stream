@@ -16,15 +16,15 @@
 
 package groovy.stream.iterators.java ;
 
-import groovy.stream.functions.StreamFunction ;
+import groovy.stream.functions.Function;
 import groovy.stream.iterators.groovy.FlatMapIterator ;
 import java.util.Collection ;
 import java.util.Iterator ;
 
-public class FlatMapFnIterator<T,U> extends FlatMapIterator<T,U> {
-    private final StreamFunction<T,? extends Collection<U>> mappingFn ;
+public class FlatMapIteratorForFunction<T,U> extends FlatMapIterator<T,U> {
+    private final Function<T,? extends Collection<U>> mappingFn ;
 
-    public FlatMapFnIterator( Iterator<T> iterator, StreamFunction<T,? extends Collection<U>> mapping ) {
+    public FlatMapIteratorForFunction( Iterator<T> iterator, Function<T, ? extends Collection<U>> mapping ) {
         super( iterator, null, false ) ;
         this.mappingFn = mapping ;
     }

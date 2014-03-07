@@ -7,11 +7,11 @@ import java.util.* ;
 
 public class UntilFnIteratorUnitTests {
     List<Integer> list = Arrays.asList( 1, 2, null, 4, 5 ) ;
-    UntilFnIterator<Integer> iter ;
+    UntilIteratorForPredicate<Integer> iter ;
 
     @Before
     public void setUp() {
-        iter = new UntilFnIterator<Integer>( list.iterator(), new StreamPredicate<Integer>() {
+        iter = new UntilIteratorForPredicate<Integer>( list.iterator(), new Predicate<Integer>() {
             @Override
             public boolean call( Integer i ) {
                 return i == null ;

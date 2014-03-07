@@ -21,7 +21,6 @@ import java.util.Iterator ;
 import java.util.LinkedHashMap ;
 import java.util.List ;
 import java.util.Map ;
-import java.util.NoSuchElementException ;
 
 public class MapIterator<T,U> extends AbstractIterator<Map<T,U>> {
     private final Map<T,Iterable<U>> iterables ;

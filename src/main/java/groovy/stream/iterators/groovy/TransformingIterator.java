@@ -19,7 +19,6 @@ package groovy.stream.iterators.groovy ;
 import groovy.lang.Closure ;
 import groovy.stream.iterators.AbstractIterator ;
 import java.util.Iterator ;
-import java.util.NoSuchElementException ;
 
 public class TransformingIterator<T,U> extends AbstractIterator<U> {
     protected final Iterator<T> inputIterator ;

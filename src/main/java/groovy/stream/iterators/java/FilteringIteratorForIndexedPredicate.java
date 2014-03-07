@@ -16,30 +16,27 @@
 
 package groovy.stream.iterators.java ;
 
-import groovy.stream.functions.StreamPredicate ;
-import groovy.stream.iterators.groovy.UntilIterator ;
-import java.util.Collection ;
+import groovy.stream.functions.IndexedPredicate;
+import groovy.stream.iterators.groovy.FilteringIterator ;
+
 import java.util.Iterator ;
 
-public class UntilFnIterator<T> extends UntilIterator<T> {
-    private final StreamPredicate<T> predicateFn ;
+public class FilteringIteratorForIndexedPredicate<T> extends FilteringIterator<T> {
+    private final IndexedPredicate<T> predicateFn ;
 
-    public UntilFnIterator( Iterator<T> iterator, StreamPredicate<T> predicateFn ) {
-        super( iterator, null, false ) ;
-        this.predicateFn = predicateFn ;
+    public FilteringIteratorForIndexedPredicate( Iterator<T> iterator, IndexedPredicate<T> predicate ) {
+        super( iterator, null, true ) ;
+        this.predicateFn = predicate ;
     }
 
     @Override
     protected void loadNext() {
-        if( iterator.hasNext() ) {
+        while( iterator.hasNext() ) {
             current = iterator.next() ;
-            boolean check = predicateFn.call( current ) ;
-            if( check ) {
-                exhausted = true ;
-            }
+            boolean result = predicateFn.call( current, index ) ;
+            index++ ;
+            if( result ) return ;
         }
-        else {
-            exhausted = true ;
-        }
+        exhausted = true ;
     }
 }

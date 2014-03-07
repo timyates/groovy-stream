@@ -7,11 +7,11 @@ import java.util.* ;
 
 public class TransformingFnIndexIteratorUnitTests {
     List<Integer> list = Arrays.asList( 1, 2, null, 4, 5 ) ;
-    TransformingFnIndexIterator<Integer,Integer> iter ;
+    TransformingIteratorForIndexedFunction<Integer,Integer> iter ;
 
     @Before
     public void setUp() {
-        iter = new TransformingFnIndexIterator<Integer,Integer>( list.iterator(), new StreamWithIndexFunction<Integer,Integer>() {
+        iter = new TransformingIteratorForIndexedFunction<Integer,Integer>( list.iterator(), new IndexedFunction<Integer,Integer>() {
             @Override
             public Integer call( Integer i, Integer index ) {
                 return i == null ? null : i + index ;

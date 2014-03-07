@@ -16,15 +16,15 @@
 
 package groovy.stream.iterators.java ;
 
-import groovy.stream.functions.StreamWithIndexPredicate ;
+import groovy.stream.functions.IndexedPredicate;
 import groovy.stream.iterators.groovy.UntilIterator ;
-import java.util.Collection ;
+
 import java.util.Iterator ;
 
-public class UntilFnIndexIterator<T> extends UntilIterator<T> {
-    private final StreamWithIndexPredicate<T> predicateFn ;
+public class UntilIteratorForIndexedPredicate<T> extends UntilIterator<T> {
+    private final IndexedPredicate<T> predicateFn ;
 
-    public UntilFnIndexIterator( Iterator<T> iterator, StreamWithIndexPredicate<T> predicateFn ) {
+    public UntilIteratorForIndexedPredicate( Iterator<T> iterator, IndexedPredicate<T> predicateFn ) {
         super( iterator, null, true ) ;
         this.predicateFn = predicateFn ;
     }

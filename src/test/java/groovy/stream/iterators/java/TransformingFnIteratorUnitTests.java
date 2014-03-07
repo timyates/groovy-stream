@@ -7,11 +7,11 @@ import java.util.* ;
 
 public class TransformingFnIteratorUnitTests {
     List<Integer> list = Arrays.asList( 1, 2, null, 4, 5 ) ;
-    TransformingFnIterator<Integer,Integer> iter ;
+    TransformingIteratorForFunction<Integer,Integer> iter ;
 
     @Before
     public void setUp() {
-        iter = new TransformingFnIterator<Integer,Integer>( list.iterator(), new StreamFunction<Integer,Integer>() {
+        iter = new TransformingIteratorForFunction<Integer,Integer>( list.iterator(), new Function<Integer,Integer>() {
             @Override
             public Integer call( Integer i ) {
                 return i == null ? null : i + 10 ;
