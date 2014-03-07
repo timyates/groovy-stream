@@ -16,7 +16,7 @@
 
 package groovy.stream.iterators.java ;
 
-import groovy.stream.functions.Predicate;
+import groovy.stream.functions.Predicate ;
 import groovy.stream.iterators.groovy.FilteringIterator ;
 
 import java.util.Iterator ;
@@ -30,12 +30,12 @@ public class FilteringIteratorForPredicate<T> extends FilteringIterator<T> {
     }
 
     @Override
-    protected void loadNext() {
-        while( iterator.hasNext() ) {
-            current = iterator.next() ;
-            boolean result = predicateFn.call( current ) ;
-            if( result ) return ;
-        }
-        exhausted = true ;
+    protected void setDelegate() {
+        // Cannot set delegate
+    }
+
+    @Override
+    protected boolean callFilter() {
+        return predicateFn.call( current ) ;
     }
 }

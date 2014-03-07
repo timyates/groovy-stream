@@ -16,26 +16,21 @@
 
 package groovy.stream.iterators.java ;
 
-import groovy.stream.functions.IndexedPredicate ;
-import groovy.stream.iterators.groovy.FilteringIterator ;
+import groovy.stream.functions.Function2 ;
+import groovy.stream.iterators.groovy.ZipIterator ;
 
 import java.util.Iterator ;
 
-public class FilteringIteratorForIndexedPredicate<T> extends FilteringIterator<T> {
-    private final IndexedPredicate<T> predicateFn ;
+public class ZipIteratorForFunction<T,U,V> extends ZipIterator<T,U,V> {
+    private final Function2<T,U,V> function ;
 
-    public FilteringIteratorForIndexedPredicate( Iterator<T> iterator, IndexedPredicate<T> predicate ) {
-        super( iterator, null, true ) ;
-        this.predicateFn = predicate ;
+    public ZipIteratorForFunction( Iterator<T> iter1, Iterator<U> iter2, Function2<T,U,V> method ) {
+        super( iter1, iter2, false, null ) ;
+        this.function = method ;
     }
 
     @Override
-    protected void setDelegate() {
-        // Cannot set delegate
-    }
-
-    @Override
-    protected boolean callFilter() {
-        return predicateFn.call( current, index ) ;
+    protected V performZip( T a, U b ) {
+        return function.call( a, b ) ;
     }
 }

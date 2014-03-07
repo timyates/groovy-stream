@@ -16,6 +16,7 @@
 
 package groovy.stream
 
+import java.util.jar.JarFile
 import java.util.zip.ZipFile
 
 class FileTests extends spock.lang.Specification {
@@ -39,5 +40,30 @@ class FileTests extends spock.lang.Specification {
             f.close()
         then:
             result == [ 'File A', 'File B', 'And File C' ]
+    }
+
+    def "Simple Jar test"() {
+        setup:
+            JarFile f = new JarFile( new File( 'src/test/resources/test.jar' ) )
+            def stream = Stream.from f map { it.name }
+        when:
+            def result = stream.collect()
+            f.close()
+        then:
+            result == [ 'META-INF/', 'META-INF/MANIFEST.MF', 'a.txt', 'b.txt', 'c.txt' ]
+    }
+
+    def "Jar content test"() {
+        setup:
+            JarFile f = new JarFile( new File( 'src/test/resources/test.jar' ) )
+            def stream = Stream.from f filter { !it.directory } map { f.getInputStream( it ).text }
+        when:
+            def result = stream.collect()
+            f.close()
+        then:
+            result == [ 'Manifest-Version: 1.0\r\nCreated-By: 1.7.0_51 (Oracle Corporation)\r\n\r\n',
+                        'File A',
+                        'File B',
+                        'And File C' ]
     }
 }

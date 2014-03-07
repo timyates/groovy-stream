@@ -17,25 +17,26 @@
 package groovy.stream.iterators.java ;
 
 import groovy.stream.functions.IndexedFunction ;
-import groovy.stream.iterators.groovy.TransformingIterator ;
+import groovy.stream.iterators.groovy.TapIterator;
 
-import java.util.Iterator ;
+import java.util.Iterator;
 
-public class TransformingIteratorForIndexedFunction<T,U> extends TransformingIterator<T,U> {
-    private final IndexedFunction<T,U> mappingFn ;
+public class TapIteratorForIndexedFunction<T> extends TapIterator<T> {
+    private final IndexedFunction<T,Void> function ;
 
-    public TransformingIteratorForIndexedFunction( Iterator<T> iterator, IndexedFunction<T, U> mapping ) {
-        super( iterator, null, true ) ;
-        this.mappingFn = mapping ;
+    public TapIteratorForIndexedFunction( Iterator<T> iterator, IndexedFunction<T,Void> function ) {
+        this( iterator, 1, function ) ;
+    }
+
+    public TapIteratorForIndexedFunction( Iterator<T> iterator, int every, IndexedFunction<T,Void> function ) {
+        super( iterator, every, true, null ) ;
+        this.function = function ;
     }
 
     @Override
-    protected void setDelegate( T next ) {
-        // Cannot set delegate
-    }
-
-    @Override
-    protected U getMappedValue( T next ) {
-        return mappingFn.call( next, index );
+    protected void performTap( T ret ) {
+        if( ++index % every == 0 ) {
+            function.call( ret, index - 1 );
+        }
     }
 }

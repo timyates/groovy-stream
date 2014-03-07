@@ -23,7 +23,7 @@ import java.util.NoSuchElementException ;
 
 public class BufferedReaderIterator implements Iterator<String> {
     private String current ;
-    private BufferedReader reader ;
+    private final BufferedReader reader ;
     private boolean  exhausted ;
     private boolean  loaded ;
 

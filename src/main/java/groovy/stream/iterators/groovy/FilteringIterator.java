@@ -36,13 +36,20 @@ public class FilteringIterator<T> extends AbstractIterator<T> {
     protected void loadNext() {
         while( iterator.hasNext() ) {
             current = iterator.next() ;
-            predicate.setDelegate( current ) ;
-            Boolean result = withIndex ?
-                                 DefaultTypeTransformation.castToBoolean( predicate.call( current, index ) ) :
-                                 DefaultTypeTransformation.castToBoolean( predicate.call( current ) ) ;
+            setDelegate();
+            Boolean result = callFilter();
             index++ ;                                 
             if( result ) return ;
         }
         exhausted = true ;
+    }
+
+    protected boolean callFilter() {
+        return withIndex ? DefaultTypeTransformation.castToBoolean( predicate.call( current, index ) ) :
+                           DefaultTypeTransformation.castToBoolean( predicate.call( current ) );
+    }
+
+    protected void setDelegate() {
+        predicate.setDelegate( current );
     }
 }

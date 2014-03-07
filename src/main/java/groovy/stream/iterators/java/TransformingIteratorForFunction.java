@@ -16,7 +16,7 @@
 
 package groovy.stream.iterators.java ;
 
-import groovy.stream.functions.Function;
+import groovy.stream.functions.Function ;
 import groovy.stream.iterators.groovy.TransformingIterator ;
 
 import java.util.Iterator ;
@@ -30,15 +30,12 @@ public class TransformingIteratorForFunction<T,U> extends TransformingIterator<T
     }
 
     @Override
-    protected void loadNext() {
-        if( inputIterator.hasNext() ) {
-            T next = inputIterator.next() ;
-            current = mappingFn.call( next ) ;
-            index++ ;
-        }
-        else {
-            exhausted = true ;
-        }
+    protected void setDelegate( T next ) {
+        // Cannot set delegate
     }
 
+    @Override
+    protected U getMappedValue( T next ) {
+        return mappingFn.call( next );
+    }
 }

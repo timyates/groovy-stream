@@ -20,8 +20,14 @@ import groovy.lang.Closure ;
 
 import java.io.BufferedReader ;
 
-import java.util.Iterator;
-import java.util.Map;
+import java.util.Iterator ;
+import java.util.Map ;
+
+import java.util.jar.JarEntry ;
+import java.util.jar.JarFile ;
+
+import java.util.zip.ZipEntry ;
+import java.util.zip.ZipFile ;
 
 public class StreamExtension {
     public static <T>   Stream<T>         toStream( Closure<T>                   delegate ) { return Stream.from( delegate ) ; }
@@ -38,4 +44,6 @@ public class StreamExtension {
     public static       Stream<Float>     toStream( float[]                      delegate ) { return Stream.from( delegate ) ; }
     public static       Stream<Double>    toStream( double[]                     delegate ) { return Stream.from( delegate ) ; }
     public static       Stream<Boolean>   toStream( boolean[]                    delegate ) { return Stream.from( delegate ) ; }
+    public static       Stream<ZipEntry>  toStream( ZipFile                      delegate ) { return Stream.from( delegate ) ; }
+    public static       Stream<JarEntry>  toStream( JarFile                      delegate ) { return Stream.from( delegate ) ; }
 }

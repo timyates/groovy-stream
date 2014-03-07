@@ -22,11 +22,11 @@ import java.util.Iterator ;
 import java.util.NoSuchElementException ;
 
 public class TapIterator<T> extends AbstractIterator<T> {
-    private final int           every ;
-    private final boolean       withIndex ;
-    private final Closure<Void> output ;
+    protected final int           every ;
+    private   final boolean       withIndex ;
+    private   final Closure<Void> output ;
 
-    private int     index ;
+    protected int     index ;
 
     public TapIterator( Iterator<T> parent, int every, boolean withIndex, Closure<Void> output ) {
         super( parent ) ;
@@ -53,15 +53,19 @@ public class TapIterator<T> extends AbstractIterator<T> {
             throw new NoSuchElementException( "TapIterator has been exhausted and contains no more elements" ) ;
         }
         T ret = current ;
+        performTap( ret );
+        loaded = false ;
+        return ret ;
+    }
+
+    protected void performTap( T ret ) {
         if( ++index % every == 0 ) {
             if( withIndex ) {
-                output.call( ret, index - 1 ) ; 
+                output.call( ret, index - 1 ) ;
             }
             else {
                 output.call( ret ) ;
             }
         }
-        loaded = false ;
-        return ret ;
     }
 }

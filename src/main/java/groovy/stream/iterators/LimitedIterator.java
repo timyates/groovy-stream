@@ -19,7 +19,7 @@ package groovy.stream.iterators ;
 import java.util.Iterator ;
 
 public class LimitedIterator<T> implements Iterator<T> {
-    private Iterator<T> delegate ;
+    private final Iterator<T> delegate ;
     private int limit ;
 
     public LimitedIterator( Iterator<T> delegate, int limit ) {

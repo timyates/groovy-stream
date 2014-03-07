@@ -16,6 +16,9 @@
 
 package groovy.stream
 
+import java.util.jar.JarFile
+import java.util.zip.ZipFile
+
 class ExtensionTests extends spock.lang.Specification {
     def 'closure test'() {
         setup:
@@ -89,5 +92,34 @@ class ExtensionTests extends spock.lang.Specification {
                                           .join()
         then:
             incremented == 'x11u'
+    }
+
+    def "Multitude test"() {
+        expect:
+            data.toStream().collect() == result
+        where:
+            data                                                | result
+            [ 1, 2, 3 ] as int[]                                | [ 1, 2, 3 ]
+            [ 1, 2, 3 ] as long[]                               | [ 1, 2, 3 ]
+            [ true, false ] as boolean[]                        | [ true, false ]
+            [ 1, 2, 3 ] as double[]                             | [ 1, 2, 3 ]
+            [ 1, 2, 3 ] as float[]                              | [ 1, 2, 3 ]
+            [ 1, 2, 3 ] as short[]                              | [ 1, 2, 3 ]
+            [ 1, 2, 3 ] as byte[]                               | [ 1, 2, 3 ]
+            [ 1, 2, 3 ] as Integer[]                            | [ 1, 2, 3 ]
+            new BufferedReader( new StringReader( '1\n2\n3' ) ) | [ '1', '2', '3' ]
+    }
+
+    def "File tests"() {
+        setup:
+            def je = new JarFile( new File( 'src/test/resources/test.jar' ) )
+            def ze = new ZipFile( new File( 'src/test/resources/test.zip' ) )
+
+        when:
+            def jeresult = je.toStream().map { it.name }.collect()
+            def zeresult = ze.toStream().map { it.name }.collect()
+        then:
+            jeresult == [ 'META-INF/', 'META-INF/MANIFEST.MF', 'a.txt', 'b.txt', 'c.txt' ]
+            zeresult == [ 'a.txt', 'b.txt', 'c.txt' ]
     }
 }

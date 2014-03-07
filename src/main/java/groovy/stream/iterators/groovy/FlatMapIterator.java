@@ -28,7 +28,7 @@ public class FlatMapIterator<T,U> extends AbstractIterator<U> {
     protected final Iterator<T> inputIterator ;
     private   final boolean     withIndex ;
     protected int            index = 0 ;
-    private Closure<? extends Collection<U>> mapping ;
+    private final Closure<? extends Collection<U>> mapping ;
 
     public FlatMapIterator( Iterator<T> iterator, Closure<? extends Collection<U>> mapping, boolean withIndex ) {
         super( null ) ;
@@ -41,8 +41,8 @@ public class FlatMapIterator<T,U> extends AbstractIterator<U> {
     protected void loadNext() {
         while( pushback.isEmpty() && inputIterator.hasNext() ) {
             T next = inputIterator.next() ;
-            mapping.setDelegate( next ) ;
-            Collection<U> mapped = withIndex ? mapping.call( next, index ) : mapping.call( next ) ;
+            setDelegate( next );
+            Collection<U> mapped = performMapping( next ) ;
             index++ ;
             for( U element : mapped ) {
                 pushback.offer( element ) ;
@@ -54,5 +54,13 @@ public class FlatMapIterator<T,U> extends AbstractIterator<U> {
         else {
             exhausted = true ;
         }
+    }
+
+    protected Collection<U> performMapping( T next ) {
+        return withIndex ? mapping.call( next, index ) : mapping.call( next );
+    }
+
+    protected void setDelegate( T next ) {
+        mapping.setDelegate( next ) ;
     }
 }

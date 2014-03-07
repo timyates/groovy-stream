@@ -14,28 +14,29 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators.java ;
+package groovy.stream.iterators.java;
 
 import groovy.stream.functions.Function ;
-import groovy.stream.iterators.groovy.FlatMapIterator ;
-import java.util.Collection ;
-import java.util.Iterator ;
+import groovy.stream.iterators.groovy.TapIterator;
 
-public class FlatMapIteratorForFunction<T,U> extends FlatMapIterator<T,U> {
-    private final Function<T,? extends Collection<U>> mappingFn ;
+import java.util.Iterator;
 
-    public FlatMapIteratorForFunction( Iterator<T> iterator, Function<T, ? extends Collection<U>> mapping ) {
-        super( iterator, null, false ) ;
-        this.mappingFn = mapping ;
+public class TapIteratorForFunction<T> extends TapIterator<T> {
+    private final Function<T,Void> function ;
+
+    public TapIteratorForFunction( Iterator<T> iterator, Function<T,Void> function ) {
+        this( iterator, 1, function ) ;
+    }
+
+    public TapIteratorForFunction( Iterator<T> iterator, int every, Function<T,Void> function ) {
+        super( iterator, every, false, null ) ;
+        this.function = function ;
     }
 
     @Override
-    protected void setDelegate( T next ) {
-        // Cannot set delegate
-    }
-
-    @Override
-    protected Collection<U> performMapping( T next ) {
-        return mappingFn.call( next ) ;
+    protected void performTap( T ret ) {
+        if( ++index % every == 0 ) {
+            function.call( ret ) ;
+        }
     }
 }

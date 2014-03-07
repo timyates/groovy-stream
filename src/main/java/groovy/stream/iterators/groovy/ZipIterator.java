@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators ;
+package groovy.stream.iterators.groovy ;
 
 import groovy.lang.Closure ;
+import groovy.stream.iterators.AbstractIterator ;
 import java.util.Iterator ;
 import java.util.NoSuchElementException ;
 
-public class ZipIterator<T,U,V> implements Iterator<V> {
-    private final Iterator<T> iter1 ;
-    private final Iterator<U> iter2 ;
-    private final Closure<V>  method ;
-    private final boolean     withIndex ;
-
-    private boolean loaded ;
-    private boolean exhausted ;
-    private int     index ;
-    private V       current ;
+public class ZipIterator<T,U,V> extends AbstractIterator<V> {
+    protected final Iterator<T> iter1 ;
+    protected final Iterator<U> iter2 ;
+    private   final Closure<V>  method ;
+    private   final boolean     withIndex ;
+    protected int   index ;
 
     public ZipIterator( Iterator<T> iter1, Iterator<U> iter2, boolean withIndex, Closure<V> method ) {
+        super( null ) ;
         this.iter1 = iter1 ;
         this.iter2 = iter2 ;
         this.method = method ;
@@ -42,16 +40,12 @@ public class ZipIterator<T,U,V> implements Iterator<V> {
     }
 
     @Override
-    public void remove() {
-        throw new UnsupportedOperationException() ;
-    }
-
-    private void loadNext() {
+    protected void loadNext() {
         if( iter1.hasNext() ) {
             T obj1 = iter1.next() ;
             if( iter2.hasNext() ) {
                 U obj2 = iter2.next() ;
-                current = withIndex ? method.call( obj1, obj2, index ) : method.call( obj1, obj2 ) ;
+                current = performZip( obj1, obj2 );
                 index++ ;
             }
             else {
@@ -63,24 +57,7 @@ public class ZipIterator<T,U,V> implements Iterator<V> {
         }
     }
 
-    @Override
-    public boolean hasNext() {
-        if( !loaded ) {
-            loadNext() ;
-            loaded = true ;
-        }
-        return !exhausted ;
+    protected V performZip( T obj1, U obj2 ) {
+        return withIndex ? method.call( obj1, obj2, index ) : method.call( obj1, obj2 ) ;
     }
-
-    @Override
-    public V next() {
-        hasNext() ;
-        if( exhausted ) {
-            throw new NoSuchElementException( "TransformingIterator has been exhausted and contains no more elements" ) ;
-        }
-        V ret = current ;
-        loaded = false ;
-        return ret ;
-    }
-
 }

@@ -37,12 +37,20 @@ public class TransformingIterator<T,U> extends AbstractIterator<U> {
     protected void loadNext() {
         if( inputIterator.hasNext() ) {
             T next = inputIterator.next() ;
-            mapping.setDelegate( next ) ;
-            current = withIndex ? mapping.call( next, index ) : mapping.call( next ) ;
+            setDelegate( next );
+            current = getMappedValue( next );
             index++ ;
         }
         else {
             exhausted = true ;
         }
+    }
+
+    protected void setDelegate( T next ) {
+        mapping.setDelegate( next ) ;
+    }
+
+    protected U getMappedValue( T next ) {
+        return withIndex ? mapping.call( next, index ) : mapping.call( next );
     }
 }

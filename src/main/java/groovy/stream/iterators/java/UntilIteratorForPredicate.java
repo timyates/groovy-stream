@@ -16,7 +16,7 @@
 
 package groovy.stream.iterators.java ;
 
-import groovy.stream.functions.Predicate;
+import groovy.stream.functions.Predicate ;
 import groovy.stream.iterators.groovy.UntilIterator ;
 
 import java.util.Iterator ;
@@ -30,16 +30,12 @@ public class UntilIteratorForPredicate<T> extends UntilIterator<T> {
     }
 
     @Override
-    protected void loadNext() {
-        if( iterator.hasNext() ) {
-            current = iterator.next() ;
-            boolean check = predicateFn.call( current ) ;
-            if( check ) {
-                exhausted = true ;
-            }
-        }
-        else {
-            exhausted = true ;
-        }
+    protected void setDelegate() {
+        // Cannot set delegate
+    }
+
+    @Override
+    protected boolean performCheck() {
+        return predicateFn.call( current ) ;
     }
 }

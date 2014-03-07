@@ -42,4 +42,18 @@ class ListTests extends spock.lang.Specification {
         then:
             result == [ [ 1, 0 ], [ 2, 1 ], [ 3, 2 ] ]
     }
+
+    def "test removal via limitediterator"() {
+        setup:
+            def data = [ 1, 2, 3, 4, 5 ]
+            def stream = Stream.from data take 3
+
+        when:
+            def result = stream.collect()
+            stream.remove()
+
+        then:
+            result == [  1, 2, 3 ]
+            data == [ 1, 2, 4, 5 ]
+    }
 }

@@ -16,7 +16,7 @@
 
 package groovy.stream.iterators.java ;
 
-import groovy.stream.functions.IndexedFunction;
+import groovy.stream.functions.IndexedFunction ;
 import groovy.stream.iterators.groovy.FlatMapIterator ;
 import java.util.Collection ;
 import java.util.Iterator ;
@@ -30,20 +30,12 @@ public class FlatMapIteratorForIndexedFunction<T,U> extends FlatMapIterator<T,U>
     }
 
     @Override
-    protected void loadNext() {
-        while( pushback.isEmpty() && inputIterator.hasNext() ) {
-            T next = inputIterator.next() ;
-            Collection<U> mapped = mappingFn.call( next, index ) ;
-            index++ ;
-            for( U element : mapped ) {
-                pushback.offer( element ) ;
-            }
-        }
-        if( !pushback.isEmpty() ) {
-            current = pushback.poll() ;
-        }
-        else {
-            exhausted = true ;
-        }
+    protected void setDelegate( T next ) {
+        // Cannot set delegate
+    }
+
+    @Override
+    protected Collection<U> performMapping( T next ) {
+        return mappingFn.call( next, index ) ;
     }
 }

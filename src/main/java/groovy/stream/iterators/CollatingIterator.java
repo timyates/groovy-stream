@@ -68,10 +68,7 @@ public class CollatingIterator<T> extends AbstractIterator<Collection<T>> {
         if( !keepRemainder && ( current == null || current.size() < size ) ) {
             return true ;
         }
-        if( current == null && !parent.hasNext() ) {
-            return true ;
-        }
-        return false ;
+        return current == null && !parent.hasNext();
     }
 
     @Override

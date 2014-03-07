@@ -37,10 +37,8 @@ public class UntilIterator<T> extends AbstractIterator<T> {
     protected void loadNext() {
         if( iterator.hasNext() ) {
             current = iterator.next() ;
-            predicate.setDelegate( current ) ;
-            Boolean check = withIndex ?
-                                DefaultTypeTransformation.castToBoolean( predicate.call( current, index ) ) :
-                                DefaultTypeTransformation.castToBoolean( predicate.call( current ) ) ;
+            setDelegate();
+            Boolean check = performCheck();
             index++ ;
             if( check ) {
                 exhausted = true ;
@@ -49,5 +47,14 @@ public class UntilIterator<T> extends AbstractIterator<T> {
         else {
             exhausted = true ;
         }
+    }
+
+    protected void setDelegate() {
+        predicate.setDelegate( current ) ;
+    }
+
+    protected boolean performCheck() {
+        return withIndex ? DefaultTypeTransformation.castToBoolean( predicate.call( current, index ) ) :
+                           DefaultTypeTransformation.castToBoolean( predicate.call( current ) );
     }
 }
