@@ -63,7 +63,7 @@ class SynchronizedStreamTests extends spock.lang.Specification {
 
         then:
             counter.synchronized == true
-            mapped.synchronized == true
+            mapped.synchronized == false
 
         and:
             def store = { value ->
