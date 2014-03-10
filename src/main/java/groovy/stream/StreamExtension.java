@@ -30,6 +30,7 @@ import java.util.zip.ZipEntry ;
 import java.util.zip.ZipFile ;
 
 public class StreamExtension {
+    private StreamExtension() {}
     public static <T>   Stream<T>         toStream( Closure<T>                   delegate ) { return Stream.from( delegate ) ; }
     public static <T>   Stream<T>         toStream( Iterator<T>                  delegate ) { return Stream.from( delegate ) ; }
     public static <T>   Stream<T>         toStream( Iterable<T>                  delegate ) { return Stream.from( delegate ) ; }
