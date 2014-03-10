@@ -19,10 +19,10 @@ public class StreamUnitTests {
         stream = Stream.from( Arrays.asList( 1, 2, 3, 4 ) );
     }
 
-    private <T> List<T> iterableToList( Iterable<T> i ) {
+    private <T> List<T> collectIterator( Iterator<T> i ) {
         List<T> ret = new ArrayList<T>() ;
-        for( T v : i ) {
-            ret.add( v ) ;
+        while( i.hasNext() ) {
+            ret.add( i.next() ) ;
         }
         return ret ;
     }
@@ -36,7 +36,7 @@ public class StreamUnitTests {
             }
         } );
 
-        assertEquals( iterableToList( s ), Arrays.asList( 1, 3 ) );
+        assertEquals( collectIterator( s ), Arrays.asList( 1, 3 ) );
     }
 
     @Test
@@ -48,7 +48,7 @@ public class StreamUnitTests {
             }
         } );
 
-        assertEquals( iterableToList( s ), Arrays.asList( 2, 4 ) );
+        assertEquals( collectIterator( s ), Arrays.asList( 2, 4 ) );
     }
 
     @Test
@@ -62,7 +62,7 @@ public class StreamUnitTests {
             }
         } ) ;
 
-        assertEquals( iterableToList( s ), Arrays.asList( 1, 2, 3, 4 ) );
+        assertEquals( collectIterator( s ), Arrays.asList( 1, 2, 3, 4 ) );
         assertEquals( tapped, Arrays.asList( "Tap 1", "Tap 2", "Tap 3", "Tap 4" ) ) ;
     }
 
@@ -77,7 +77,7 @@ public class StreamUnitTests {
             }
         } ) ;
 
-        assertEquals( iterableToList( s ), Arrays.asList( 1, 2, 3, 4 ) );
+        assertEquals( collectIterator( s ), Arrays.asList( 1, 2, 3, 4 ) );
         assertEquals( tapped, Arrays.asList( "Tap 0", "Tap 2", "Tap 6", "Tap 12" ) ) ;
     }
 
@@ -90,7 +90,7 @@ public class StreamUnitTests {
             }
         } ) ;
 
-        assertEquals( iterableToList( s ), Arrays.asList( "Item1", "Item2", "Item3", "Item4" ) );
+        assertEquals( collectIterator( s ), Arrays.asList( "Item1", "Item2", "Item3", "Item4" ) );
     }
 
     @Test
@@ -102,7 +102,7 @@ public class StreamUnitTests {
             }
         } ) ;
 
-        assertEquals( iterableToList( s ), Arrays.asList( "Item0", "Item2", "Item6", "Item12" ) );
+        assertEquals( collectIterator( s ), Arrays.asList( "Item0", "Item2", "Item6", "Item12" ) );
     }
 
     @Test
@@ -114,7 +114,7 @@ public class StreamUnitTests {
             }
         } ) ;
 
-        assertEquals( iterableToList( s ), Arrays.asList( 1 ) );
+        assertEquals( collectIterator( s ), Arrays.asList( 1 ) );
     }
 
     @Test
@@ -126,7 +126,7 @@ public class StreamUnitTests {
             }
         } ) ;
 
-        assertEquals( iterableToList( s ), Arrays.asList( 1, 2, 3 ) );
+        assertEquals( collectIterator( s ), Arrays.asList( 1, 2, 3 ) );
     }
 
     @Test
@@ -139,7 +139,7 @@ public class StreamUnitTests {
             }
         } ) ;
 
-        assertEquals( iterableToList( s ), Arrays.asList( "One1", "Two2", "Three3" ) );
+        assertEquals( collectIterator( s ), Arrays.asList( "One1", "Two2", "Three3" ) );
     }
 
     @Test
@@ -152,7 +152,7 @@ public class StreamUnitTests {
             }
         } ) ;
 
-        assertEquals( iterableToList( s ), Arrays.asList( "One0", "Two2", "Three6" ) );
+        assertEquals( collectIterator( s ), Arrays.asList( "One0", "Two2", "Three6" ) );
     }
 
     @Test
@@ -164,7 +164,7 @@ public class StreamUnitTests {
             }
         } ) ;
 
-        assertEquals( iterableToList( s ), Arrays.asList( 1, 1, 2, 2, 3, 3, 4, 4 ) );
+        assertEquals( collectIterator( s ), Arrays.asList( 1, 1, 2, 2, 3, 3, 4, 4 ) );
     }
 
     @Test
@@ -180,6 +180,13 @@ public class StreamUnitTests {
             }
         } ) ;
 
-        assertEquals( iterableToList( s ), Arrays.asList( 2, 3, 3, 4, 4, 4 ) );
+        assertEquals( collectIterator( s ), Arrays.asList( 2, 3, 3, 4, 4, 4 ) );
+    }
+
+    @Test
+    public void testSynchronizedStream() {
+        Stream<Integer> s = stream.asSynchronized() ;
+        assertTrue( s.isSynchronized() ) ;
+        assertEquals( collectIterator( s ), Arrays.asList( 1, 2, 3, 4 ) );
     }
 }

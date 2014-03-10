@@ -52,7 +52,7 @@ import java.util.zip.ZipFile ;
  * @author Tim Yates
  * @param <T> the type of each element returned from the Stream.
  */
-public class Stream<T> implements Iterator<T>, Iterable<T> {
+public class Stream<T> implements Iterator<T> {
     private final ReentrantLock lock ;
     private final Iterator<T> iterator ;
 
@@ -887,10 +887,6 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<Boolean>( primitiveArrayToList( array ).iterator(), null ) ;
     }
 
-    /* Iterator and Iterable Methods */
-    @Override public Iterator<T> iterator() {
-        return this ;
-    }
     @Override public T next() {
         if( lock != null ) {
             lock.lock() ;
