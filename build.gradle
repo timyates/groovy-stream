@@ -6,6 +6,7 @@ buildscript {
     dependencies {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.3'
         classpath 'org._10ne.gradle:rest-gradle-plugin:0.1.1'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:0.2.1'
     }
 }
 
@@ -15,6 +16,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'idea'
 apply plugin: 'rest'
 apply plugin: 'jacoco'
+apply plugin: 'coveralls'
 
 group               = 'com.bloidonia'
 version             = '0.8'
@@ -74,6 +76,10 @@ jacocoTestReport {
     group = "Reporting"
     description = "Generate Jacoco coverage reports after running tests."
     additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
+    reports {
+        xml.enabled = true // coveralls plugin depends on xml format report
+        html.enabled = true
+    }
 }
 jacocoTestReport.dependsOn( test )
 

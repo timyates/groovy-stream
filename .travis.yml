@@ -4,3 +4,5 @@ jdk:
 install: true
 script:
   - TERM=dumb ./gradlew check
+after_success:
+  - gradle jacocoTestReport coveralls
