@@ -73,14 +73,16 @@ task javadocCopy( type: Copy ) {
 cobertura.coverageFormats = ['html', 'xml'] // coveralls plugin depends on xml format report
 
 task coverageCopy( type: Copy ) {
-    from "${project.buildDir}/reports/jacoco/test/html"
+    from "${project.buildDir}/reports/cobertura"
     into 'docs/assets/coverage'
 }
+coverageCopy.dependsOn( 'cobertura' )
 
 task jbake( type:Exec ) {
     commandLine 'jbake', 'docs', 'docs/output'
 }
-jbake.dependsOn( javadocCopy, coverageCopy )
+jbake.dependsOn( javadocCopy )
+jbake.dependsOn( coverageCopy )
 
 compileGroovy.dependsOn( generateModule )
 test.dependsOn( jar )
