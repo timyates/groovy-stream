@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators
+package groovy.stream.iterators.groovy
 
 class FlatMapIteratorTests extends spock.lang.Specification {
 

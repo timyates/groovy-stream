@@ -16,28 +16,18 @@
 
 package groovy.stream.iterators ;
 
-import groovy.lang.Closure ;
-
 import java.util.Iterator ;
 import java.util.NoSuchElementException ;
 
-public class TapIterator<T> implements Iterator<T> {
-    private final Iterator<T>   parent ;
-    private final int           every ;
-    private final boolean       withIndex ;
-    private final Closure<Void> output ;
+public abstract class AbstractIterator<T> implements Iterator<T> {
+    protected final Iterator<T>   iterator ;
 
-    private int     index ;
-    private T       current ;
-    private boolean loaded ;
-    private boolean exhausted ;
+    protected T       current ;
+    protected boolean loaded ;
+    protected boolean exhausted ;
 
-    public TapIterator( Iterator<T> parent, int every, boolean withIndex, Closure<Void> output ) {
-        this.parent = parent ;
-        this.every = every ;
-        this.index = 0 ;
-        this.withIndex = withIndex ;
-        this.output = output ;
+    public AbstractIterator( Iterator<T> parentIterator ) {
+        this.iterator = parentIterator ;
         this.loaded = false ;
         this.current = null ;
         this.exhausted = false ;
@@ -48,14 +38,7 @@ public class TapIterator<T> implements Iterator<T> {
         throw new UnsupportedOperationException() ;
     }
 
-    private void loadNext() {
-        if( parent.hasNext() ) {
-            current = parent.next() ;
-        }
-        else {
-            exhausted = true ;
-        }
-    }
+    protected abstract void loadNext() ;
 
     @Override
     public boolean hasNext() {
@@ -70,17 +53,9 @@ public class TapIterator<T> implements Iterator<T> {
     public T next() {
         hasNext() ;
         if( exhausted ) {
-            throw new NoSuchElementException( "TapIterator has been exhausted and contains no more elements" ) ;
+            throw new NoSuchElementException( "Iterator has been exhausted and contains no more elements" ) ;
         }
         T ret = current ;
-        if( ++index % every == 0 ) {
-            if( withIndex ) {
-                output.call( ret, index - 1 ) ; 
-            }
-            else {
-                output.call( ret ) ;
-            }
-        }
         loaded = false ;
         return ret ;
     }

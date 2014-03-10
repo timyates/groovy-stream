@@ -19,10 +19,18 @@ package groovy.stream ;
 import groovy.lang.Closure ;
 
 import groovy.stream.iterators.* ;
+import groovy.stream.iterators.java.* ;
+import groovy.stream.iterators.groovy.* ;
+import groovy.stream.functions.Function ;
+import groovy.stream.functions.Function2 ;
+import groovy.stream.functions.Predicate ;
+import groovy.stream.functions.IndexedFunction ;
+import groovy.stream.functions.IndexedFunction2 ;
+import groovy.stream.functions.IndexedPredicate ;
 
 import java.io.BufferedReader ;
 
-import java.lang.reflect.Array;
+import java.lang.reflect.Array ;
 
 import java.util.ArrayList ;
 import java.util.Collection ;
@@ -44,7 +52,7 @@ import java.util.zip.ZipFile ;
  * @author Tim Yates
  * @param <T> the type of each element returned from the Stream.
  */
-public class Stream<T> implements Iterator<T>, Iterable<T> {
+public class Stream<T> implements Iterator<T> {
     private final ReentrantLock lock ;
     private final Iterator<T> iterator ;
 
@@ -73,6 +81,17 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     }
 
     /**
+     * Filter the current stream, passing each element through a predicate filter (Java friendly version).
+     *
+     * @param predicate A {@link Predicate} instance returning {@code true} from it's {@code call} method
+     *                  if the element is to be included.
+     * @return A new {@code Stream} wrapping a {@link FilteringIteratorForPredicate}
+     */
+    public Stream<T> filter( Predicate<T> predicate ) {
+        return new Stream<T>( new FilteringIteratorForPredicate<T>( iterator, predicate ), lock ) ;
+    }
+
+    /**
      * Filter the current stream, passing each element and it's index through a predicate filter.
      *
      * <pre class="groovyTestCase">
@@ -89,6 +108,17 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      */
     public Stream<T> filterWithIndex( Closure<Boolean> predicate ) {
         return new Stream<T>( new FilteringIterator<T>( iterator, predicate, true ), lock ) ;
+    }
+
+    /**
+     * Filter the current stream, passing each element and its index through a predicate filter (Java friendly version).
+     *
+     * @param predicate An {@link IndexedPredicate} instance returning {@code true} from it's {@code call} method
+     *                  if the element is to be included.
+     * @return A new {@code Stream} wrapping a {@link FilteringIteratorForIndexedPredicate}
+     */
+    public Stream<T> filterWithIndex( IndexedPredicate<T> predicate ) {
+        return new Stream<T>( new FilteringIteratorForIndexedPredicate<T>( iterator, predicate ), lock ) ;
     }
 
     /**
@@ -151,6 +181,20 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     }
 
     /**
+     * Takes a {@link Function} that returns a {@code Collection}.  Each element
+     * in this {@code Collection} is passed on in turn, before the next element is
+     * fetched from upstream, and the {@link Function} is executed again.
+     *
+     * @param <U> The type of the new Stream.
+     * @param map A single {@link Function} to pass the element through, returning a
+     *            new Collection of elements to iterate.
+     * @return A new {@code Stream} wrapping a {@link FlatMapIteratorForFunction}
+     */
+    public <U> Stream<U> flatMap( Function<T,? extends Collection<U>> map ) {
+        return new Stream<U>( new FlatMapIteratorForFunction<T,U>( iterator, map ), lock ) ;
+    }
+
+    /**
      * Takes a {@code Closure} that returns a {@code Collection}.  Each element
      * in this {@code Collection} is passed on in turn, before the next element is
      * fetched from upstream, and the Closure executed again.
@@ -173,6 +217,20 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     }
 
     /**
+     * Takes an {@link IndexedFunction} that returns a {@code Collection}.  Each element
+     * in this {@code Collection} is passed on in turn, before the next element is
+     * fetched from upstream, and the {@link IndexedFunction} is executed again.
+     *
+     * @param <U> The type of the new Stream.
+     * @param map A single {@link IndexedFunction} to pass the element and its index through,
+     *            returning a new Collection of elements to iterate.
+     * @return A new {@code Stream} wrapping a {@link FlatMapIteratorForIndexedFunction}
+     */
+    public <U> Stream<U> flatMapWithIndex( IndexedFunction<T,? extends Collection<U>> map ) {
+        return new Stream<U>( new FlatMapIteratorForIndexedFunction<T,U>( iterator, map ), lock ) ;
+    }
+
+    /**
      * Inspect every value in the {@code Stream} and pass it on.
      * 
      * <pre class="groovyTestCase">
@@ -189,6 +247,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      * @return A new {@code Stream} wrapping a {@link TapIterator}
      */
     public Stream<T> tap( Closure<Void> output ) { return tapEvery( 1, output ) ; }
+
+    public Stream<T> tap( Function<T,Void> output ) { return tapEvery( 1, output ) ; }
 
     /**
      * Inspect the every nth value in the {@code Stream} and pass it on.
@@ -211,6 +271,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<T>( new TapIterator<T>( iterator, n, false, output ), lock ) ;
     }
 
+    public Stream<T> tapEvery( int n, Function<T,Void> output ) {
+        return new Stream<T>( new TapIteratorForFunction<T>( iterator, n, output ), lock ) ;
+    }
+
     /**
      * Inspect every value in the {@code Stream} with its {@code index} and pass it on.
      * 
@@ -228,6 +292,8 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      * @return A new {@code Stream} wrapping a {@link TapIterator}
      */
     public Stream<T> tapWithIndex( Closure<Void> output ) { return tapEveryWithIndex( 1, output ) ; }
+
+    public Stream<T> tapWithIndex( IndexedFunction<T,Void> output ) { return tapEveryWithIndex( 1, output ) ; }
 
     /**
      * Inspect the every nth value in the {@code Stream} with its index and pass it on.
@@ -248,6 +314,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      */
     public Stream<T> tapEveryWithIndex( int n, Closure<Void> output ) {
         return new Stream<T>( new TapIterator<T>( iterator, n, true, output ), lock ) ;
+    }
+
+    public Stream<T> tapEveryWithIndex( int n, IndexedFunction<T,Void> output ) {
+        return new Stream<T>( new TapIteratorForIndexedFunction<T>( iterator, n, output ), lock ) ;
     }
 
     /**
@@ -275,6 +345,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<U>( new TransformingIterator<T,U>( iterator, map, false ), lock ) ;
     }
 
+    public <U> Stream<U> map( Function<T,U> map ) {
+        return new Stream<U>( new TransformingIteratorForFunction<T,U>( iterator, map ), lock ) ;
+    }
+
     /**
      * Maps the elements of a {@code Stream} to a new value as they are requested. Each
      * element plus an index is passed in to a two arg closure, and the result of
@@ -300,6 +374,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<U>( new TransformingIterator<T,U>( iterator, map, true ), lock ) ;
     }
 
+    public <U> Stream<U> mapWithIndex( IndexedFunction<T,U> map ) {
+        return new Stream<U>( new TransformingIteratorForIndexedFunction<T,U>( iterator, map ), lock ) ;
+    }
+
     /**
      *
      * @param predicate The Closure that stops the Stream when it returns {@code true}.
@@ -309,6 +387,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<T>( new UntilIterator<T>( iterator, predicate, false ), lock ) ;
     }
 
+    public Stream<T> until( Predicate<T> predicate ) {
+        return new Stream<T>( new UntilIteratorForPredicate<T>( iterator, predicate ), lock ) ;
+    }
+
     /**
      *
      * @param predicate The Closure that stops the Stream when it returns {@code true}.
@@ -316,6 +398,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      */
     public Stream<T> untilWithIndex( Closure<Boolean> predicate ) {
         return new Stream<T>( new UntilIterator<T>( iterator, predicate, true ), lock ) ;
+    }
+
+    public Stream<T> untilWithIndex( IndexedPredicate<T> predicate ) {
+        return new Stream<T>( new UntilIteratorForIndexedPredicate<T>( iterator, predicate ), lock ) ;
     }
 
     /**
@@ -427,6 +513,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<V>( new ZipIterator<T,U,V>( this.iterator, other, false, map ), lock ) ;
     }
 
+    public <U,V> Stream<V> zip( Iterator<U> other, Function2<T,U,V> map ) {
+        return new Stream<V>( new ZipIteratorForFunction<T,U,V>( this.iterator, other, map ), lock ) ;
+    }
+
     /**
      * Takes another {@code Iterator} or {@code Stream} and calls the three arg {@code Closure}
      * to zip the two together along with the current index.
@@ -449,6 +539,10 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
      */
     public <U,V> Stream<V> zipWithIndex( Iterator<U> other, Closure<V> map ) {
         return new Stream<V>( new ZipIterator<T,U,V>( this.iterator, other, true, map ), lock ) ;
+    }
+
+    public <U,V> Stream<V> zipWithIndex( Iterator<U> other, IndexedFunction2<T,U,V> map ) {
+        return new Stream<V>( new ZipIteratorForIndexedFunction<T,U,V>( this.iterator, other, map ), lock ) ;
     }
 
     /**
@@ -605,7 +699,32 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     }
 
     /**
+     * Construct a {@code Stream} that for every element, returns {@code object}.
+     *
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1 ).take( 3 ).collect() == [ 1, 1, 1 ]
+     * </pre>
+     *
+     * @param <T> The type of the {@code Object}.
+     * @param object The object to return each time an element is requested.
+     * @return A new {@code Stream} wrapping an {@link RepeatingObjectIterator}.
+     */
+    public static <T> Stream<T> from( T object ) {
+        return new Stream<T>( new RepeatingObjectIterator<T>( object ), null ) ;
+    }
+
+    /**
      * Construct a {@code Stream} that iterates every {@code Object} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
+     *
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   String[] elems = [ 'one', 'two', 'three' ]
+     *
+     *   assert Stream.from( elems ).collect() == [ 'one', 'two', 'three' ]
+     * </pre>
      *
      * @param <T> The type of the array.
      * @param array An array of Object to iterate
@@ -619,6 +738,14 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} that iterates every {@code byte} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   byte[] elems = [ 127, 128, 129 ]
+     *
+     *   assert Stream.from( elems ).collect() == [ 127, -128, -127 ]
+     * </pre>
+     *
      * @param array An array of byte to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
@@ -629,6 +756,14 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
 
     /**
      * Construct a {@code Stream} that iterates every {@code Character} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
+     *
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   char[] elems = 'Hello'.toList()
+     *
+     *   assert Stream.from( elems ).collect() == [ 'H', 'e', 'l', 'l', 'o' ]
+     * </pre>
      *
      * @param array An array of char to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
@@ -641,6 +776,14 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} that iterates every {@code Short} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   short[] elems = [ 10, 65535, 65536, 65537, 99 ]
+     *
+     *   assert Stream.from( elems ).collect() == [ 10, -1, 0, 1, 99 ]
+     * </pre>
+     *
      * @param array An array of short to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
@@ -651,6 +794,14 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
 
     /**
      * Construct a {@code Stream} that iterates every {@code Integer} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
+     *
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   int[] elems = [ 10, 65535, 65536, 65537, 99 ]
+     *
+     *   assert Stream.from( elems ).collect() == [ 10, 65535, 65536, 65537, 99 ]
+     * </pre>
      *
      * @param array An array of int to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
@@ -663,6 +814,14 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} that iterates every {@code Long} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   long[] elems = [ 10, 65535, 65536, 65537, 99 ]
+     *
+     *   assert Stream.from( elems ).collect() == [ 10, 65535, 65536, 65537, 99 ]
+     * </pre>
+     *
      * @param array An array of long to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
@@ -673,6 +832,14 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
 
     /**
      * Construct a {@code Stream} that iterates every {@code Float} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
+     *
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   float[] elems = [ 0.1, 0.2, 0.3 ]
+     *
+     *   assert Stream.from( elems ).collect() == [ 0.1f, 0.2f, 0.3f ]
+     * </pre>
      *
      * @param array An array of float to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
@@ -685,6 +852,14 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} that iterates every {@code Double} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   double[] elems = [ 0.1, 0.2, 0.3 ]
+     *
+     *   assert Stream.from( elems ).collect() == [ 0.1, 0.2, 0.3 ]
+     * </pre>
+     *
      * @param array An array of double to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
@@ -696,6 +871,14 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
     /**
      * Construct a {@code Stream} that iterates every {@code Boolean} in an array. First converts the array to an {@link ArrayList}, then wraps the {@code ArrayList.iterator()}.
      *
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   boolean[] elems = [ true, false ]
+     *
+     *   assert Stream.from( elems ).collect() == [ true, false ]
+     * </pre>
+     *
      * @param array An array of boolean to iterate
      * @return A new {@code Stream} wrapping the iterator for the array as a List.
      */
@@ -704,10 +887,6 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         return new Stream<Boolean>( primitiveArrayToList( array ).iterator(), null ) ;
     }
 
-    /* Iterator and Iterable Methods */
-    @Override public Iterator<T> iterator() {
-        return this ;
-    }
     @Override public T next() {
         if( lock != null ) {
             lock.lock() ;
@@ -744,11 +923,7 @@ public class Stream<T> implements Iterator<T>, Iterable<T> {
         int size = Array.getLength( array ) ;
         List list = new ArrayList( size ) ;
         for( int i = 0 ; i < size ; i++ ) {
-            Object item = Array.get( array, i ) ;
-            if( item != null && item.getClass().isArray() && item.getClass().getComponentType().isPrimitive() ) {
-                item = primitiveArrayToList( item ) ;
-            }
-            list.add( item ) ;
+            list.add( Array.get( array, i ) ) ;
         }
         return list ;
     }

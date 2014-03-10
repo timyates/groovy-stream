@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators
+package groovy.stream.iterators.groovy
 
 class ZipIteratorTests extends spock.lang.Specification {
     List a = [ 1, null, 2 ]

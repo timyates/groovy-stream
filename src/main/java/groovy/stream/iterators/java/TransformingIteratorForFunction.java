@@ -14,33 +14,28 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators ;
+package groovy.stream.iterators.java ;
+
+import groovy.stream.functions.Function ;
+import groovy.stream.iterators.groovy.TransformingIterator ;
 
 import java.util.Iterator ;
 
-public class LimitedIterator<T> implements Iterator<T> {
-    private final Iterator<T> delegate ;
-    private int limit ;
+public class TransformingIteratorForFunction<T,U> extends TransformingIterator<T,U> {
+    private final Function<T,U> mappingFn ;
 
-    public LimitedIterator( Iterator<T> delegate, int limit ) {
-        this.delegate = delegate ;
-        this.limit = limit ;
+    public TransformingIteratorForFunction( Iterator<T> iterator, Function<T, U> mapping ) {
+        super( iterator, null, false ) ;
+        this.mappingFn = mapping ;
     }
 
     @Override
-    public boolean hasNext() {
-        return delegate.hasNext() && limit > 0 ;
+    protected void setDelegate( T next ) {
+        // Cannot set delegate
     }
 
     @Override
-    public T next() {
-    	T ret = delegate.next() ;
-    	limit-- ;
-    	return ret ;
-    }
-
-    @Override
-    public void remove() {
-        delegate.remove() ;
+    protected U getMappedValue( T next ) {
+        return mappingFn.call( next );
     }
 }

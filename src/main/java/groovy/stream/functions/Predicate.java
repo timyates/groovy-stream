@@ -14,27 +14,8 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators ;
+package groovy.stream.functions ;
 
-import java.util.Enumeration ;
-import java.util.Iterator ;
-
-public class EnumerationIterator<T> implements Iterator<T> {
-	private final Enumeration<? extends T> delegate ;
-
-	public EnumerationIterator( Enumeration<? extends T> delegate ) {
-		this.delegate = delegate ;
-	}
-
-	public boolean hasNext() {
-		return delegate.hasMoreElements() ;
-	}
-
-	public T next() {
-		return delegate.nextElement() ;
-	}
-
-	public void remove() {
-        throw new UnsupportedOperationException() ;
-	}
+public interface Predicate<T> {
+    boolean call( T value ) ;
 }

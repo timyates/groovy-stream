@@ -14,33 +14,28 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators ;
+package groovy.stream.iterators.java ;
+
+import groovy.stream.functions.Predicate ;
+import groovy.stream.iterators.groovy.UntilIterator ;
 
 import java.util.Iterator ;
 
-public class LimitedIterator<T> implements Iterator<T> {
-    private final Iterator<T> delegate ;
-    private int limit ;
+public class UntilIteratorForPredicate<T> extends UntilIterator<T> {
+    private final Predicate<T> predicateFn ;
 
-    public LimitedIterator( Iterator<T> delegate, int limit ) {
-        this.delegate = delegate ;
-        this.limit = limit ;
+    public UntilIteratorForPredicate( Iterator<T> iterator, Predicate<T> predicateFn ) {
+        super( iterator, null, false ) ;
+        this.predicateFn = predicateFn ;
     }
 
     @Override
-    public boolean hasNext() {
-        return delegate.hasNext() && limit > 0 ;
+    protected void setDelegate() {
+        // Cannot set delegate
     }
 
     @Override
-    public T next() {
-    	T ret = delegate.next() ;
-    	limit-- ;
-    	return ret ;
-    }
-
-    @Override
-    public void remove() {
-        delegate.remove() ;
+    protected boolean performCheck() {
+        return predicateFn.call( current ) ;
     }
 }

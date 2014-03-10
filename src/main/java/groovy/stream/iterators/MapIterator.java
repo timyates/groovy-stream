@@ -21,24 +21,17 @@ import java.util.Iterator ;
 import java.util.LinkedHashMap ;
 import java.util.List ;
 import java.util.Map ;
-import java.util.NoSuchElementException ;
 
-public class MapIterator<T,U> implements Iterator<Map<T,U>> {
+public class MapIterator<T,U> extends AbstractIterator<Map<T,U>> {
     private final Map<T,Iterable<U>> iterables ;
     private final Map<T,Iterator<U>> iterators ;
     private final List<T>            keys ;
 
-    private boolean  exhausted ;
-    private boolean  loaded ;
-    private Map<T,U> current ;
-
     public MapIterator( Map<T,? extends Iterable<U>> underlying ) {
+        super( null ) ;
         this.iterables = new LinkedHashMap<T,Iterable<U>>();
         this.iterators = new LinkedHashMap<T,Iterator<U>>();
         this.keys = new ArrayList<T>();
-        this.exhausted = false;
-        this.current = null;
-        this.loaded = false;
         for( Map.Entry<T,? extends Iterable<U>> entry : underlying.entrySet() ) {
             keys.add( entry.getKey() ) ;
             iterables.put( entry.getKey(), entry.getValue() ) ;
@@ -53,7 +46,8 @@ public class MapIterator<T,U> implements Iterator<Map<T,U>> {
         }
     }
 
-    private void loadNext() {
+    @Override
+    protected void loadNext() {
         if( current == null ) {
             loadFirst() ;
         }
@@ -74,30 +68,5 @@ public class MapIterator<T,U> implements Iterator<Map<T,U>> {
                 }
             }
         }
-    }
-
-    @Override
-    public boolean hasNext() {
-        if( !loaded ) {
-            loadNext() ;
-            loaded = true ;
-        }
-        return !exhausted ;
-    }
-
-    @Override
-    public Map<T,U> next() {
-        hasNext() ;
-        if( exhausted ) {
-            throw new NoSuchElementException( "MapIterator has been exhausted and contains no more elements" ) ;
-        }
-        Map<T,U> ret = new LinkedHashMap<T,U>( current ) ;
-        loaded = false ;
-        return ret ;
-    }
-
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException() ;
     }
 }

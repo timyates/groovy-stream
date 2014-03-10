@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators
+package groovy.stream.iterators.groovy
 
-class FilteringIteratorTests extends spock.lang.Specification {
+class UntilIteratorTests extends spock.lang.Specification {
 
-    def list = [ 1, 2, null, 4, 5 ]
-    FilteringIterator iter
+    def list  = [ 1, 2, null, 4, 5 ]
+    UntilIterator iter
 
     def setup() {
-        iter = new FilteringIterator( list.iterator(), { it -> ( it ?: 0 ) % 2 }, false )
+        iter = new UntilIterator( list.iterator(), { it -> it > 3 }, false )
     }
 
     def "collect should return values"() {
         when:
             def result = iter.collect()
         then:
-            result == [ 1, 5 ]
+            result == [ 1, 2, null ]
     }
 
     def "call to next with no hasNext should work"() {
@@ -52,5 +52,15 @@ class FilteringIteratorTests extends spock.lang.Specification {
 
         then:
             NoSuchElementException ex = thrown()
+    }
+
+    def "Test UntilIterator which never passes predicate"() {
+        when:
+            def iter = new UntilIterator( list.iterator(), { it -> it == 'NOTFOUND' }, false )
+            def result = iter.collect()
+            iter.next()
+        then:
+            NoSuchElementException ex = thrown()
+            result == [ 1, 2, null, 4, 5 ]
     }
 }

@@ -17,66 +17,33 @@
 package groovy.stream.iterators ;
 
 import java.util.Iterator ;
-import java.util.NoSuchElementException ;
 
-public class SkipIterator<T> implements Iterator<T> {
-    private final Iterator<T>   parent ;
-
+public class SkipIterator<T> extends AbstractIterator<T> {
     private int     numberToSkip ;
-    private T       current ;
-    private boolean loaded ;
-    private boolean exhausted ;
 
-    public SkipIterator( Iterator<T> parent, int numberToSkip ) {
-        this.parent = parent ;
+    public SkipIterator( Iterator<T> parentIterator, int numberToSkip ) {
+        super( parentIterator ) ;
         this.numberToSkip = numberToSkip ;
-        this.loaded = false ;
-        this.current = null ;
-        this.exhausted = false ;
     }
 
     @Override
-    public void remove() {
-        throw new UnsupportedOperationException() ;
-    }
-
-    private void loadNext() {
+    protected void loadNext() {
         while( !exhausted ) {
             if( numberToSkip-- <= 0 ) {
                 break ;
             }
-            else if( parent.hasNext() ) {
-                current = parent.next() ;
+            else if( iterator.hasNext() ) {
+                current = iterator.next() ;
             }
             else {
                 exhausted = true ;
             }
         }
-        if( parent.hasNext() ) {
-            current = parent.next() ;
+        if( iterator.hasNext() ) {
+            current = iterator.next() ;
         }
         else {
             exhausted = true ;
         }
-    }
-
-    @Override
-    public boolean hasNext() {
-        if( !loaded ) {
-            loadNext() ;
-            loaded = true ;
-        }
-        return !exhausted ;
-    }
-
-    @Override
-    public T next() {
-        hasNext() ;
-        if( exhausted ) {
-            throw new NoSuchElementException( "SkipIterator has been exhausted and contains no more elements" ) ;
-        }
-        T ret = current ;
-        loaded = false ;
-        return ret ;
     }
 }

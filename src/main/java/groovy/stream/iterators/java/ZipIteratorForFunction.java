@@ -14,27 +14,23 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators ;
+package groovy.stream.iterators.java ;
 
-import java.util.Enumeration ;
+import groovy.stream.functions.Function2 ;
+import groovy.stream.iterators.groovy.ZipIterator ;
+
 import java.util.Iterator ;
 
-public class EnumerationIterator<T> implements Iterator<T> {
-	private final Enumeration<? extends T> delegate ;
+public class ZipIteratorForFunction<T,U,V> extends ZipIterator<T,U,V> {
+    private final Function2<T,U,V> function ;
 
-	public EnumerationIterator( Enumeration<? extends T> delegate ) {
-		this.delegate = delegate ;
-	}
+    public ZipIteratorForFunction( Iterator<T> iter1, Iterator<U> iter2, Function2<T,U,V> method ) {
+        super( iter1, iter2, false, null ) ;
+        this.function = method ;
+    }
 
-	public boolean hasNext() {
-		return delegate.hasMoreElements() ;
-	}
-
-	public T next() {
-		return delegate.nextElement() ;
-	}
-
-	public void remove() {
-        throw new UnsupportedOperationException() ;
-	}
+    @Override
+    protected V performZip( T a, U b ) {
+        return function.call( a, b ) ;
+    }
 }

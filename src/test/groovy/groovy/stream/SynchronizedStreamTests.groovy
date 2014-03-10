@@ -23,11 +23,23 @@ class SynchronizedStreamTests extends spock.lang.Specification {
         when:
             def t = s.map { it * 2 }
         then:
+            t.take( 3 ).collect() == [ 2, 2, 2 ]
             s.synchronized == true
             t.synchronized == true
     }
 
-    def "Should allow multiple threads reading from the map stream"() {
+    def "Synchronizing something twice makes no difference"() {
+        setup:
+            def s = Stream.from( 1 ).asSynchronized()
+        when:
+            def t = s.map { it * 2 }.asSynchronized()
+        then:
+            t.take( 3 ).collect() == [ 2, 2, 2 ]
+            s.synchronized == true
+            t.synchronized == true
+    }
+
+  def "Should allow multiple threads reading from the map stream"() {
         setup:
             def s = Stream.from( x:1..10, y:1..10 ).asSynchronized()
 

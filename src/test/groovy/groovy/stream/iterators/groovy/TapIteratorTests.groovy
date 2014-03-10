@@ -14,28 +14,30 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators
+package groovy.stream.iterators.groovy
 
-class UntilIteratorTests extends spock.lang.Specification {
-
-    def list  = [ 1, 2, null, 4, 5 ]
-    UntilIterator iter
+class TapIteratorTests extends spock.lang.Specification {
+    def inputList = [ 1, 2, null, 4, 5 ]
+    def list = []
+    TapIterator iter
 
     def setup() {
-        iter = new UntilIterator( list.iterator(), { it -> it > 3 }, false )
+        iter = new TapIterator( inputList.iterator(), 1, true, { object, index -> list << [ index, object ] } )
     }
 
     def "collect should return values"() {
         when:
             def result = iter.collect()
         then:
-            result == [ 1, 2, null ]
+            result == [ 1, 2, null, 4, 5 ]
+            list   == [ [ 0, 1 ], [ 1, 2 ], [ 2, null ], [ 3, 4 ], [ 4, 5 ] ]
     }
 
     def "call to next with no hasNext should work"() {
         expect:
             iter.next() == 1
             iter.hasNext() == true
+            list == [ [ 0, 1 ] ]
     }
 
     def "remove should throw UnsupportedOperationException"() {
@@ -52,15 +54,5 @@ class UntilIteratorTests extends spock.lang.Specification {
 
         then:
             NoSuchElementException ex = thrown()
-    }
-
-    def "Test UntilIterator which never passes predicate"() {
-        when:
-            def iter = new UntilIterator( list.iterator(), { it -> it == 'NOTFOUND' }, false )
-            def result = iter.collect()
-            iter.next()
-        then:
-            NoSuchElementException ex = thrown()
-            result == [ 1, 2, null, 4, 5 ]
     }
 }

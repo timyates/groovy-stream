@@ -14,33 +14,28 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators ;
+package groovy.stream.iterators.java ;
 
+import groovy.stream.functions.Function ;
+import groovy.stream.iterators.groovy.FlatMapIterator ;
+import java.util.Collection ;
 import java.util.Iterator ;
 
-public class LimitedIterator<T> implements Iterator<T> {
-    private final Iterator<T> delegate ;
-    private int limit ;
+public class FlatMapIteratorForFunction<T,U> extends FlatMapIterator<T,U> {
+    private final Function<T,? extends Collection<U>> mappingFn ;
 
-    public LimitedIterator( Iterator<T> delegate, int limit ) {
-        this.delegate = delegate ;
-        this.limit = limit ;
+    public FlatMapIteratorForFunction( Iterator<T> iterator, Function<T, ? extends Collection<U>> mapping ) {
+        super( iterator, null, false ) ;
+        this.mappingFn = mapping ;
     }
 
     @Override
-    public boolean hasNext() {
-        return delegate.hasNext() && limit > 0 ;
+    protected void setDelegate( T next ) {
+        // Cannot set delegate
     }
 
     @Override
-    public T next() {
-    	T ret = delegate.next() ;
-    	limit-- ;
-    	return ret ;
-    }
-
-    @Override
-    public void remove() {
-        delegate.remove() ;
+    protected Collection<U> performMapping( T next ) {
+        return mappingFn.call( next ) ;
     }
 }
