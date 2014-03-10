@@ -2,7 +2,9 @@ language: groovy
 jdk:
   - oraclejdk7
 install: true
+env:
+  - TERM=dumb
 script:
-  - TERM=dumb ./gradlew check
+  - ./gradlew check
 after_success:
-  - TERM=dumb ./gradlew jacocoTestReport coveralls
+  - ./gradle cobertura coveralls

@@ -6,6 +6,7 @@ buildscript {
     dependencies {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.3'
         classpath 'org._10ne.gradle:rest-gradle-plugin:0.1.1'
+        classpath 'net.saliman:gradle-cobertura-plugin:2.0.0' // coveralls plugin depends on cobertura plugin
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:0.2.1'
     }
 }
@@ -15,7 +16,7 @@ apply plugin: 'bintray'
 apply plugin: 'maven-publish'
 apply plugin: 'idea'
 apply plugin: 'rest'
-apply plugin: 'jacoco'
+apply plugin: 'cobertura'
 apply plugin: 'coveralls'
 
 group               = 'com.bloidonia'
@@ -69,30 +70,17 @@ task javadocCopy( type: Copy ) {
     into 'docs/assets/javadoc'
 }
 
-jacoco {
-    toolVersion = "0.6.4.201312101107"
-}
-jacocoTestReport {
-    group = "Reporting"
-    description = "Generate Jacoco coverage reports after running tests."
-    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
-    reports {
-        xml.enabled = true // coveralls plugin depends on xml format report
-        html.enabled = true
-    }
-}
-jacocoTestReport.dependsOn( test )
+cobertura.coverageFormats = ['html', 'xml'] // coveralls plugin depends on xml format report
 
-task jacocoCopy( type: Copy ) {
+task coverageCopy( type: Copy ) {
     from "${project.buildDir}/reports/jacoco/test/html"
     into 'docs/assets/coverage'
 }
-jacocoCopy.dependsOn( jacocoTestReport )
 
 task jbake( type:Exec ) {
     commandLine 'jbake', 'docs', 'docs/output'
 }
-jbake.dependsOn( javadocCopy, jacocoCopy )
+jbake.dependsOn( javadocCopy, coverageCopy )
 
 compileGroovy.dependsOn( generateModule )
 test.dependsOn( jar )
