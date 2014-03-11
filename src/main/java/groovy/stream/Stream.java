@@ -53,12 +53,10 @@ import java.util.zip.ZipFile ;
  * @param <T> the type of each element returned from the Stream.
  */
 public class Stream<T> implements Iterator<T> {
-    private final ReentrantLock lock ;
     private final Iterator<T> iterator ;
 
-    private Stream( Iterator<T> iterator, ReentrantLock lock ) {
+    private Stream( Iterator<T> iterator ) {
         this.iterator = iterator ;
-        this.lock = lock ;
     }
 
     /**
@@ -77,7 +75,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link FilteringIterator}
      */
     public Stream<T> filter( Closure<Boolean> predicate ) {
-        return new Stream<T>( new FilteringIterator<T>( iterator, predicate, false ), lock ) ;
+        return new Stream<T>( new FilteringIterator<T>( iterator, predicate, false ) ) ;
     }
 
     /**
@@ -88,7 +86,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link FilteringIteratorForPredicate}
      */
     public Stream<T> filter( Predicate<T> predicate ) {
-        return new Stream<T>( new FilteringIteratorForPredicate<T>( iterator, predicate ), lock ) ;
+        return new Stream<T>( new FilteringIteratorForPredicate<T>( iterator, predicate ) ) ;
     }
 
     /**
@@ -107,7 +105,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link FilteringIterator}
      */
     public Stream<T> filterWithIndex( Closure<Boolean> predicate ) {
-        return new Stream<T>( new FilteringIterator<T>( iterator, predicate, true ), lock ) ;
+        return new Stream<T>( new FilteringIterator<T>( iterator, predicate, true ) ) ;
     }
 
     /**
@@ -118,7 +116,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link FilteringIteratorForIndexedPredicate}
      */
     public Stream<T> filterWithIndex( IndexedPredicate<T> predicate ) {
-        return new Stream<T>( new FilteringIteratorForIndexedPredicate<T>( iterator, predicate ), lock ) ;
+        return new Stream<T>( new FilteringIteratorForIndexedPredicate<T>( iterator, predicate ) ) ;
     }
 
     /**
@@ -138,7 +136,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link ConcatenationIterator}
      */
     public Stream<T> concat( Iterator<? extends T> other ) {
-        return new Stream<T>( new ConcatenationIterator<T>( iterator, other ), lock ) ;
+        return new Stream<T>( new ConcatenationIterator<T>( iterator, other ) ) ;
     }
 
     /**
@@ -155,7 +153,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link SkipIterator}
      */
     public Stream<T> skip( int n ) {
-        return new Stream<T>( new SkipIterator<T>( iterator, n ), lock ) ;
+        return new Stream<T>( new SkipIterator<T>( iterator, n ) ) ;
     }
 
     /**
@@ -177,7 +175,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link FlatMapIterator}
      */
     public <U> Stream<U> flatMap( Closure<? extends Collection<U>> map ) { 
-        return new Stream<U>( new FlatMapIterator<T,U>( iterator, map, false ), lock ) ;
+        return new Stream<U>( new FlatMapIterator<T,U>( iterator, map, false ) ) ;
     }
 
     /**
@@ -191,7 +189,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link FlatMapIteratorForFunction}
      */
     public <U> Stream<U> flatMap( Function<T,? extends Collection<U>> map ) {
-        return new Stream<U>( new FlatMapIteratorForFunction<T,U>( iterator, map ), lock ) ;
+        return new Stream<U>( new FlatMapIteratorForFunction<T,U>( iterator, map ) ) ;
     }
 
     /**
@@ -213,7 +211,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link FlatMapIterator}
      */
     public <U> Stream<U> flatMapWithIndex( Closure<? extends Collection<U>> map ) { 
-        return new Stream<U>( new FlatMapIterator<T,U>( iterator, map, true ), lock ) ;
+        return new Stream<U>( new FlatMapIterator<T,U>( iterator, map, true ) ) ;
     }
 
     /**
@@ -227,7 +225,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link FlatMapIteratorForIndexedFunction}
      */
     public <U> Stream<U> flatMapWithIndex( IndexedFunction<T,? extends Collection<U>> map ) {
-        return new Stream<U>( new FlatMapIteratorForIndexedFunction<T,U>( iterator, map ), lock ) ;
+        return new Stream<U>( new FlatMapIteratorForIndexedFunction<T,U>( iterator, map ) ) ;
     }
 
     /**
@@ -275,7 +273,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link TapIterator}
      */
     public Stream<T> tapEvery( int n, Closure<Void> output ) {
-        return new Stream<T>( new TapIterator<T>( iterator, n, false, output ), lock ) ;
+        return new Stream<T>( new TapIterator<T>( iterator, n, false, output ) ) ;
     }
 
     /**
@@ -287,7 +285,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link TapIteratorForFunction}
      */
     public Stream<T> tapEvery( int n, Function<T,Void> output ) {
-        return new Stream<T>( new TapIteratorForFunction<T>( iterator, n, output ), lock ) ;
+        return new Stream<T>( new TapIteratorForFunction<T>( iterator, n, output ) ) ;
     }
 
     /**
@@ -335,7 +333,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link TapIterator}
      */
     public Stream<T> tapEveryWithIndex( int n, Closure<Void> output ) {
-        return new Stream<T>( new TapIterator<T>( iterator, n, true, output ), lock ) ;
+        return new Stream<T>( new TapIterator<T>( iterator, n, true, output ) ) ;
     }
 
     /**
@@ -347,7 +345,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link TapIteratorForIndexedFunction}
      */
     public Stream<T> tapEveryWithIndex( int n, IndexedFunction<T,Void> output ) {
-        return new Stream<T>( new TapIteratorForIndexedFunction<T>( iterator, n, output ), lock ) ;
+        return new Stream<T>( new TapIteratorForIndexedFunction<T>( iterator, n, output ) ) ;
     }
 
     /**
@@ -372,7 +370,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link TransformingIterator}
      */
     public <U> Stream<U> map( Closure<U> map ) {
-        return new Stream<U>( new TransformingIterator<T,U>( iterator, map, false ), lock ) ;
+        return new Stream<U>( new TransformingIterator<T,U>( iterator, map, false ) ) ;
     }
 
     /**
@@ -386,7 +384,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link TransformingIteratorForFunction}
      */
     public <U> Stream<U> map( Function<T,U> map ) {
-        return new Stream<U>( new TransformingIteratorForFunction<T,U>( iterator, map ), lock ) ;
+        return new Stream<U>( new TransformingIteratorForFunction<T,U>( iterator, map ) ) ;
     }
 
     /**
@@ -411,7 +409,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link TransformingIterator}
      */
     public <U> Stream<U> mapWithIndex( Closure<U> map ) {
-        return new Stream<U>( new TransformingIterator<T,U>( iterator, map, true ), lock ) ;
+        return new Stream<U>( new TransformingIterator<T,U>( iterator, map, true ) ) ;
     }
 
     /**
@@ -425,7 +423,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link TransformingIteratorForIndexedFunction}
      */
     public <U> Stream<U> mapWithIndex( IndexedFunction<T,U> map ) {
-        return new Stream<U>( new TransformingIteratorForIndexedFunction<T,U>( iterator, map ), lock ) ;
+        return new Stream<U>( new TransformingIteratorForIndexedFunction<T,U>( iterator, map ) ) ;
     }
 
     /**
@@ -443,7 +441,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping an {@link UntilIterator}
      */
     public Stream<T> until( Closure<Boolean> predicate ) {
-        return new Stream<T>( new UntilIterator<T>( iterator, predicate, false ), lock ) ;
+        return new Stream<T>( new UntilIterator<T>( iterator, predicate, false ) ) ;
     }
 
     /**
@@ -454,7 +452,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping an {@link UntilIteratorForPredicate}
      */
     public Stream<T> until( Predicate<T> predicate ) {
-        return new Stream<T>( new UntilIteratorForPredicate<T>( iterator, predicate ), lock ) ;
+        return new Stream<T>( new UntilIteratorForPredicate<T>( iterator, predicate ) ) ;
     }
 
     /**
@@ -473,7 +471,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping an {@link UntilIterator}
      */
     public Stream<T> untilWithIndex( Closure<Boolean> predicate ) {
-        return new Stream<T>( new UntilIterator<T>( iterator, predicate, true ), lock ) ;
+        return new Stream<T>( new UntilIterator<T>( iterator, predicate, true ) ) ;
     }
 
     /**
@@ -484,7 +482,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping an {@link UntilIteratorForIndexedPredicate}
      */
     public Stream<T> untilWithIndex( IndexedPredicate<T> predicate ) {
-        return new Stream<T>( new UntilIteratorForIndexedPredicate<T>( iterator, predicate ), lock ) ;
+        return new Stream<T>( new UntilIteratorForIndexedPredicate<T>( iterator, predicate ) ) ;
     }
 
     /**
@@ -569,7 +567,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping an {@link CollatingIterator}
      */
     public Stream<Collection<T>> collate( int size, int step, boolean keepRemainder ) {
-        return new Stream<Collection<T>>( new CollatingIterator<T>( this.iterator, size, step, keepRemainder ), lock ) ;
+        return new Stream<Collection<T>>( new CollatingIterator<T>( this.iterator, size, step, keepRemainder ) ) ;
     }
 
     /**
@@ -593,7 +591,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link ZipIterator}
      */
     public <U,V> Stream<V> zip( Iterator<U> other, Closure<V> map ) {
-        return new Stream<V>( new ZipIterator<T,U,V>( this.iterator, other, false, map ), lock ) ;
+        return new Stream<V>( new ZipIterator<T,U,V>( this.iterator, other, false, map ) ) ;
     }
 
     /**
@@ -608,7 +606,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link ZipIteratorForFunction}
      */
     public <U,V> Stream<V> zip( Iterator<U> other, Function2<T,U,V> map ) {
-        return new Stream<V>( new ZipIteratorForFunction<T,U,V>( this.iterator, other, map ), lock ) ;
+        return new Stream<V>( new ZipIteratorForFunction<T,U,V>( this.iterator, other, map ) ) ;
     }
 
     /**
@@ -633,7 +631,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link ZipIterator}
      */
     public <U,V> Stream<V> zipWithIndex( Iterator<U> other, Closure<V> map ) {
-        return new Stream<V>( new ZipIterator<T,U,V>( this.iterator, other, true, map ), lock ) ;
+        return new Stream<V>( new ZipIterator<T,U,V>( this.iterator, other, true, map ) ) ;
     }
 
     /**
@@ -649,7 +647,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link ZipIteratorForIndexedFunction}
      */
     public <U,V> Stream<V> zipWithIndex( Iterator<U> other, IndexedFunction2<T,U,V> map ) {
-        return new Stream<V>( new ZipIteratorForIndexedFunction<T,U,V>( this.iterator, other, map ), lock ) ;
+        return new Stream<V>( new ZipIteratorForIndexedFunction<T,U,V>( this.iterator, other, map ) ) ;
     }
 
     /**
@@ -667,30 +665,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link LimitedIterator}
      */
     public Stream<T> take( int n ) {
-        return new Stream<T>( new LimitedIterator<T>( this.iterator, n ), lock ) ;
-    }
-
-    /**
-     * Is this stream currently synchonized on a lock?
-     *
-     * @return true if synchronized, false otherwise.
-     */
-    public boolean isSynchronized() {
-        return lock != null ;
-    }
-
-    /**
-     * Returns a new {@code Stream} with a {@link ReentrantLock} for {@code hasNext} and {@code next}.
-     *
-     * @return The new locked {@code Stream}.
-     */
-    public Stream<T> asSynchronized() {
-        if( lock != null ) {
-            return this ;
-        }
-        else {
-            return new Stream<T>( this.iterator, new ReentrantLock() ) ;
-        }
+        return new Stream<T>( new LimitedIterator<T>( this.iterator, n ) ) ;
     }
 
     /**
@@ -717,7 +692,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link MapIterator}.
      */
     public static <K,V> Stream<Map<K,V>> from( Map<K,? extends Iterable<V>> map ) {
-        return new Stream<Map<K,V>>( new MapIterator<K,V>( map ), null ) ;
+        return new Stream<Map<K,V>>( new MapIterator<K,V>( map ) ) ;
     }
 
     /**
@@ -735,7 +710,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping the iterator of the other {@code Stream}.
      */
     public static <T> Stream<T> from( Stream<T> stream ) {
-        return new Stream<T>( stream.iterator, stream.lock ) ;
+        return new Stream<T>( stream.iterator ) ;
     }
 
     /**
@@ -753,7 +728,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping the {@code iterable.iterator()}.
      */
     public static <T> Stream<T> from( Iterable<T> iterable ) {
-        return new Stream<T>( iterable.iterator(), null ) ;
+        return new Stream<T>( iterable.iterator() ) ;
     }
 
     /**
@@ -771,7 +746,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping the iterator.
      */
     public static <T> Stream<T> from( Iterator<T> iterator ) {
-        return new Stream<T>( iterator, null ) ;
+        return new Stream<T>( iterator ) ;
     }
 
     /**
@@ -781,7 +756,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link BufferedReaderIterator}.
      */
     public static Stream<String> from( BufferedReader reader ) {
-        return new Stream<String>( new BufferedReaderIterator( reader ), null ) ;
+        return new Stream<String>( new BufferedReaderIterator( reader ) ) ;
     }
 
     /**
@@ -791,7 +766,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping an {@link EnumerationIterator}.
      */
     public static Stream<ZipEntry> from( ZipFile file ) {
-        return new Stream<ZipEntry>( new EnumerationIterator<ZipEntry>( file.entries() ), null ) ;
+        return new Stream<ZipEntry>( new EnumerationIterator<ZipEntry>( file.entries() ) ) ;
     }
 
     /**
@@ -801,7 +776,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping an {@link EnumerationIterator}.
      */
     public static Stream<JarEntry> from( JarFile file ) {
-        return new Stream<JarEntry>( new EnumerationIterator<JarEntry>( file.entries() ), null ) ;
+        return new Stream<JarEntry>( new EnumerationIterator<JarEntry>( file.entries() ) ) ;
     }
 
     /**
@@ -812,7 +787,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping an {@link RepeatingClosureIterator}.
      */
     public static <T> Stream<T> from( Closure<T> closure ) {
-        return new Stream<T>( new RepeatingClosureIterator<T>( closure ), null ) ;
+        return new Stream<T>( new RepeatingClosureIterator<T>( closure ) ) ;
     }
 
     /**
@@ -829,7 +804,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping an {@link RepeatingObjectIterator}.
      */
     public static <T> Stream<T> from( T object ) {
-        return new Stream<T>( new RepeatingObjectIterator<T>( object ), null ) ;
+        return new Stream<T>( new RepeatingObjectIterator<T>( object ) ) ;
     }
 
     /**
@@ -849,7 +824,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static <T> Stream<T> from( T[] array ) {
-        return new Stream<T>( primitiveArrayToList( array ).iterator(), null ) ;
+        return new Stream<T>( primitiveArrayToList( array ).iterator() ) ;
     }
 
     /**
@@ -868,7 +843,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static Stream<Byte> from( byte[] array ) {
-        return new Stream<Byte>(      primitiveArrayToList( array ).iterator(), null ) ;
+        return new Stream<Byte>(      primitiveArrayToList( array ).iterator() ) ;
     }
 
     /**
@@ -887,7 +862,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static Stream<Character> from( char[] array ) {
-        return new Stream<Character>( primitiveArrayToList( array ).iterator(), null ) ;
+        return new Stream<Character>( primitiveArrayToList( array ).iterator() ) ;
     }
 
     /**
@@ -906,7 +881,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static Stream<Short> from( short[] array ) {
-        return new Stream<Short>( primitiveArrayToList( array ).iterator(), null ) ;
+        return new Stream<Short>( primitiveArrayToList( array ).iterator() ) ;
     }
 
     /**
@@ -925,7 +900,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static Stream<Integer> from( int[] array ) {
-        return new Stream<Integer>( primitiveArrayToList( array ).iterator(), null ) ;
+        return new Stream<Integer>( primitiveArrayToList( array ).iterator() ) ;
     }
 
     /**
@@ -944,7 +919,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static Stream<Long> from( long[] array ) {
-        return new Stream<Long>( primitiveArrayToList( array ).iterator(), null ) ;
+        return new Stream<Long>( primitiveArrayToList( array ).iterator() ) ;
     }
 
     /**
@@ -963,7 +938,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static Stream<Float> from( float[] array ) {
-        return new Stream<Float>( primitiveArrayToList( array ).iterator(), null ) ;
+        return new Stream<Float>( primitiveArrayToList( array ).iterator() ) ;
     }
 
     /**
@@ -982,7 +957,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static Stream<Double> from( double[] array ) {
-        return new Stream<Double>( primitiveArrayToList( array ).iterator(), null ) ;
+        return new Stream<Double>( primitiveArrayToList( array ).iterator() ) ;
     }
 
     /**
@@ -1001,34 +976,14 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static Stream<Boolean> from( boolean[] array ) {
-        return new Stream<Boolean>( primitiveArrayToList( array ).iterator(), null ) ;
+        return new Stream<Boolean>( primitiveArrayToList( array ).iterator() ) ;
     }
 
     @Override public T next() {
-        if( lock != null ) {
-            lock.lock() ;
-        }
-        try {
-            return iterator.next() ;
-        }
-        finally {
-            if( lock != null ) {
-                lock.unlock() ;
-            }
-        }
+        return iterator.next() ;
     }
     @Override public boolean hasNext() {
-        if( lock != null ) {
-            lock.lock() ;
-        }
-        try {
-            return iterator.hasNext() ;
-        }
-        finally {
-            if( lock != null ) {
-                lock.unlock() ;
-            }
-        }
+        return iterator.hasNext() ;
     }
     @Override public void remove() {
         iterator.remove() ;

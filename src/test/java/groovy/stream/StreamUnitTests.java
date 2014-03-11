@@ -182,11 +182,4 @@ public class StreamUnitTests {
 
         assertEquals( collectIterator( s ), Arrays.asList( 2, 3, 3, 4, 4, 4 ) );
     }
-
-    @Test
-    public void testSynchronizedStream() {
-        Stream<Integer> s = stream.asSynchronized() ;
-        assertTrue( s.isSynchronized() ) ;
-        assertEquals( collectIterator( s ), Arrays.asList( 1, 2, 3, 4 ) );
-    }
-}
+ }
