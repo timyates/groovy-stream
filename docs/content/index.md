@@ -36,7 +36,7 @@ It is only at the point where we call `collect()` that any integers are generate
 
 We can use the Stream to mimic the behaviour of a list comprehension. Lets say we want to do the following:
 
-> For all values of `x` from 1 to 5 and all values of `y` from 1 to 3, return `x + 1` if `( x + y ) % ( x + 2 ) == 0`
+> For all values of `x` from 1 to 5 and all values of `y` from 1 to 3, return `x + y` if `( x + y ) % ( x + 2 ) == 0`
 
 ```groovy
 def s = Stream.from( x:1..5, y:1..3 )
@@ -140,7 +140,7 @@ There are currently 2 other methods available in a Stream definition:
 
 #### `flatMap`
 
-The `flatMap` step returns a List of elements, and each of this list is then passed
+The `flatMap` step returns a List of elements, and each element of this list is then passed
 individually along the rest of the stream.  Only when the list is exhausted will the
 stream go back to the source for another value to process:
 
