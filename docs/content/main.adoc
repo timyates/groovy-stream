@@ -40,7 +40,7 @@ intermediate Streams).
 .. xref:filters[Filters]
 .. xref:mappings[Mappings]
 .. xref:inspectors[Inspectors]
-.. xref:crossing-the-streams[Crossing the Streams]
+.. xref:java-integration[Java Integration]
 
 [[getting-started]]
 == Getting started
@@ -53,7 +53,7 @@ intermediate Streams).
 <dependency>
     <groupId>com.bloidonia</groupId>
     <artifactId>groovy-stream</artifactId>
-    <version>0.7.0</version>
+    <version>0.8.0</version>
 </dependency>
 ----
 
@@ -62,7 +62,7 @@ intermediate Streams).
 
 [source,groovy]
 ----
-compile "com.bloidonia:groovy-stream:0.7.0"
+compile "com.bloidonia:groovy-stream:0.8.0"
 ----
 
 [[using-grab]]
@@ -70,7 +70,7 @@ compile "com.bloidonia:groovy-stream:0.7.0"
 
 [source,groovy]
 ----
-@Grab( "com.bloidonia:groovy-stream:0.7.0" )
+@Grab( "com.bloidonia:groovy-stream:0.8.0" )
 import groovy.stream.*
 ----
 
@@ -165,6 +165,8 @@ To create a `Stream` class you can either use one of the many static `from` meth
     public static       Stream<Float>     from( float[] array                    )
     public static       Stream<Double>    from( double[] array                   )
     public static       Stream<Boolean>   from( boolean[] array                  )
+    public static       Stream<ZipEntry>  from( ZipFile file                     )
+    public static       Stream<JarEntry>  from( JarFile file                     )
 ----
 
 Or, you can make use of the Groovy Extension class which adds the `toStream()`
@@ -184,6 +186,8 @@ method to:
 - `float[]`
 - `double[]`
 - `boolean[]`
+- `ZipFile`
+- `JarFile`
 
 Once you have this single Iterator `Stream`, you can then perform different operations
 to create a new filtered, transformed, limited or conjoined `Stream`
@@ -191,10 +195,21 @@ to create a new filtered, transformed, limited or conjoined `Stream`
 [[filters]]
 === Filters
 
+TBD
 
 [[mappings]]
 === Mappings
+
+TBD
+
 [[inspectors]]
 === Inspectors
-[[crossing-the-streams]]
-=== Crossing the Streams
+
+TBD
+
+[[java-integration]]
+=== Java integration
+
+As of version `0.8.0`, you can use Java friendly versions of all of the above `Closure` taking methods to access `groovy-stream` functionality from native Java.
+
+
