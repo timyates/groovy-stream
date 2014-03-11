@@ -16,6 +16,14 @@
 
 package groovy.stream.functions ;
 
+/**
+ * Describes a function which transforms a value of type {@code T} to one of type {@code S}.
+ *
+ * @author Tim Yates
+ * @since 0.8
+ * @param <T> The input type
+ * @param <S> The output type
+ */
 public interface Function<T,S> {
     S call( T value ) ;
 }

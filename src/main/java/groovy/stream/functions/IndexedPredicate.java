@@ -16,6 +16,13 @@
 
 package groovy.stream.functions ;
 
+/**
+ * Given a value of type {@code T} and an {@link Integer} index, returns a {@code boolean}.
+ *
+ * @author Tim Yates
+ * @since 0.8
+ * @param <T> The type of the input variable.
+ */
 public interface IndexedPredicate<T> {
     boolean call( T value, Integer index ) ;
 }

@@ -231,7 +231,7 @@ public class Stream<T> implements Iterator<T> {
     }
 
     /**
-     * Inspect every value in the {@code Stream} and pass it on.
+     * Inspect every value in the {@code Stream} and pass it on unmodified.
      * 
      * <pre class="groovyTestCase">
      *   import groovy.stream.*
@@ -248,10 +248,17 @@ public class Stream<T> implements Iterator<T> {
      */
     public Stream<T> tap( Closure<Void> output ) { return tapEvery( 1, output ) ; }
 
+    /**
+     * Inspect every value in the {@code Stream} and pass it on.
+     *
+     * @see #tap(groovy.lang.Closure)
+     * @param output The {@code Function} to be called for every element
+     * @return A new {@code Stream} wrapping a {@link TapIteratorForFunction}
+     */
     public Stream<T> tap( Function<T,Void> output ) { return tapEvery( 1, output ) ; }
 
     /**
-     * Inspect the every nth value in the {@code Stream} and pass it on.
+     * Inspect the every nth value in the {@code Stream} and pass it on unmodified.
      * 
      * <pre class="groovyTestCase">
      *   import groovy.stream.*
@@ -271,12 +278,20 @@ public class Stream<T> implements Iterator<T> {
         return new Stream<T>( new TapIterator<T>( iterator, n, false, output ), lock ) ;
     }
 
+    /**
+     * Inspect the every nth value in the {@code Stream} and pass it on.
+     *
+     * @see #tapEvery(int, groovy.lang.Closure)
+     * @param n the elements to inspect
+     * @param output The {@code Function} to be called for every nth element
+     * @return A new {@code Stream} wrapping a {@link TapIteratorForFunction}
+     */
     public Stream<T> tapEvery( int n, Function<T,Void> output ) {
         return new Stream<T>( new TapIteratorForFunction<T>( iterator, n, output ), lock ) ;
     }
 
     /**
-     * Inspect every value in the {@code Stream} with its {@code index} and pass it on.
+     * Inspect every value in the {@code Stream} with its {@code index} and pass it on unmodified.
      * 
      * <pre class="groovyTestCase">
      *   import groovy.stream.*
@@ -293,10 +308,17 @@ public class Stream<T> implements Iterator<T> {
      */
     public Stream<T> tapWithIndex( Closure<Void> output ) { return tapEveryWithIndex( 1, output ) ; }
 
+    /**
+     * Inspect every value in the {@code Stream} with its {@code index} and pass it on unmodified.
+     *
+     * @see #tapWithIndex(groovy.lang.Closure)
+     * @param output The {@link IndexedFunction} to call for each element in the Stream.
+     * @return A new {@code Stream} wrapping a {@link TapIteratorForIndexedFunction}
+     */
     public Stream<T> tapWithIndex( IndexedFunction<T,Void> output ) { return tapEveryWithIndex( 1, output ) ; }
 
     /**
-     * Inspect the every nth value in the {@code Stream} with its index and pass it on.
+     * Inspect the every nth value in the {@code Stream} with its index and pass it on unmodified.
      * 
      * <pre class="groovyTestCase">
      *   import groovy.stream.*
@@ -316,6 +338,14 @@ public class Stream<T> implements Iterator<T> {
         return new Stream<T>( new TapIterator<T>( iterator, n, true, output ), lock ) ;
     }
 
+    /**
+     * Inspect the every nth value in the {@code Stream} with its index and pass it on unmodified.
+     *
+     * @see #tapEveryWithIndex(int, groovy.lang.Closure)
+     * @param n the elements to inspect
+     * @param output The {@link IndexedFunction} to be called for every nth element
+     * @return A new {@code Stream} wrapping a {@link TapIteratorForIndexedFunction}
+     */
     public Stream<T> tapEveryWithIndex( int n, IndexedFunction<T,Void> output ) {
         return new Stream<T>( new TapIteratorForIndexedFunction<T>( iterator, n, output ), lock ) ;
     }
@@ -345,6 +375,16 @@ public class Stream<T> implements Iterator<T> {
         return new Stream<U>( new TransformingIterator<T,U>( iterator, map, false ), lock ) ;
     }
 
+    /**
+     * Maps the elements of a {@code Stream} to a new value as they are requested. Each
+     * element is passed in to a {@link Function}, the result of which is returned as the
+     * next element in the {@code Stream}.
+     *
+     * @see #map(groovy.lang.Closure)
+     * @param <U> The type of the new Stream.
+     * @param map The transforming {@link Function}.
+     * @return A new {@code Stream} wrapping a {@link TransformingIteratorForFunction}
+     */
     public <U> Stream<U> map( Function<T,U> map ) {
         return new Stream<U>( new TransformingIteratorForFunction<T,U>( iterator, map ), lock ) ;
     }
@@ -374,32 +414,75 @@ public class Stream<T> implements Iterator<T> {
         return new Stream<U>( new TransformingIterator<T,U>( iterator, map, true ), lock ) ;
     }
 
+    /**
+     * Maps the elements of a {@code Stream} to a new value as they are requested. Each
+     * element plus an index is passed in to an {@link IndexedFunction}, and the result of
+     * this is returned as the next element in the {@code Stream}.
+     *
+     * @see #mapWithIndex(groovy.lang.Closure)
+     * @param <U> The type of the new Stream.
+     * @param map The transforming {@link IndexedFunction}.
+     * @return A new {@code Stream} wrapping a {@link TransformingIteratorForIndexedFunction}
+     */
     public <U> Stream<U> mapWithIndex( IndexedFunction<T,U> map ) {
         return new Stream<U>( new TransformingIteratorForIndexedFunction<T,U>( iterator, map ), lock ) ;
     }
 
     /**
+     * When the {@link Closure} predicate returns {@code true}, the stream is stopped.
      *
-     * @param predicate The Closure that stops the Stream when it returns {@code true}.
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..5 )
+     *                .until { it &gt; 3 }
+     *                .collect() == [ 1, 2, 3 ]
+     * </pre>
+     *
+     * @param predicate The {@link Closure} that stops the Stream when it returns {@code true}.
      * @return A new {@code Stream} wrapping an {@link UntilIterator}
      */
     public Stream<T> until( Closure<Boolean> predicate ) {
         return new Stream<T>( new UntilIterator<T>( iterator, predicate, false ), lock ) ;
     }
 
+    /**
+     * When the {@link Predicate} returns {@code true}, the stream is stopped.
+     *
+     * @see #until(groovy.lang.Closure)
+     * @param predicate The {@link Predicate} that stops the Stream when it returns {@code true}.
+     * @return A new {@code Stream} wrapping an {@link UntilIteratorForPredicate}
+     */
     public Stream<T> until( Predicate<T> predicate ) {
         return new Stream<T>( new UntilIteratorForPredicate<T>( iterator, predicate ), lock ) ;
     }
 
     /**
+     * Calls the {@link Closure} predicate with the current element and the index in the stream.
+     * When the predicate returns {@code true}, the stream is stopped.
      *
-     * @param predicate The Closure that stops the Stream when it returns {@code true}.
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   assert Stream.from( 1..5 )
+     *                .untilWithIndex { it, index -&gt; index == 2 }
+     *                .collect() == [ 1, 2 ]
+     * </pre>
+     *
+     * @param predicate The {@link Closure} that stops the Stream when it returns {@code true}.
      * @return A new {@code Stream} wrapping an {@link UntilIterator}
      */
     public Stream<T> untilWithIndex( Closure<Boolean> predicate ) {
         return new Stream<T>( new UntilIterator<T>( iterator, predicate, true ), lock ) ;
     }
 
+    /**
+     * Calls the {@link IndexedPredicate} with the current element and the index in the stream.
+     * When the predicate returns {@code true}, the stream is stopped.
+     *
+     * @param predicate The {@link IndexedPredicate} that stops the Stream when it returns {@code true}.
+     * @return A new {@code Stream} wrapping an {@link UntilIteratorForIndexedPredicate}
+     */
     public Stream<T> untilWithIndex( IndexedPredicate<T> predicate ) {
         return new Stream<T>( new UntilIteratorForIndexedPredicate<T>( iterator, predicate ), lock ) ;
     }
@@ -503,8 +586,8 @@ public class Stream<T> implements Iterator<T> {
      *                .collect() == [ "1:a", "2:b", "3:c" ]
      * </pre>
      * 
-     * @param <U> The type of the secondary Stream.
-     * @param <V> The type of the new Stream.
+     * @param <U> The type of the secondary {@link Iterator}.
+     * @param <V> The type of the new {@link Iterator}.
      * @param other The other {@link Iterator}
      * @param map The 2 arg {@link Closure} to call with each next element from the Stream
      * @return A new {@code Stream} wrapping a {@link ZipIterator}
@@ -513,6 +596,17 @@ public class Stream<T> implements Iterator<T> {
         return new Stream<V>( new ZipIterator<T,U,V>( this.iterator, other, false, map ), lock ) ;
     }
 
+    /**
+     * Takes another {@code Iterator} or {@code Stream} and calls the two arg {@code Function2}
+     * to zip the two together.
+     *
+     * @see #zip(java.util.Iterator, groovy.lang.Closure)
+     * @param <U> The type of the secondary {@link Iterator}.
+     * @param <V> The type of the new {@link Iterator}.
+     * @param other The other {@link Iterator}
+     * @param map The 2 arg {@link Function2} to call with each next element from the Stream
+     * @return A new {@code Stream} wrapping a {@link ZipIteratorForFunction}
+     */
     public <U,V> Stream<V> zip( Iterator<U> other, Function2<T,U,V> map ) {
         return new Stream<V>( new ZipIteratorForFunction<T,U,V>( this.iterator, other, map ), lock ) ;
     }
@@ -531,16 +625,29 @@ public class Stream<T> implements Iterator<T> {
      *                .collect() == [ "1:a:0", "2:b:1", "3:c:2" ]
      * </pre>
      * 
-     * @param <U> The type of the secondary Stream.
-     * @param <V> The type of the new Stream.
+     * @param <U> The type of the secondary {@link Iterator}.
+     * @param <V> The type of the new {@link Iterator}.
      * @param other The other {@link Iterator}
-     * @param map The 3 arg {@link Closure} to call with each next element from the Stream and the current stream index
+     * @param map The 3 arg {@link Closure} to call with each next element from the Stream and the
+     *            current stream index
      * @return A new {@code Stream} wrapping a {@link ZipIterator}
      */
     public <U,V> Stream<V> zipWithIndex( Iterator<U> other, Closure<V> map ) {
         return new Stream<V>( new ZipIterator<T,U,V>( this.iterator, other, true, map ), lock ) ;
     }
 
+    /**
+     * Takes another {@code Iterator} or {@code Stream} and calls the three arg {@link IndexedFunction2}
+     * to zip the two together along with the current index.
+     *
+     * @see #zipWithIndex(java.util.Iterator, groovy.lang.Closure)
+     * @param <U> The type of the secondary {@link Iterator}.
+     * @param <V> The type of the new {@link Iterator}.
+     * @param other The other {@link Iterator}
+     * @param map The 3 arg {@link IndexedFunction2} to call with each next element from the Stream and the
+     *            current stream index
+     * @return A new {@code Stream} wrapping a {@link ZipIteratorForIndexedFunction}
+     */
     public <U,V> Stream<V> zipWithIndex( Iterator<U> other, IndexedFunction2<T,U,V> map ) {
         return new Stream<V>( new ZipIteratorForIndexedFunction<T,U,V>( this.iterator, other, map ), lock ) ;
     }
@@ -563,10 +670,20 @@ public class Stream<T> implements Iterator<T> {
         return new Stream<T>( new LimitedIterator<T>( this.iterator, n ), lock ) ;
     }
 
+    /**
+     * Is this stream currently synchonized on a lock?
+     *
+     * @return true if synchronized, false otherwise.
+     */
     public boolean isSynchronized() {
         return lock != null ;
     }
 
+    /**
+     * Returns a new {@code Stream} with a {@link ReentrantLock} for {@code hasNext} and {@code next}.
+     *
+     * @return The new locked {@code Stream}.
+     */
     public Stream<T> asSynchronized() {
         if( lock != null ) {
             return this ;

@@ -16,6 +16,15 @@
 
 package groovy.stream.functions ;
 
+/**
+ * Describes a function which takes a value of type {@code T} plus an {@link Integer} index,
+ * and returns a value of type {@code S}
+ *
+ * @author Tim Yates
+ * @since 0.8
+ * @param <T> The input type
+ * @param <S> The output type
+ */
 public interface IndexedFunction<T,S> {
     S call( T value, Integer index ) ;
 }
