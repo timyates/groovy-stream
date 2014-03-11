@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
 
-<coverage line-rate="0.9976689976689976" branch-rate="0.9913793103448276" lines-covered="428" lines-valid="429" branches-covered="115" branches-valid="116" complexity="1.3798882681564246" version="2.0.3" timestamp="1394540365105">
+<coverage line-rate="0.9976689976689976" branch-rate="0.9913793103448276" lines-covered="428" lines-valid="429" branches-covered="115" branches-valid="116" complexity="1.3798882681564246" version="2.0.3" timestamp="1394544567346">
 	<sources>
 		<source>/Users/tyates/Code/Groovy/groovy-stream/src/main/java</source>
 	</sources>
