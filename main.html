@@ -155,7 +155,7 @@ intermediate Streams).</p>
 <p><a href="#inspectors">Inspectors</a></p>
 </li>
 <li>
-<p><a href="#crossing-the-streams">Crossing the Streams</a></p>
+<p><a href="#java-integration">Java Integration</a></p>
 </li>
 </ol>
 </div>
@@ -174,7 +174,7 @@ intermediate Streams).</p>
 <pre class="prettyprint xml language-xml"><code>&lt;dependency&gt;
     &lt;groupId&gt;com.bloidonia&lt;/groupId&gt;
     &lt;artifactId&gt;groovy-stream&lt;/artifactId&gt;
-    &lt;version&gt;0.7.0&lt;/version&gt;
+    &lt;version&gt;0.8.0&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
@@ -183,7 +183,7 @@ intermediate Streams).</p>
 <h3 id="using-gradle">Using Gradle</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint groovy language-groovy"><code>compile "com.bloidonia:groovy-stream:0.7.0"</code></pre>
+<pre class="prettyprint groovy language-groovy"><code>compile "com.bloidonia:groovy-stream:0.8.0"</code></pre>
 </div>
 </div>
 </div>
@@ -191,7 +191,7 @@ intermediate Streams).</p>
 <h3 id="using-grab">Using Grab</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint groovy language-groovy"><code>@Grab( "com.bloidonia:groovy-stream:0.7.0" )
+<pre class="prettyprint groovy language-groovy"><code>@Grab( "com.bloidonia:groovy-stream:0.8.0" )
 import groovy.stream.*</code></pre>
 </div>
 </div>
@@ -314,7 +314,9 @@ assert s.collect() == [ 3, 4, 5, 6, 7 ]</code></pre>
     public static       Stream&lt;Long&gt;      from( long[] array                     )
     public static       Stream&lt;Float&gt;     from( float[] array                    )
     public static       Stream&lt;Double&gt;    from( double[] array                   )
-    public static       Stream&lt;Boolean&gt;   from( boolean[] array                  )</code></pre>
+    public static       Stream&lt;Boolean&gt;   from( boolean[] array                  )
+    public static       Stream&lt;ZipEntry&gt;  from( ZipFile file                     )
+    public static       Stream&lt;JarEntry&gt;  from( JarFile file                     )</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -365,6 +367,12 @@ method to:</p>
 <li>
 <p><code>boolean[]</code></p>
 </li>
+<li>
+<p><code>ZipFile</code></p>
+</li>
+<li>
+<p><code>JarFile</code></p>
+</li>
 </ul>
 </div>
 <div class="paragraph">
@@ -374,19 +382,27 @@ to create a new filtered, transformed, limited or conjoined <code>Stream</code><
 </div>
 <div class="sect2">
 <h3 id="filters">Filters</h3>
-
+<div class="paragraph">
+<p>TBD</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="mappings">Mappings</h3>
-
+<div class="paragraph">
+<p>TBD</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="inspectors">Inspectors</h3>
-
+<div class="paragraph">
+<p>TBD</p>
+</div>
 </div>
 <div class="sect2">
-<h3 id="crossing-the-streams">Crossing the Streams</h3>
-
+<h3 id="java-integration">Java integration</h3>
+<div class="paragraph">
+<p>As of version <code>0.8.0</code>, you can use Java friendly versions of all of the above <code>Closure</code> taking methods to access <code>groovy-stream</code> functionality from native Java.</p>
+</div>
 </div>
 </div>
 </div></p>

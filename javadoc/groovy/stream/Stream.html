@@ -3,14 +3,14 @@
 <html lang="en">
 <head>
 
-<title>Stream (groovy-stream 0.7.3 API)</title>
-<meta name="date" content="2014-03-02">
+<title>Stream (groovy-stream 0.8.0 API)</title>
+<meta name="date" content="2014-03-11">
 <link rel="stylesheet" type="text/css" href="../../stylesheet.css" title="Style">
 </head>
 <body>
 <script type="text/javascript"><!--
     if (location.href.indexOf('is-external=true') == -1) {
-        parent.document.title="Stream (groovy-stream 0.7.3 API)";
+        parent.document.title="Stream (groovy-stream 0.8.0 API)";
     }
 //-->
 </script>
@@ -96,13 +96,13 @@
 <dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>T</code> - the type of each element returned from the Stream.</dd></dl>
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;T&gt;, <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util">Iterator</a>&lt;T&gt;</dd>
+<dd><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util">Iterator</a>&lt;T&gt;</dd>
 </dl>
 <hr>
 <br>
 <pre>public class <span class="strong">Stream&lt;T&gt;</span>
 extends <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>
-implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util">Iterator</a>&lt;T&gt;, <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;T&gt;</pre>
+implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util">Iterator</a>&lt;T&gt;</pre>
 </li>
 </ul>
 </div>
@@ -166,8 +166,20 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#filter(groovy.stream.functions.Predicate)">filter</a></strong>(<a href="../../groovy/stream/functions/Predicate.html" title="interface in groovy.stream.functions">Predicate</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;predicate)</code>
+<div class="block">Filter the current stream, passing each element through a predicate filter (Java friendly version).</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code><a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#filterWithIndex(groovy.lang.Closure)">filterWithIndex</a></strong>(<a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&nbsp;predicate)</code>
 <div class="block">Filter the current stream, passing each element and it's index through a predicate filter.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code><a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#filterWithIndex(groovy.stream.functions.IndexedPredicate)">filterWithIndex</a></strong>(<a href="../../groovy/stream/functions/IndexedPredicate.html" title="interface in groovy.stream.functions">IndexedPredicate</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;predicate)</code>
+<div class="block">Filter the current stream, passing each element and its index through a predicate filter (Java friendly version).</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -178,8 +190,20 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>&lt;U&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;U&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#flatMap(groovy.stream.functions.Function)">flatMap</a></strong>(<a href="../../groovy/stream/functions/Function.html" title="interface in groovy.stream.functions">Function</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,? extends <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;U&gt;&gt;&nbsp;map)</code>
+<div class="block">Takes a <a href="../../groovy/stream/functions/Function.html" title="interface in groovy.stream.functions"><code>Function</code></a> that returns a <code>Collection</code>.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>&lt;U&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;U&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#flatMapWithIndex(groovy.lang.Closure)">flatMapWithIndex</a></strong>(<a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;? extends <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;U&gt;&gt;&nbsp;map)</code>
 <div class="block">Takes a <code>Closure</code> that returns a <code>Collection</code>.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>&lt;U&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;U&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#flatMapWithIndex(groovy.stream.functions.IndexedFunction)">flatMapWithIndex</a></strong>(<a href="../../groovy/stream/functions/IndexedFunction.html" title="interface in groovy.stream.functions">IndexedFunction</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,? extends <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;U&gt;&gt;&nbsp;map)</code>
+<div class="block">Takes an <a href="../../groovy/stream/functions/IndexedFunction.html" title="interface in groovy.stream.functions"><code>IndexedFunction</code></a> that returns a <code>Collection</code>.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -274,23 +298,25 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>static &lt;T&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;T&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#from(T)">from</a></strong>(T&nbsp;object)</code>
+<div class="block">Construct a <code>Stream</code> that for every element, returns <code>object</code>.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static &lt;T&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;T&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#from(T[])">from</a></strong>(T[]&nbsp;array)</code>
 <div class="block">Construct a <code>Stream</code> that iterates every <code>Object</code> in an array.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>static <a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/util/zip/ZipEntry.html?is-external=true" title="class or interface in java.util.zip">ZipEntry</a>&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#from(java.util.zip.ZipFile)">from</a></strong>(<a href="http://docs.oracle.com/javase/6/docs/api/java/util/zip/ZipFile.html?is-external=true" title="class or interface in java.util.zip">ZipFile</a>&nbsp;file)</code>
 <div class="block">Construct a <code>Stream</code> from a <a href="http://docs.oracle.com/javase/6/docs/api/java/util/zip/ZipFile.html?is-external=true" title="class or interface in java.util.zip"><code>ZipFile</code></a> that iterates the <a href="http://docs.oracle.com/javase/6/docs/api/java/util/zip/ZipEntry.html?is-external=true" title="class or interface in java.util.zip"><code>ZipEntry</code></a> objects contained within.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#hasNext()">hasNext</a></strong>()</code>&nbsp;</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util">Iterator</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></td>
-<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#iterator()">iterator</a></strong>()</code>&nbsp;</td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>&lt;U&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;U&gt;</code></td>
@@ -300,7 +326,19 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>&lt;U&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;U&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#map(groovy.stream.functions.Function)">map</a></strong>(<a href="../../groovy/stream/functions/Function.html" title="interface in groovy.stream.functions">Function</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,U&gt;&nbsp;map)</code>
+<div class="block">Maps the elements of a <code>Stream</code> to a new value as they are requested.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>&lt;U&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;U&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#mapWithIndex(groovy.lang.Closure)">mapWithIndex</a></strong>(<a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;U&gt;&nbsp;map)</code>
+<div class="block">Maps the elements of a <code>Stream</code> to a new value as they are requested.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>&lt;U&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;U&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#mapWithIndex(groovy.stream.functions.IndexedFunction)">mapWithIndex</a></strong>(<a href="../../groovy/stream/functions/IndexedFunction.html" title="interface in groovy.stream.functions">IndexedFunction</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,U&gt;&nbsp;map)</code>
 <div class="block">Maps the elements of a <code>Stream</code> to a new value as they are requested.</div>
 </td>
 </tr>
@@ -327,13 +365,26 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#tap(groovy.lang.Closure)">tap</a></strong>(<a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</code>
-<div class="block">Inspect every value in the <code>Stream</code> and pass it on.</div>
+<div class="block">Inspect every value in the <code>Stream</code> and pass it on unmodified.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#tap(groovy.stream.functions.Function)">tap</a></strong>(<a href="../../groovy/stream/functions/Function.html" title="interface in groovy.stream.functions">Function</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</code>
+<div class="block">Inspect every value in the <code>Stream</code> and pass it on.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code><a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#tapEvery(int, groovy.lang.Closure)">tapEvery</a></strong>(int&nbsp;n,
         <a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</code>
+<div class="block">Inspect the every nth value in the <code>Stream</code> and pass it on unmodified.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code><a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#tapEvery(int, groovy.stream.functions.Function)">tapEvery</a></strong>(int&nbsp;n,
+        <a href="../../groovy/stream/functions/Function.html" title="interface in groovy.stream.functions">Function</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</code>
 <div class="block">Inspect the every nth value in the <code>Stream</code> and pass it on.</div>
 </td>
 </tr>
@@ -341,22 +392,51 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <td class="colFirst"><code><a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#tapEveryWithIndex(int, groovy.lang.Closure)">tapEveryWithIndex</a></strong>(int&nbsp;n,
                  <a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</code>
-<div class="block">Inspect the every nth value in the <code>Stream</code> with its index and pass it on.</div>
+<div class="block">Inspect the every nth value in the <code>Stream</code> with its index and pass it on unmodified.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></td>
-<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#tapWithIndex(groovy.lang.Closure)">tapWithIndex</a></strong>(<a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</code>
-<div class="block">Inspect every value in the <code>Stream</code> with its <code>index</code> and pass it on.</div>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#tapEveryWithIndex(int, groovy.stream.functions.IndexedFunction)">tapEveryWithIndex</a></strong>(int&nbsp;n,
+                 <a href="../../groovy/stream/functions/IndexedFunction.html" title="interface in groovy.stream.functions">IndexedFunction</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</code>
+<div class="block">Inspect the every nth value in the <code>Stream</code> with its index and pass it on unmodified.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></td>
-<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#until(groovy.lang.Closure)">until</a></strong>(<a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&nbsp;predicate)</code>&nbsp;</td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#tapWithIndex(groovy.lang.Closure)">tapWithIndex</a></strong>(<a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</code>
+<div class="block">Inspect every value in the <code>Stream</code> with its <code>index</code> and pass it on unmodified.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></td>
-<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#untilWithIndex(groovy.lang.Closure)">untilWithIndex</a></strong>(<a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&nbsp;predicate)</code>&nbsp;</td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#tapWithIndex(groovy.stream.functions.IndexedFunction)">tapWithIndex</a></strong>(<a href="../../groovy/stream/functions/IndexedFunction.html" title="interface in groovy.stream.functions">IndexedFunction</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</code>
+<div class="block">Inspect every value in the <code>Stream</code> with its <code>index</code> and pass it on unmodified.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code><a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#until(groovy.lang.Closure)">until</a></strong>(<a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&nbsp;predicate)</code>
+<div class="block">When the <a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang"><code>Closure</code></a> predicate returns <code>true</code>, the stream is stopped.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code><a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#until(groovy.stream.functions.Predicate)">until</a></strong>(<a href="../../groovy/stream/functions/Predicate.html" title="interface in groovy.stream.functions">Predicate</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;predicate)</code>
+<div class="block">When the <a href="../../groovy/stream/functions/Predicate.html" title="interface in groovy.stream.functions"><code>Predicate</code></a> returns <code>true</code>, the stream is stopped.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code><a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#untilWithIndex(groovy.lang.Closure)">untilWithIndex</a></strong>(<a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&nbsp;predicate)</code>
+<div class="block">Calls the <a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang"><code>Closure</code></a> predicate with the current element and the index in the stream.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code><a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#untilWithIndex(groovy.stream.functions.IndexedPredicate)">untilWithIndex</a></strong>(<a href="../../groovy/stream/functions/IndexedPredicate.html" title="interface in groovy.stream.functions">IndexedPredicate</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;predicate)</code>
+<div class="block">Calls the <a href="../../groovy/stream/functions/IndexedPredicate.html" title="interface in groovy.stream.functions"><code>IndexedPredicate</code></a> with the current element and the index in the stream.</div>
+</td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>&lt;U,V&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;V&gt;</code></td>
@@ -368,9 +448,25 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>&lt;U,V&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;V&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#zip(java.util.Iterator, groovy.stream.functions.Function2)">zip</a></strong>(<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util">Iterator</a>&lt;U&gt;&nbsp;other,
+   <a href="../../groovy/stream/functions/Function2.html" title="interface in groovy.stream.functions">Function2</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,U,V&gt;&nbsp;map)</code>
+<div class="block">Takes another <code>Iterator</code> or <code>Stream</code> and calls the two arg <code>Function2</code>
+ to zip the two together.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>&lt;U,V&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;V&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#zipWithIndex(java.util.Iterator, groovy.lang.Closure)">zipWithIndex</a></strong>(<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util">Iterator</a>&lt;U&gt;&nbsp;other,
             <a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;V&gt;&nbsp;map)</code>
 <div class="block">Takes another <code>Iterator</code> or <code>Stream</code> and calls the three arg <code>Closure</code>
+ to zip the two together along with the current index.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>&lt;U,V&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;V&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../groovy/stream/Stream.html#zipWithIndex(java.util.Iterator, groovy.stream.functions.IndexedFunction2)">zipWithIndex</a></strong>(<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util">Iterator</a>&lt;U&gt;&nbsp;other,
+            <a href="../../groovy/stream/functions/IndexedFunction2.html" title="interface in groovy.stream.functions">IndexedFunction2</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,U,V&gt;&nbsp;map)</code>
+<div class="block">Takes another <code>Iterator</code> or <code>Stream</code> and calls the three arg <a href="../../groovy/stream/functions/IndexedFunction2.html" title="interface in groovy.stream.functions"><code>IndexedFunction2</code></a>
  to zip the two together along with the current index.</div>
 </td>
 </tr>
@@ -414,7 +510,20 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
  </pre></div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>predicate</code> - A single parameter closure to pass the element through,
                    returning <code>true</code> if the element is to be included.</dd>
-<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/FilteringIterator.html" title="class in groovy.stream.iterators"><code>FilteringIterator</code></a></dd></dl>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/groovy/FilteringIterator.html" title="class in groovy.stream.iterators.groovy"><code>FilteringIterator</code></a></dd></dl>
+</li>
+</ul>
+<a name="filter(groovy.stream.functions.Predicate)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>filter</h4>
+<pre>public&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;filter(<a href="../../groovy/stream/functions/Predicate.html" title="interface in groovy.stream.functions">Predicate</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;predicate)</pre>
+<div class="block">Filter the current stream, passing each element through a predicate filter (Java friendly version).</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>predicate</code> - A <a href="../../groovy/stream/functions/Predicate.html" title="interface in groovy.stream.functions"><code>Predicate</code></a> instance returning <code>true</code> from it's <code>call</code> method
+                  if the element is to be included.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/java/FilteringIteratorForPredicate.html" title="class in groovy.stream.iterators.java"><code>FilteringIteratorForPredicate</code></a></dd></dl>
 </li>
 </ul>
 <a name="filterWithIndex(groovy.lang.Closure)">
@@ -435,7 +544,20 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
  </pre></div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>predicate</code> - A two parameter closure, the first parameter being the
                    element in the <code>Stream</code>, the second the index (starting at 0).</dd>
-<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/FilteringIterator.html" title="class in groovy.stream.iterators"><code>FilteringIterator</code></a></dd></dl>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/groovy/FilteringIterator.html" title="class in groovy.stream.iterators.groovy"><code>FilteringIterator</code></a></dd></dl>
+</li>
+</ul>
+<a name="filterWithIndex(groovy.stream.functions.IndexedPredicate)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>filterWithIndex</h4>
+<pre>public&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;filterWithIndex(<a href="../../groovy/stream/functions/IndexedPredicate.html" title="interface in groovy.stream.functions">IndexedPredicate</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;predicate)</pre>
+<div class="block">Filter the current stream, passing each element and its index through a predicate filter (Java friendly version).</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>predicate</code> - An <a href="../../groovy/stream/functions/IndexedPredicate.html" title="interface in groovy.stream.functions"><code>IndexedPredicate</code></a> instance returning <code>true</code> from it's <code>call</code> method
+                  if the element is to be included.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/java/FilteringIteratorForIndexedPredicate.html" title="class in groovy.stream.iterators.java"><code>FilteringIteratorForIndexedPredicate</code></a></dd></dl>
 </li>
 </ul>
 <a name="concat(java.util.Iterator)">
@@ -499,7 +621,22 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
  </pre></div>
 <dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>U</code> - The type of the new Stream.</dd><dt><span class="strong">Parameters:</span></dt><dd><code>map</code> - A single parameter closure to pass the element through,
             returning a new Collection of elements to iterate.</dd>
-<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/FlatMapIterator.html" title="class in groovy.stream.iterators"><code>FlatMapIterator</code></a></dd></dl>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/groovy/FlatMapIterator.html" title="class in groovy.stream.iterators.groovy"><code>FlatMapIterator</code></a></dd></dl>
+</li>
+</ul>
+<a name="flatMap(groovy.stream.functions.Function)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>flatMap</h4>
+<pre>public&nbsp;&lt;U&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;U&gt;&nbsp;flatMap(<a href="../../groovy/stream/functions/Function.html" title="interface in groovy.stream.functions">Function</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,? extends <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;U&gt;&gt;&nbsp;map)</pre>
+<div class="block">Takes a <a href="../../groovy/stream/functions/Function.html" title="interface in groovy.stream.functions"><code>Function</code></a> that returns a <code>Collection</code>.  Each element
+ in this <code>Collection</code> is passed on in turn, before the next element is
+ fetched from upstream, and the <a href="../../groovy/stream/functions/Function.html" title="interface in groovy.stream.functions"><code>Function</code></a> is executed again.</div>
+<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>U</code> - The type of the new Stream.</dd><dt><span class="strong">Parameters:</span></dt><dd><code>map</code> - A single <a href="../../groovy/stream/functions/Function.html" title="interface in groovy.stream.functions"><code>Function</code></a> to pass the element through, returning a
+            new Collection of elements to iterate.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/java/FlatMapIteratorForFunction.html" title="class in groovy.stream.iterators.java"><code>FlatMapIteratorForFunction</code></a></dd></dl>
 </li>
 </ul>
 <a name="flatMapWithIndex(groovy.lang.Closure)">
@@ -522,7 +659,22 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
  </pre></div>
 <dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>U</code> - The type of the new Stream.</dd><dt><span class="strong">Parameters:</span></dt><dd><code>map</code> - A two parameter closure to pass the element and it's index through,
             returning a new Collection of elements to iterate.</dd>
-<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/FlatMapIterator.html" title="class in groovy.stream.iterators"><code>FlatMapIterator</code></a></dd></dl>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/groovy/FlatMapIterator.html" title="class in groovy.stream.iterators.groovy"><code>FlatMapIterator</code></a></dd></dl>
+</li>
+</ul>
+<a name="flatMapWithIndex(groovy.stream.functions.IndexedFunction)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>flatMapWithIndex</h4>
+<pre>public&nbsp;&lt;U&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;U&gt;&nbsp;flatMapWithIndex(<a href="../../groovy/stream/functions/IndexedFunction.html" title="interface in groovy.stream.functions">IndexedFunction</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,? extends <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;U&gt;&gt;&nbsp;map)</pre>
+<div class="block">Takes an <a href="../../groovy/stream/functions/IndexedFunction.html" title="interface in groovy.stream.functions"><code>IndexedFunction</code></a> that returns a <code>Collection</code>.  Each element
+ in this <code>Collection</code> is passed on in turn, before the next element is
+ fetched from upstream, and the <a href="../../groovy/stream/functions/IndexedFunction.html" title="interface in groovy.stream.functions"><code>IndexedFunction</code></a> is executed again.</div>
+<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>U</code> - The type of the new Stream.</dd><dt><span class="strong">Parameters:</span></dt><dd><code>map</code> - A single <a href="../../groovy/stream/functions/IndexedFunction.html" title="interface in groovy.stream.functions"><code>IndexedFunction</code></a> to pass the element and its index through,
+            returning a new Collection of elements to iterate.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/java/FlatMapIteratorForIndexedFunction.html" title="class in groovy.stream.iterators.java"><code>FlatMapIteratorForIndexedFunction</code></a></dd></dl>
 </li>
 </ul>
 <a name="tap(groovy.lang.Closure)">
@@ -532,7 +684,7 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <li class="blockList">
 <h4>tap</h4>
 <pre>public&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;tap(<a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</pre>
-<div class="block">Inspect every value in the <code>Stream</code> and pass it on.
+<div class="block">Inspect every value in the <code>Stream</code> and pass it on unmodified.
  
  <pre class="groovyTestCase">
    import groovy.stream.*
@@ -544,7 +696,19 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
    assert list == [ 1, 2, 3 ]
  </pre></div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>output</code> - The <code>Closure</code> to be called for every element</dd>
-<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/TapIterator.html" title="class in groovy.stream.iterators"><code>TapIterator</code></a></dd></dl>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/groovy/TapIterator.html" title="class in groovy.stream.iterators.groovy"><code>TapIterator</code></a></dd></dl>
+</li>
+</ul>
+<a name="tap(groovy.stream.functions.Function)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>tap</h4>
+<pre>public&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;tap(<a href="../../groovy/stream/functions/Function.html" title="interface in groovy.stream.functions">Function</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</pre>
+<div class="block">Inspect every value in the <code>Stream</code> and pass it on.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>output</code> - The <code>Function</code> to be called for every element</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/java/TapIteratorForFunction.html" title="class in groovy.stream.iterators.java"><code>TapIteratorForFunction</code></a></dd><dt><span class="strong">See Also:</span></dt><dd><a href="../../groovy/stream/Stream.html#tap(groovy.lang.Closure)"><code>tap(groovy.lang.Closure)</code></a></dd></dl>
 </li>
 </ul>
 <a name="tapEvery(int, groovy.lang.Closure)">
@@ -555,7 +719,7 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <h4>tapEvery</h4>
 <pre>public&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;tapEvery(int&nbsp;n,
                  <a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</pre>
-<div class="block">Inspect the every nth value in the <code>Stream</code> and pass it on.
+<div class="block">Inspect the every nth value in the <code>Stream</code> and pass it on unmodified.
  
  <pre class="groovyTestCase">
    import groovy.stream.*
@@ -567,7 +731,20 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
    assert list == [ 2 ]
  </pre></div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>n</code> - the elements to inspect</dd><dd><code>output</code> - The <code>Closure</code> to be called for every nth element</dd>
-<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/TapIterator.html" title="class in groovy.stream.iterators"><code>TapIterator</code></a></dd></dl>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/groovy/TapIterator.html" title="class in groovy.stream.iterators.groovy"><code>TapIterator</code></a></dd></dl>
+</li>
+</ul>
+<a name="tapEvery(int, groovy.stream.functions.Function)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>tapEvery</h4>
+<pre>public&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;tapEvery(int&nbsp;n,
+                 <a href="../../groovy/stream/functions/Function.html" title="interface in groovy.stream.functions">Function</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</pre>
+<div class="block">Inspect the every nth value in the <code>Stream</code> and pass it on.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>n</code> - the elements to inspect</dd><dd><code>output</code> - The <code>Function</code> to be called for every nth element</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/java/TapIteratorForFunction.html" title="class in groovy.stream.iterators.java"><code>TapIteratorForFunction</code></a></dd><dt><span class="strong">See Also:</span></dt><dd><a href="../../groovy/stream/Stream.html#tapEvery(int, groovy.lang.Closure)"><code>tapEvery(int, groovy.lang.Closure)</code></a></dd></dl>
 </li>
 </ul>
 <a name="tapWithIndex(groovy.lang.Closure)">
@@ -577,7 +754,7 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <li class="blockList">
 <h4>tapWithIndex</h4>
 <pre>public&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;tapWithIndex(<a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</pre>
-<div class="block">Inspect every value in the <code>Stream</code> with its <code>index</code> and pass it on.
+<div class="block">Inspect every value in the <code>Stream</code> with its <code>index</code> and pass it on unmodified.
  
  <pre class="groovyTestCase">
    import groovy.stream.*
@@ -589,7 +766,19 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
    assert list == [ [ 1:0 ], [ 2:1 ], [ 3:2 ] ]
  </pre></div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>output</code> - The closure to call for each element in the Stream.</dd>
-<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/TapIterator.html" title="class in groovy.stream.iterators"><code>TapIterator</code></a></dd></dl>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/groovy/TapIterator.html" title="class in groovy.stream.iterators.groovy"><code>TapIterator</code></a></dd></dl>
+</li>
+</ul>
+<a name="tapWithIndex(groovy.stream.functions.IndexedFunction)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>tapWithIndex</h4>
+<pre>public&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;tapWithIndex(<a href="../../groovy/stream/functions/IndexedFunction.html" title="interface in groovy.stream.functions">IndexedFunction</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</pre>
+<div class="block">Inspect every value in the <code>Stream</code> with its <code>index</code> and pass it on unmodified.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>output</code> - The <a href="../../groovy/stream/functions/IndexedFunction.html" title="interface in groovy.stream.functions"><code>IndexedFunction</code></a> to call for each element in the Stream.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/java/TapIteratorForIndexedFunction.html" title="class in groovy.stream.iterators.java"><code>TapIteratorForIndexedFunction</code></a></dd><dt><span class="strong">See Also:</span></dt><dd><a href="../../groovy/stream/Stream.html#tapWithIndex(groovy.lang.Closure)"><code>tapWithIndex(groovy.lang.Closure)</code></a></dd></dl>
 </li>
 </ul>
 <a name="tapEveryWithIndex(int, groovy.lang.Closure)">
@@ -600,7 +789,7 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <h4>tapEveryWithIndex</h4>
 <pre>public&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;tapEveryWithIndex(int&nbsp;n,
                           <a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</pre>
-<div class="block">Inspect the every nth value in the <code>Stream</code> with its index and pass it on.
+<div class="block">Inspect the every nth value in the <code>Stream</code> with its index and pass it on unmodified.
  
  <pre class="groovyTestCase">
    import groovy.stream.*
@@ -612,7 +801,20 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
    assert list == [ [2:1] ]
  </pre></div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>n</code> - the elements to inspect</dd><dd><code>output</code> - The <a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang"><code>Closure</code></a> to be called for every nth element</dd>
-<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/TapIterator.html" title="class in groovy.stream.iterators"><code>TapIterator</code></a></dd></dl>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/groovy/TapIterator.html" title="class in groovy.stream.iterators.groovy"><code>TapIterator</code></a></dd></dl>
+</li>
+</ul>
+<a name="tapEveryWithIndex(int, groovy.stream.functions.IndexedFunction)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>tapEveryWithIndex</h4>
+<pre>public&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;tapEveryWithIndex(int&nbsp;n,
+                          <a href="../../groovy/stream/functions/IndexedFunction.html" title="interface in groovy.stream.functions">IndexedFunction</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Void.html?is-external=true" title="class or interface in java.lang">Void</a>&gt;&nbsp;output)</pre>
+<div class="block">Inspect the every nth value in the <code>Stream</code> with its index and pass it on unmodified.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>n</code> - the elements to inspect</dd><dd><code>output</code> - The <a href="../../groovy/stream/functions/IndexedFunction.html" title="interface in groovy.stream.functions"><code>IndexedFunction</code></a> to be called for every nth element</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/java/TapIteratorForIndexedFunction.html" title="class in groovy.stream.iterators.java"><code>TapIteratorForIndexedFunction</code></a></dd><dt><span class="strong">See Also:</span></dt><dd><a href="../../groovy/stream/Stream.html#tapEveryWithIndex(int, groovy.lang.Closure)"><code>tapEveryWithIndex(int, groovy.lang.Closure)</code></a></dd></dl>
 </li>
 </ul>
 <a name="map(groovy.lang.Closure)">
@@ -638,7 +840,21 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
                                 "3:a", "3:b", "3:c" ]
  </pre></div>
 <dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>U</code> - The type of the new Stream.</dd><dt><span class="strong">Parameters:</span></dt><dd><code>map</code> - The transforming Closure.</dd>
-<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/TransformingIterator.html" title="class in groovy.stream.iterators"><code>TransformingIterator</code></a></dd></dl>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/groovy/TransformingIterator.html" title="class in groovy.stream.iterators.groovy"><code>TransformingIterator</code></a></dd></dl>
+</li>
+</ul>
+<a name="map(groovy.stream.functions.Function)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>map</h4>
+<pre>public&nbsp;&lt;U&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;U&gt;&nbsp;map(<a href="../../groovy/stream/functions/Function.html" title="interface in groovy.stream.functions">Function</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,U&gt;&nbsp;map)</pre>
+<div class="block">Maps the elements of a <code>Stream</code> to a new value as they are requested. Each
+ element is passed in to a <a href="../../groovy/stream/functions/Function.html" title="interface in groovy.stream.functions"><code>Function</code></a>, the result of which is returned as the
+ next element in the <code>Stream</code>.</div>
+<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>U</code> - The type of the new Stream.</dd><dt><span class="strong">Parameters:</span></dt><dd><code>map</code> - The transforming <a href="../../groovy/stream/functions/Function.html" title="interface in groovy.stream.functions"><code>Function</code></a>.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/java/TransformingIteratorForFunction.html" title="class in groovy.stream.iterators.java"><code>TransformingIteratorForFunction</code></a></dd><dt><span class="strong">See Also:</span></dt><dd><a href="../../groovy/stream/Stream.html#map(groovy.lang.Closure)"><code>map(groovy.lang.Closure)</code></a></dd></dl>
 </li>
 </ul>
 <a name="mapWithIndex(groovy.lang.Closure)">
@@ -664,7 +880,21 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
                                 "3:a:6", "3:b:7", "3:c:8" ]
  </pre></div>
 <dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>U</code> - The type of the new Stream.</dd><dt><span class="strong">Parameters:</span></dt><dd><code>map</code> - The transforming Closure.</dd>
-<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/TransformingIterator.html" title="class in groovy.stream.iterators"><code>TransformingIterator</code></a></dd></dl>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/groovy/TransformingIterator.html" title="class in groovy.stream.iterators.groovy"><code>TransformingIterator</code></a></dd></dl>
+</li>
+</ul>
+<a name="mapWithIndex(groovy.stream.functions.IndexedFunction)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>mapWithIndex</h4>
+<pre>public&nbsp;&lt;U&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;U&gt;&nbsp;mapWithIndex(<a href="../../groovy/stream/functions/IndexedFunction.html" title="interface in groovy.stream.functions">IndexedFunction</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,U&gt;&nbsp;map)</pre>
+<div class="block">Maps the elements of a <code>Stream</code> to a new value as they are requested. Each
+ element plus an index is passed in to an <a href="../../groovy/stream/functions/IndexedFunction.html" title="interface in groovy.stream.functions"><code>IndexedFunction</code></a>, and the result of
+ this is returned as the next element in the <code>Stream</code>.</div>
+<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>U</code> - The type of the new Stream.</dd><dt><span class="strong">Parameters:</span></dt><dd><code>map</code> - The transforming <a href="../../groovy/stream/functions/IndexedFunction.html" title="interface in groovy.stream.functions"><code>IndexedFunction</code></a>.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/java/TransformingIteratorForIndexedFunction.html" title="class in groovy.stream.iterators.java"><code>TransformingIteratorForIndexedFunction</code></a></dd><dt><span class="strong">See Also:</span></dt><dd><a href="../../groovy/stream/Stream.html#mapWithIndex(groovy.lang.Closure)"><code>mapWithIndex(groovy.lang.Closure)</code></a></dd></dl>
 </li>
 </ul>
 <a name="until(groovy.lang.Closure)">
@@ -674,8 +904,29 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <li class="blockList">
 <h4>until</h4>
 <pre>public&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;until(<a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&nbsp;predicate)</pre>
-<dl><dt><span class="strong">Parameters:</span></dt><dd><code>predicate</code> - The Closure that stops the Stream when it returns <code>true</code>.</dd>
-<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping an <a href="../../groovy/stream/iterators/UntilIterator.html" title="class in groovy.stream.iterators"><code>UntilIterator</code></a></dd></dl>
+<div class="block">When the <a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang"><code>Closure</code></a> predicate returns <code>true</code>, the stream is stopped.
+
+ <pre class="groovyTestCase">
+   import groovy.stream.*
+
+   assert Stream.from( 1..5 )
+                .until { it &gt; 3 }
+                .collect() == [ 1, 2, 3 ]
+ </pre></div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>predicate</code> - The <a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang"><code>Closure</code></a> that stops the Stream when it returns <code>true</code>.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping an <a href="../../groovy/stream/iterators/groovy/UntilIterator.html" title="class in groovy.stream.iterators.groovy"><code>UntilIterator</code></a></dd></dl>
+</li>
+</ul>
+<a name="until(groovy.stream.functions.Predicate)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>until</h4>
+<pre>public&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;until(<a href="../../groovy/stream/functions/Predicate.html" title="interface in groovy.stream.functions">Predicate</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;predicate)</pre>
+<div class="block">When the <a href="../../groovy/stream/functions/Predicate.html" title="interface in groovy.stream.functions"><code>Predicate</code></a> returns <code>true</code>, the stream is stopped.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>predicate</code> - The <a href="../../groovy/stream/functions/Predicate.html" title="interface in groovy.stream.functions"><code>Predicate</code></a> that stops the Stream when it returns <code>true</code>.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping an <a href="../../groovy/stream/iterators/java/UntilIteratorForPredicate.html" title="class in groovy.stream.iterators.java"><code>UntilIteratorForPredicate</code></a></dd><dt><span class="strong">See Also:</span></dt><dd><a href="../../groovy/stream/Stream.html#until(groovy.lang.Closure)"><code>until(groovy.lang.Closure)</code></a></dd></dl>
 </li>
 </ul>
 <a name="untilWithIndex(groovy.lang.Closure)">
@@ -685,8 +936,31 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <li class="blockList">
 <h4>untilWithIndex</h4>
 <pre>public&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;untilWithIndex(<a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang">Closure</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&nbsp;predicate)</pre>
-<dl><dt><span class="strong">Parameters:</span></dt><dd><code>predicate</code> - The Closure that stops the Stream when it returns <code>true</code>.</dd>
-<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping an <a href="../../groovy/stream/iterators/UntilIterator.html" title="class in groovy.stream.iterators"><code>UntilIterator</code></a></dd></dl>
+<div class="block">Calls the <a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang"><code>Closure</code></a> predicate with the current element and the index in the stream.
+ When the predicate returns <code>true</code>, the stream is stopped.
+
+ <pre class="groovyTestCase">
+   import groovy.stream.*
+
+   assert Stream.from( 1..5 )
+                .untilWithIndex { it, index -&gt; index == 2 }
+                .collect() == [ 1, 2 ]
+ </pre></div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>predicate</code> - The <a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang"><code>Closure</code></a> that stops the Stream when it returns <code>true</code>.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping an <a href="../../groovy/stream/iterators/groovy/UntilIterator.html" title="class in groovy.stream.iterators.groovy"><code>UntilIterator</code></a></dd></dl>
+</li>
+</ul>
+<a name="untilWithIndex(groovy.stream.functions.IndexedPredicate)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>untilWithIndex</h4>
+<pre>public&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;untilWithIndex(<a href="../../groovy/stream/functions/IndexedPredicate.html" title="interface in groovy.stream.functions">IndexedPredicate</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;predicate)</pre>
+<div class="block">Calls the <a href="../../groovy/stream/functions/IndexedPredicate.html" title="interface in groovy.stream.functions"><code>IndexedPredicate</code></a> with the current element and the index in the stream.
+ When the predicate returns <code>true</code>, the stream is stopped.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>predicate</code> - The <a href="../../groovy/stream/functions/IndexedPredicate.html" title="interface in groovy.stream.functions"><code>IndexedPredicate</code></a> that stops the Stream when it returns <code>true</code>.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping an <a href="../../groovy/stream/iterators/java/UntilIteratorForIndexedPredicate.html" title="class in groovy.stream.iterators.java"><code>UntilIteratorForIndexedPredicate</code></a></dd></dl>
 </li>
 </ul>
 <a name="collate(int)">
@@ -808,8 +1082,22 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
    assert numbers.zip( letters ) { n, l -&gt; "$n:$l" }
                 .collect() == [ "1:a", "2:b", "3:c" ]
  </pre></div>
-<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>U</code> - The type of the secondary Stream.</dd><dd><code>V</code> - The type of the new Stream.</dd><dt><span class="strong">Parameters:</span></dt><dd><code>other</code> - The other <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util"><code>Iterator</code></a></dd><dd><code>map</code> - The 2 arg <a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang"><code>Closure</code></a> to call with each next element from the Stream</dd>
-<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/ZipIterator.html" title="class in groovy.stream.iterators"><code>ZipIterator</code></a></dd></dl>
+<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>U</code> - The type of the secondary <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util"><code>Iterator</code></a>.</dd><dd><code>V</code> - The type of the new <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util"><code>Iterator</code></a>.</dd><dt><span class="strong">Parameters:</span></dt><dd><code>other</code> - The other <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util"><code>Iterator</code></a></dd><dd><code>map</code> - The 2 arg <a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang"><code>Closure</code></a> to call with each next element from the Stream</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/groovy/ZipIterator.html" title="class in groovy.stream.iterators.groovy"><code>ZipIterator</code></a></dd></dl>
+</li>
+</ul>
+<a name="zip(java.util.Iterator, groovy.stream.functions.Function2)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>zip</h4>
+<pre>public&nbsp;&lt;U,V&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;V&gt;&nbsp;zip(<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util">Iterator</a>&lt;U&gt;&nbsp;other,
+                  <a href="../../groovy/stream/functions/Function2.html" title="interface in groovy.stream.functions">Function2</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,U,V&gt;&nbsp;map)</pre>
+<div class="block">Takes another <code>Iterator</code> or <code>Stream</code> and calls the two arg <code>Function2</code>
+ to zip the two together.</div>
+<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>U</code> - The type of the secondary <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util"><code>Iterator</code></a>.</dd><dd><code>V</code> - The type of the new <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util"><code>Iterator</code></a>.</dd><dt><span class="strong">Parameters:</span></dt><dd><code>other</code> - The other <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util"><code>Iterator</code></a></dd><dd><code>map</code> - The 2 arg <a href="../../groovy/stream/functions/Function2.html" title="interface in groovy.stream.functions"><code>Function2</code></a> to call with each next element from the Stream</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/java/ZipIteratorForFunction.html" title="class in groovy.stream.iterators.java"><code>ZipIteratorForFunction</code></a></dd><dt><span class="strong">See Also:</span></dt><dd><a href="../../groovy/stream/Stream.html#zip(java.util.Iterator, groovy.lang.Closure)"><code>zip(java.util.Iterator, groovy.lang.Closure)</code></a></dd></dl>
 </li>
 </ul>
 <a name="zipWithIndex(java.util.Iterator, groovy.lang.Closure)">
@@ -832,8 +1120,24 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
    assert numbers.zipWithIndex( letters ) { n, l, i -&gt; "$n:$l:$i" }
                 .collect() == [ "1:a:0", "2:b:1", "3:c:2" ]
  </pre></div>
-<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>U</code> - The type of the secondary Stream.</dd><dd><code>V</code> - The type of the new Stream.</dd><dt><span class="strong">Parameters:</span></dt><dd><code>other</code> - The other <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util"><code>Iterator</code></a></dd><dd><code>map</code> - The 3 arg <a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang"><code>Closure</code></a> to call with each next element from the Stream and the current stream index</dd>
-<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/ZipIterator.html" title="class in groovy.stream.iterators"><code>ZipIterator</code></a></dd></dl>
+<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>U</code> - The type of the secondary <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util"><code>Iterator</code></a>.</dd><dd><code>V</code> - The type of the new <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util"><code>Iterator</code></a>.</dd><dt><span class="strong">Parameters:</span></dt><dd><code>other</code> - The other <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util"><code>Iterator</code></a></dd><dd><code>map</code> - The 3 arg <a href="http://groovy.codehaus.org/api/groovy/lang/Closure.html?is-external=true" title="class or interface in groovy.lang"><code>Closure</code></a> to call with each next element from the Stream and the
+            current stream index</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/groovy/ZipIterator.html" title="class in groovy.stream.iterators.groovy"><code>ZipIterator</code></a></dd></dl>
+</li>
+</ul>
+<a name="zipWithIndex(java.util.Iterator, groovy.stream.functions.IndexedFunction2)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>zipWithIndex</h4>
+<pre>public&nbsp;&lt;U,V&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;V&gt;&nbsp;zipWithIndex(<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util">Iterator</a>&lt;U&gt;&nbsp;other,
+                           <a href="../../groovy/stream/functions/IndexedFunction2.html" title="interface in groovy.stream.functions">IndexedFunction2</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>,U,V&gt;&nbsp;map)</pre>
+<div class="block">Takes another <code>Iterator</code> or <code>Stream</code> and calls the three arg <a href="../../groovy/stream/functions/IndexedFunction2.html" title="interface in groovy.stream.functions"><code>IndexedFunction2</code></a>
+ to zip the two together along with the current index.</div>
+<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>U</code> - The type of the secondary <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util"><code>Iterator</code></a>.</dd><dd><code>V</code> - The type of the new <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util"><code>Iterator</code></a>.</dd><dt><span class="strong">Parameters:</span></dt><dd><code>other</code> - The other <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util"><code>Iterator</code></a></dd><dd><code>map</code> - The 3 arg <a href="../../groovy/stream/functions/IndexedFunction2.html" title="interface in groovy.stream.functions"><code>IndexedFunction2</code></a> to call with each next element from the Stream and the
+            current stream index</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping a <a href="../../groovy/stream/iterators/java/ZipIteratorForIndexedFunction.html" title="class in groovy.stream.iterators.java"><code>ZipIteratorForIndexedFunction</code></a></dd><dt><span class="strong">See Also:</span></dt><dd><a href="../../groovy/stream/Stream.html#zipWithIndex(java.util.Iterator, groovy.lang.Closure)"><code>zipWithIndex(java.util.Iterator, groovy.lang.Closure)</code></a></dd></dl>
 </li>
 </ul>
 <a name="take(int)">
@@ -988,6 +1292,26 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping an <a href="../../groovy/stream/iterators/RepeatingClosureIterator.html" title="class in groovy.stream.iterators"><code>RepeatingClosureIterator</code></a>.</dd></dl>
 </li>
 </ul>
+<a name="from(java.lang.Object)">
+<!--   -->
+</a><a name="from(T)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>from</h4>
+<pre>public static&nbsp;&lt;T&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;T&gt;&nbsp;from(T&nbsp;object)</pre>
+<div class="block">Construct a <code>Stream</code> that for every element, returns <code>object</code>.
+
+ <pre class="groovyTestCase">
+   import groovy.stream.*
+
+   assert Stream.from( 1 ).take( 3 ).collect() == [ 1, 1, 1 ]
+ </pre></div>
+<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>T</code> - The type of the <code>Object</code>.</dd><dt><span class="strong">Parameters:</span></dt><dd><code>object</code> - The object to return each time an element is requested.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping an <a href="../../groovy/stream/iterators/RepeatingObjectIterator.html" title="class in groovy.stream.iterators"><code>RepeatingObjectIterator</code></a>.</dd></dl>
+</li>
+</ul>
 <a name="from(java.lang.Object[])">
 <!--   -->
 </a><a name="from(T[])">
@@ -997,7 +1321,15 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <li class="blockList">
 <h4>from</h4>
 <pre>public static&nbsp;&lt;T&gt;&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;T&gt;&nbsp;from(T[]&nbsp;array)</pre>
-<div class="block">Construct a <code>Stream</code> that iterates every <code>Object</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.</div>
+<div class="block">Construct a <code>Stream</code> that iterates every <code>Object</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.
+
+ <pre class="groovyTestCase">
+   import groovy.stream.*
+
+   String[] elems = [ 'one', 'two', 'three' ]
+
+   assert Stream.from( elems ).collect() == [ 'one', 'two', 'three' ]
+ </pre></div>
 <dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>T</code> - The type of the array.</dd><dt><span class="strong">Parameters:</span></dt><dd><code>array</code> - An array of Object to iterate</dd>
 <dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping the iterator for the array as a List.</dd></dl>
 </li>
@@ -1009,7 +1341,15 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <li class="blockList">
 <h4>from</h4>
 <pre>public static&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Byte.html?is-external=true" title="class or interface in java.lang">Byte</a>&gt;&nbsp;from(byte[]&nbsp;array)</pre>
-<div class="block">Construct a <code>Stream</code> that iterates every <code>byte</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.</div>
+<div class="block">Construct a <code>Stream</code> that iterates every <code>byte</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.
+
+ <pre class="groovyTestCase">
+   import groovy.stream.*
+
+   byte[] elems = [ 127, 128, 129 ]
+
+   assert Stream.from( elems ).collect() == [ 127, -128, -127 ]
+ </pre></div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>array</code> - An array of byte to iterate</dd>
 <dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping the iterator for the array as a List.</dd></dl>
 </li>
@@ -1021,7 +1361,15 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <li class="blockList">
 <h4>from</h4>
 <pre>public static&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Character.html?is-external=true" title="class or interface in java.lang">Character</a>&gt;&nbsp;from(char[]&nbsp;array)</pre>
-<div class="block">Construct a <code>Stream</code> that iterates every <code>Character</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.</div>
+<div class="block">Construct a <code>Stream</code> that iterates every <code>Character</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.
+
+ <pre class="groovyTestCase">
+   import groovy.stream.*
+
+   char[] elems = 'Hello'.toList()
+
+   assert Stream.from( elems ).collect() == [ 'H', 'e', 'l', 'l', 'o' ]
+ </pre></div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>array</code> - An array of char to iterate</dd>
 <dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping the iterator for the array as a List.</dd></dl>
 </li>
@@ -1033,7 +1381,15 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <li class="blockList">
 <h4>from</h4>
 <pre>public static&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Short.html?is-external=true" title="class or interface in java.lang">Short</a>&gt;&nbsp;from(short[]&nbsp;array)</pre>
-<div class="block">Construct a <code>Stream</code> that iterates every <code>Short</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.</div>
+<div class="block">Construct a <code>Stream</code> that iterates every <code>Short</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.
+
+ <pre class="groovyTestCase">
+   import groovy.stream.*
+
+   short[] elems = [ 10, 65535, 65536, 65537, 99 ]
+
+   assert Stream.from( elems ).collect() == [ 10, -1, 0, 1, 99 ]
+ </pre></div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>array</code> - An array of short to iterate</dd>
 <dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping the iterator for the array as a List.</dd></dl>
 </li>
@@ -1045,7 +1401,15 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <li class="blockList">
 <h4>from</h4>
 <pre>public static&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;from(int[]&nbsp;array)</pre>
-<div class="block">Construct a <code>Stream</code> that iterates every <code>Integer</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.</div>
+<div class="block">Construct a <code>Stream</code> that iterates every <code>Integer</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.
+
+ <pre class="groovyTestCase">
+   import groovy.stream.*
+
+   int[] elems = [ 10, 65535, 65536, 65537, 99 ]
+
+   assert Stream.from( elems ).collect() == [ 10, 65535, 65536, 65537, 99 ]
+ </pre></div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>array</code> - An array of int to iterate</dd>
 <dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping the iterator for the array as a List.</dd></dl>
 </li>
@@ -1057,7 +1421,15 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <li class="blockList">
 <h4>from</h4>
 <pre>public static&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Long.html?is-external=true" title="class or interface in java.lang">Long</a>&gt;&nbsp;from(long[]&nbsp;array)</pre>
-<div class="block">Construct a <code>Stream</code> that iterates every <code>Long</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.</div>
+<div class="block">Construct a <code>Stream</code> that iterates every <code>Long</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.
+
+ <pre class="groovyTestCase">
+   import groovy.stream.*
+
+   long[] elems = [ 10, 65535, 65536, 65537, 99 ]
+
+   assert Stream.from( elems ).collect() == [ 10, 65535, 65536, 65537, 99 ]
+ </pre></div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>array</code> - An array of long to iterate</dd>
 <dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping the iterator for the array as a List.</dd></dl>
 </li>
@@ -1069,7 +1441,15 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <li class="blockList">
 <h4>from</h4>
 <pre>public static&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Float.html?is-external=true" title="class or interface in java.lang">Float</a>&gt;&nbsp;from(float[]&nbsp;array)</pre>
-<div class="block">Construct a <code>Stream</code> that iterates every <code>Float</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.</div>
+<div class="block">Construct a <code>Stream</code> that iterates every <code>Float</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.
+
+ <pre class="groovyTestCase">
+   import groovy.stream.*
+
+   float[] elems = [ 0.1, 0.2, 0.3 ]
+
+   assert Stream.from( elems ).collect() == [ 0.1f, 0.2f, 0.3f ]
+ </pre></div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>array</code> - An array of float to iterate</dd>
 <dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping the iterator for the array as a List.</dd></dl>
 </li>
@@ -1081,7 +1461,15 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <li class="blockList">
 <h4>from</h4>
 <pre>public static&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</a>&gt;&nbsp;from(double[]&nbsp;array)</pre>
-<div class="block">Construct a <code>Stream</code> that iterates every <code>Double</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.</div>
+<div class="block">Construct a <code>Stream</code> that iterates every <code>Double</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.
+
+ <pre class="groovyTestCase">
+   import groovy.stream.*
+
+   double[] elems = [ 0.1, 0.2, 0.3 ]
+
+   assert Stream.from( elems ).collect() == [ 0.1, 0.2, 0.3 ]
+ </pre></div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>array</code> - An array of double to iterate</dd>
 <dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping the iterator for the array as a List.</dd></dl>
 </li>
@@ -1093,22 +1481,17 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <li class="blockList">
 <h4>from</h4>
 <pre>public static&nbsp;<a href="../../groovy/stream/Stream.html" title="class in groovy.stream">Stream</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&nbsp;from(boolean[]&nbsp;array)</pre>
-<div class="block">Construct a <code>Stream</code> that iterates every <code>Boolean</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.</div>
+<div class="block">Construct a <code>Stream</code> that iterates every <code>Boolean</code> in an array. First converts the array to an <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html?is-external=true" title="class or interface in java.util"><code>ArrayList</code></a>, then wraps the <code>ArrayList.iterator()</code>.
+
+ <pre class="groovyTestCase">
+   import groovy.stream.*
+
+   boolean[] elems = [ true, false ]
+
+   assert Stream.from( elems ).collect() == [ true, false ]
+ </pre></div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>array</code> - An array of boolean to iterate</dd>
 <dt><span class="strong">Returns:</span></dt><dd>A new <code>Stream</code> wrapping the iterator for the array as a List.</dd></dl>
-</li>
-</ul>
-<a name="iterator()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>iterator</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util">Iterator</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;&nbsp;iterator()</pre>
-<dl>
-<dt><strong>Specified by:</strong></dt>
-<dd><code><a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Iterable.html?is-external=true#iterator()" title="class or interface in java.lang">iterator</a></code>&nbsp;in interface&nbsp;<code><a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="../../groovy/stream/Stream.html" title="type parameter in Stream">T</a>&gt;</code></dd>
-</dl>
 </li>
 </ul>
 <a name="next()">

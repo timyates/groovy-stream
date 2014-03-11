@@ -3,14 +3,14 @@
 <html lang="en">
 <head>
 
-<title>CollatingIterator (groovy-stream 0.7.3 API)</title>
-<meta name="date" content="2014-03-02">
+<title>CollatingIterator (groovy-stream 0.8.0 API)</title>
+<meta name="date" content="2014-03-11">
 <link rel="stylesheet" type="text/css" href="../../../stylesheet.css" title="Style">
 </head>
 <body>
 <script type="text/javascript"><!--
     if (location.href.indexOf('is-external=true') == -1) {
-        parent.document.title="CollatingIterator (groovy-stream 0.7.3 API)";
+        parent.document.title="CollatingIterator (groovy-stream 0.8.0 API)";
     }
 //-->
 </script>
@@ -61,7 +61,7 @@
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#fields_inherited_from_class_groovy.stream.iterators.AbstractIterator">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method_summary">Method</a></li>
 </ul>
@@ -86,7 +86,12 @@
 <li><a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
 <li>
 <ul class="inheritance">
+<li><a href="../../../groovy/stream/iterators/AbstractIterator.html" title="class in groovy.stream.iterators">groovy.stream.iterators.AbstractIterator</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;T&gt;&gt;</li>
+<li>
+<ul class="inheritance">
 <li>groovy.stream.iterators.CollatingIterator&lt;T&gt;</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -100,14 +105,28 @@
 <hr>
 <br>
 <pre>public class <span class="strong">CollatingIterator&lt;T&gt;</span>
-extends <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>
-implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util">Iterator</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;T&gt;&gt;</pre>
+extends <a href="../../../groovy/stream/iterators/AbstractIterator.html" title="class in groovy.stream.iterators">AbstractIterator</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;T&gt;&gt;</pre>
 </li>
 </ul>
 </div>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field_summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<ul class="blockList">
+<li class="blockList"><a name="fields_inherited_from_class_groovy.stream.iterators.AbstractIterator">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;groovy.stream.iterators.<a href="../../../groovy/stream/iterators/AbstractIterator.html" title="class in groovy.stream.iterators">AbstractIterator</a></h3>
+<code><a href="../../../groovy/stream/iterators/AbstractIterator.html#current">current</a>, <a href="../../../groovy/stream/iterators/AbstractIterator.html#exhausted">exhausted</a>, <a href="../../../groovy/stream/iterators/AbstractIterator.html#iterator">iterator</a>, <a href="../../../groovy/stream/iterators/AbstractIterator.html#loaded">loaded</a></code></li>
+</ul>
+</li>
+</ul>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor_summary">
@@ -155,18 +174,21 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><strong><a href="../../../groovy/stream/iterators/CollatingIterator.html#hasNext()">hasNext</a></strong>()</code>&nbsp;</td>
+<td class="colFirst"><code>protected void</code></td>
+<td class="colLast"><code><strong><a href="../../../groovy/stream/iterators/CollatingIterator.html#loadNext()">loadNext</a></strong>()</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;<a href="../../../groovy/stream/iterators/CollatingIterator.html" title="type parameter in CollatingIterator">T</a>&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../../groovy/stream/iterators/CollatingIterator.html#next()">next</a></strong>()</code>&nbsp;</td>
 </tr>
-<tr class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../groovy/stream/iterators/CollatingIterator.html#remove()">remove</a></strong>()</code>&nbsp;</td>
-</tr>
 </table>
+<ul class="blockList">
+<li class="blockList"><a name="methods_inherited_from_class_groovy.stream.iterators.AbstractIterator">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;groovy.stream.iterators.<a href="../../../groovy/stream/iterators/AbstractIterator.html" title="class in groovy.stream.iterators">AbstractIterator</a></h3>
+<code><a href="../../../groovy/stream/iterators/AbstractIterator.html#hasNext()">hasNext</a>, <a href="../../../groovy/stream/iterators/AbstractIterator.html#remove()">remove</a></code></li>
+</ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods_inherited_from_class_java.lang.Object">
 <!--   -->
@@ -240,29 +262,16 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="remove()">
+<a name="loadNext()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>remove</h4>
-<pre>public&nbsp;void&nbsp;remove()</pre>
+<h4>loadNext</h4>
+<pre>protected&nbsp;void&nbsp;loadNext()</pre>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true#remove()" title="class or interface in java.util">remove</a></code>&nbsp;in interface&nbsp;<code><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util">Iterator</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;<a href="../../../groovy/stream/iterators/CollatingIterator.html" title="type parameter in CollatingIterator">T</a>&gt;&gt;</code></dd>
-</dl>
-</li>
-</ul>
-<a name="hasNext()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>hasNext</h4>
-<pre>public&nbsp;boolean&nbsp;hasNext()</pre>
-<dl>
-<dt><strong>Specified by:</strong></dt>
-<dd><code><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true#hasNext()" title="class or interface in java.util">hasNext</a></code>&nbsp;in interface&nbsp;<code><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util">Iterator</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;<a href="../../../groovy/stream/iterators/CollatingIterator.html" title="type parameter in CollatingIterator">T</a>&gt;&gt;</code></dd>
+<dd><code><a href="../../../groovy/stream/iterators/AbstractIterator.html#loadNext()">loadNext</a></code>&nbsp;in class&nbsp;<code><a href="../../../groovy/stream/iterators/AbstractIterator.html" title="class in groovy.stream.iterators">AbstractIterator</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;<a href="../../../groovy/stream/iterators/CollatingIterator.html" title="type parameter in CollatingIterator">T</a>&gt;&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -276,6 +285,8 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <dl>
 <dt><strong>Specified by:</strong></dt>
 <dd><code><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true#next()" title="class or interface in java.util">next</a></code>&nbsp;in interface&nbsp;<code><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html?is-external=true" title="class or interface in java.util">Iterator</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;<a href="../../../groovy/stream/iterators/CollatingIterator.html" title="type parameter in CollatingIterator">T</a>&gt;&gt;</code></dd>
+<dt><strong>Overrides:</strong></dt>
+<dd><code><a href="../../../groovy/stream/iterators/AbstractIterator.html#next()">next</a></code>&nbsp;in class&nbsp;<code><a href="../../../groovy/stream/iterators/AbstractIterator.html" title="class in groovy.stream.iterators">AbstractIterator</a>&lt;<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;<a href="../../../groovy/stream/iterators/CollatingIterator.html" title="type parameter in CollatingIterator">T</a>&gt;&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -330,7 +341,7 @@ implements <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#fields_inherited_from_class_groovy.stream.iterators.AbstractIterator">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method_summary">Method</a></li>
 </ul>
