@@ -594,6 +594,10 @@ public class Stream<T> implements Iterator<T> {
         return new Stream<V>( new ZipIterator<T,U,V>( this.iterator, other, false, map ) ) ;
     }
 
+    public <U,V> Stream<V> zip( Iterable<U> other, Closure<V> map ) {
+        return new Stream<V>( new ZipIterator<T,U,V>( this.iterator, other.iterator(), false, map ) ) ;
+    }
+
     /**
      * Takes another {@code Iterator} or {@code Stream} and calls the two arg {@code Function2}
      * to zip the two together.
@@ -607,6 +611,10 @@ public class Stream<T> implements Iterator<T> {
      */
     public <U,V> Stream<V> zip( Iterator<U> other, Function2<T,U,V> map ) {
         return new Stream<V>( new ZipIteratorForFunction<T,U,V>( this.iterator, other, map ) ) ;
+    }
+
+    public <U,V> Stream<V> zip( Iterable<U> other, Function2<T,U,V> map ) {
+        return new Stream<V>( new ZipIteratorForFunction<T,U,V>( this.iterator, other.iterator(), map ) ) ;
     }
 
     /**
@@ -634,6 +642,10 @@ public class Stream<T> implements Iterator<T> {
         return new Stream<V>( new ZipIterator<T,U,V>( this.iterator, other, true, map ) ) ;
     }
 
+    public <U,V> Stream<V> zipWithIndex( Iterable<U> other, Closure<V> map ) {
+        return new Stream<V>( new ZipIterator<T,U,V>( this.iterator, other.iterator(), true, map ) ) ;
+    }
+
     /**
      * Takes another {@code Iterator} or {@code Stream} and calls the three arg {@link IndexedFunction2}
      * to zip the two together along with the current index.
@@ -648,6 +660,10 @@ public class Stream<T> implements Iterator<T> {
      */
     public <U,V> Stream<V> zipWithIndex( Iterator<U> other, IndexedFunction2<T,U,V> map ) {
         return new Stream<V>( new ZipIteratorForIndexedFunction<T,U,V>( this.iterator, other, map ) ) ;
+    }
+
+    public <U,V> Stream<V> zipWithIndex( Iterable<U> other, IndexedFunction2<T,U,V> map ) {
+        return new Stream<V>( new ZipIteratorForIndexedFunction<T,U,V>( this.iterator, other.iterator(), map ) ) ;
     }
 
     /**
