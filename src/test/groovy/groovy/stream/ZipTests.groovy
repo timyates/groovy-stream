@@ -38,4 +38,24 @@ class ZipTests extends spock.lang.Specification {
                 [ idx, a, b ]
             }.collect() == [ [ 0, 1, 'a' ], [ 1, 2, 'b' ], [ 2, 3, 'c' ] ]
     }
+
+    def "Test iterable zip"() {
+        setup:
+            def stream1 = Stream.from 1..3
+
+        expect:
+            stream1.zip( [ 'a', 'b', 'c' ] ) { a, b ->
+                [ a, b ]
+            }.collect() == [ [ 1, 'a' ], [ 2, 'b' ], [ 3, 'c' ] ]
+    }
+
+    def "Test iterable zip with index"() {
+        setup:
+            def stream1 = Stream.from 1..3
+
+        expect:
+            stream1.zipWithIndex( [ 'a', 'b', 'c' ] ) { a, b, idx ->
+                [ idx, a, b ]
+            }.collect() == [ [ 0, 1, 'a' ], [ 1, 2, 'b' ], [ 2, 3, 'c' ] ]
+    }
 }
