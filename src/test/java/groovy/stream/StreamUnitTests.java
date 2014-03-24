@@ -143,9 +143,35 @@ public class StreamUnitTests {
     }
 
     @Test
+    public void testZipStreamWithIterable() {
+        List<String> names = Arrays.asList( "One", "Two", "Three" ) ;
+        Stream<String> s = stream.zip( names, new Function2<Integer, String, String>() {
+            @Override
+            public String call( Integer iValue, String sValue ) {
+                return String.format( "%s%d", sValue, iValue ) ;
+            }
+        } ) ;
+
+        assertEquals( collectIterator( s ), Arrays.asList( "One1", "Two2", "Three3" ) );
+    }
+
+    @Test
     public void testZipIndexedStream() {
         List<String> names = Arrays.asList( "One", "Two", "Three" ) ;
         Stream<String> s = stream.zipWithIndex( names.iterator(), new IndexedFunction2<Integer, String, String>() {
+            @Override
+            public String call( Integer iValue, String sValue, Integer index ) {
+                return String.format( "%s%d", sValue, iValue * index );
+            }
+        } ) ;
+
+        assertEquals( collectIterator( s ), Arrays.asList( "One0", "Two2", "Three6" ) );
+    }
+
+    @Test
+    public void testZipIndexedStreamWithIterable() {
+        List<String> names = Arrays.asList( "One", "Two", "Three" ) ;
+        Stream<String> s = stream.zipWithIndex( names, new IndexedFunction2<Integer, String, String>() {
             @Override
             public String call( Integer iValue, String sValue, Integer index ) {
                 return String.format( "%s%d", sValue, iValue * index );
