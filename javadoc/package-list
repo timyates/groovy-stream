@@ -1,2 +1,5 @@
 groovy.stream
+groovy.stream.functions
 groovy.stream.iterators
+groovy.stream.iterators.groovy
+groovy.stream.iterators.java
