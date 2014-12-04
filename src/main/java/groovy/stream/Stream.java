@@ -667,6 +667,41 @@ public class Stream<T> implements Iterator<T> {
     }
 
     /**
+     * When this stream completes, repeat it's output endlessly.
+     *
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   def numbers = Stream.from 1..3
+     *
+     *   // We will just take the first 12 elements of this infinite stream
+     *   assert numbers.andThenRepeat().take(12).collect() == [1,2,3,1,2,3,1,2,3,1,2,3]
+     * </pre>
+     *
+     * @return A new {@code Stream} wrapping a {@link RepeatingIterator}
+     */
+    public Stream<T> andThenRepeat() {
+        return new Stream<T>(new RepeatingIterator<T>(this.iterator));
+    }
+
+    /**
+     * When this stream completes, repeat it's output nTimes times.
+     *
+     * <pre class="groovyTestCase">
+     *   import groovy.stream.*
+     *
+     *   def numbers = Stream.from(['alice', 'bob'])
+     *
+     *   assert numbers.andThenRepeat(2).collect() == ['alice','bob','alice','bob','alice','bob']
+     * </pre>
+     *
+     * @return A new {@code Stream} wrapping a {@link RepeatingIterator}
+     */
+    public Stream<T> andThenRepeat(int nTimes) {
+        return new Stream<T>(new RepeatingIterator<T>(this.iterator, nTimes));
+    }
+
+    /**
      * Limits the {@code Stream} to {@code n} elements.
      * 
      * <pre class="groovyTestCase">
