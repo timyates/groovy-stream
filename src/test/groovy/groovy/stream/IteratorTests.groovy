@@ -16,6 +16,8 @@
 
 package groovy.stream
 
+import spock.lang.Unroll
+
 class IteratorTests extends spock.lang.Specification {
     def "test list iterator"() {
         setup:
@@ -83,5 +85,30 @@ class IteratorTests extends spock.lang.Specification {
 
         then:
             result == 1
+    }
+
+    @Unroll
+    def "Repeating iterator with count of #count should have size #size"() {
+        expect:
+            Stream.from([1, 2, 3]).repeat(count).filter(filter).collect().size() == size
+
+        where:
+            count | size  | filter
+            0     | 3 * 0 | { a -> true }
+            1     | 3 * 1 | { a -> true }
+            2     | 3 * 2 | { a -> true }
+            3     | 3 * 3 | { a -> true }
+            0     | 1 * 0 | { it == 2 }
+            1     | 1 * 1 | { it == 2 }
+            2     | 1 * 2 | { it == 2 }
+            3     | 1 * 3 | { it == 2 }
+    }
+
+    def "Negative repeat doesn't work"() {
+        when:
+            def ret = Stream.from([1, 2, 3]).repeat(-2).collect()
+
+        then:
+            thrown(IllegalArgumentException)
     }
 }

@@ -20,7 +20,7 @@ apply plugin: 'cobertura'
 apply plugin: 'coveralls'
 
 group               = 'com.bloidonia'
-version             = '0.8.1'
+version             = '0.9.0'
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 

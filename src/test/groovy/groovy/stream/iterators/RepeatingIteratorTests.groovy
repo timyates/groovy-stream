@@ -25,7 +25,7 @@ class RepeatingIteratorTests extends Specification {
         when:
             def result = iter.collect()
         then:
-            result == [1, 2, null]
+            result == []
     }
 
     def "Check single repeat"() {
@@ -34,7 +34,7 @@ class RepeatingIteratorTests extends Specification {
         when:
             def result = iter.collect()
         then:
-            result == [1, 2, null, 1, 2, null]
+            result == [1, 2, null]
     }
 
     def "Check double repeat"() {
@@ -43,7 +43,7 @@ class RepeatingIteratorTests extends Specification {
         when:
             def result = iter.collect()
         then:
-            result == [1, 2, null, 1, 2, null, 1, 2, null]
+            result == [1, 2, null, 1, 2, null]
     }
 
     def "Check endless repeat"() {

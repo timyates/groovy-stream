@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/timyates/groovy-stream.png)](https://travis-ci.org/timyates/groovy-stream)[![Coverage Status](https://coveralls.io/repos/timyates/groovy-stream/badge.png)](https://coveralls.io/r/timyates/groovy-stream)
 
+### Latest Version 0.9.0
+
 Documentation is embarrassingly out of date...
 
 Best place may be the Javadoc (has compiled examples in it)

@@ -34,14 +34,17 @@ public class RepeatingIterator<T> implements Iterator<T> {
     }
 
     public RepeatingIterator(Iterator<T> parent, Integer nRepeats) {
+        if(nRepeats < 0 && !nRepeats.equals(FOREVER)) {
+            throw new IllegalArgumentException("Cannot repeat a negative number of times");
+        }
         this.nRepeats = nRepeats;
-        this.current = parent;
+        this.current = nRepeats == 0 ? new EmptyIterator<T>() : parent;
         this.repeating = false;
     }
 
     @Override
     public boolean hasNext() {
-        return current.hasNext() || (nRepeats == FOREVER || nRepeats > 0);
+        return current.hasNext() || nRepeats == FOREVER || nRepeats > 1;
     }
 
     @Override
@@ -52,7 +55,7 @@ public class RepeatingIterator<T> implements Iterator<T> {
     @Override
     public T next() {
         if (!current.hasNext()) {
-            if (nRepeats == FOREVER || nRepeats-- > 0) {
+            if (nRepeats == FOREVER || nRepeats-- > 1) {
                 this.repeating = true;
                 current = queue.iterator();
             }

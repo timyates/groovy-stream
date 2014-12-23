@@ -40,7 +40,7 @@ class ChainTests extends spock.lang.Specification {
 
     def 'Repeating test'() {
         setup:
-            def fns = Stream.from([{a -> a * 2}, {a -> a + 2}]).andThenRepeat()
+            def fns = Stream.from([{a -> a * 2}, {a -> a + 2}]).repeat()
             def num = Stream.from 1..10
 
         when:
@@ -52,12 +52,12 @@ class ChainTests extends spock.lang.Specification {
     def 'Limited Repeating test'() {
         setup:
             // Only 6 elements in fns
-            def fns = Stream.from([{a -> a * 2}, {a -> a + 2}]).andThenRepeat(2)
+            def fns = Stream.from([{a -> a * 2}, {a -> a + 2}]).repeat(2)
             def num = Stream.from 1..10
 
         when:
             def result = num.zip(fns, {a, b -> b(a)}).collect()
         then:
-            result == [2,4,6,6,10,8]
+            result == [2,4,6,6]
     }
 }
