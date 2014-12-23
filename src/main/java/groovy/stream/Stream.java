@@ -683,7 +683,7 @@ public class Stream<T> implements Iterator<T> {
     }
 
     /**
-     * When this stream completes, repeat it's output count times.
+     * This stream will repeat <code>count</code> times.
      *
      * If count is <code>0</code>, the Stream will be empty. If <code>1</code>, no repetition will be performed.
      *
