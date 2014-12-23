@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
 
-<coverage line-rate="0.9934354485776805" branch-rate="0.9846153846153847" lines-covered="454" lines-valid="457" branches-covered="128" branches-valid="130" complexity="1.4" version="2.0.3" timestamp="1417734320727">
+<coverage line-rate="0.9892008639308856" branch-rate="0.9852941176470589" lines-covered="458" lines-valid="463" branches-covered="134" branches-valid="136" complexity="1.4248704663212435" version="2.0.3" timestamp="1419370354656">
 	<sources>
 		<source>/Users/tim.yates/Code/Groovy/groovy-stream/src/main/java</source>
 	</sources>
@@ -12,84 +12,74 @@
 					<methods>
 						<method name="&lt;init&gt;" signature="(Ljava/util/Iterator;)V" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="58" hits="399" branch="false"/>
-								<line number="59" hits="399" branch="false"/>
-								<line number="60" hits="399" branch="false"/>
-							</lines>
-						</method>
-						<method name="andThenRepeat" signature="()Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
-							<lines>
-								<line number="684" hits="2" branch="false"/>
-							</lines>
-						</method>
-						<method name="andThenRepeat" signature="(I)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
-							<lines>
-								<line number="702" hits="2" branch="false"/>
+								<line number="56" hits="424" branch="false"/>
+								<line number="57" hits="424" branch="false"/>
+								<line number="58" hits="424" branch="false"/>
 							</lines>
 						</method>
 						<method name="collate" signature="(I)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="502" hits="5" branch="false"/>
+								<line number="500" hits="5" branch="false"/>
 							</lines>
 						</method>
 						<method name="collate" signature="(II)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="545" hits="3" branch="false"/>
+								<line number="543" hits="3" branch="false"/>
 							</lines>
 						</method>
 						<method name="collate" signature="(IIZ)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="570" hits="12" branch="false"/>
+								<line number="568" hits="12" branch="false"/>
 							</lines>
 						</method>
 						<method name="collate" signature="(IZ)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="519" hits="3" branch="false"/>
+								<line number="517" hits="3" branch="false"/>
 							</lines>
 						</method>
 						<method name="concat" signature="(Ljava/util/Iterator;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="139" hits="2" branch="false"/>
+								<line number="137" hits="2" branch="false"/>
 							</lines>
 						</method>
 						<method name="filter" signature="(Lgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="78" hits="34" branch="false"/>
+								<line number="76" hits="42" branch="false"/>
 							</lines>
 						</method>
 						<method name="filter" signature="(Lgroovy/stream/functions/Predicate;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="89" hits="1" branch="false"/>
+								<line number="87" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="filterWithIndex" signature="(Lgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="108" hits="4" branch="false"/>
+								<line number="106" hits="4" branch="false"/>
 							</lines>
 						</method>
 						<method name="filterWithIndex" signature="(Lgroovy/stream/functions/IndexedPredicate;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="119" hits="1" branch="false"/>
+								<line number="117" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="flatMap" signature="(Lgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="178" hits="8" branch="false"/>
+								<line number="176" hits="8" branch="false"/>
 							</lines>
 						</method>
 						<method name="flatMap" signature="(Lgroovy/stream/functions/Function;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="192" hits="1" branch="false"/>
+								<line number="190" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="flatMapWithIndex" signature="(Lgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="214" hits="3" branch="false"/>
+								<line number="212" hits="3" branch="false"/>
 							</lines>
 						</method>
 						<method name="flatMapWithIndex" signature="(Lgroovy/stream/functions/IndexedFunction;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="228" hits="1" branch="false"/>
+								<line number="226" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="from" signature="(Lgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
@@ -109,7 +99,7 @@
 						</method>
 						<method name="from" signature="(Ljava/lang/Iterable;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="783" hits="105" branch="false"/>
+								<line number="783" hits="114" branch="false"/>
 							</lines>
 						</method>
 						<method name="from" signature="(Ljava/lang/Object;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
@@ -184,32 +174,32 @@
 						</method>
 						<method name="hasNext" signature="()Z" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="1038" hits="913" branch="false"/>
+								<line number="1038" hits="939" branch="false"/>
 							</lines>
 						</method>
 						<method name="map" signature="(Lgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="373" hits="51" branch="false"/>
+								<line number="371" hits="51" branch="false"/>
 							</lines>
 						</method>
 						<method name="map" signature="(Lgroovy/stream/functions/Function;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="387" hits="1" branch="false"/>
+								<line number="385" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="mapWithIndex" signature="(Lgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="412" hits="6" branch="false"/>
+								<line number="410" hits="6" branch="false"/>
 							</lines>
 						</method>
 						<method name="mapWithIndex" signature="(Lgroovy/stream/functions/IndexedFunction;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="426" hits="1" branch="false"/>
+								<line number="424" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="next" signature="()Ljava/lang/Object;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="1035" hits="740" branch="false"/>
+								<line number="1035" hits="758" branch="false"/>
 							</lines>
 						</method>
 						<method name="primitiveArrayToList" signature="(Ljava/lang/Object;)Ljava/util/List;" line-rate="1.0" branch-rate="1.0">
@@ -231,9 +221,19 @@
 								<line number="1042" hits="1" branch="false"/>
 							</lines>
 						</method>
+						<method name="repeat" signature="()Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="682" hits="2" branch="false"/>
+							</lines>
+						</method>
+						<method name="repeat" signature="(I)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="702" hits="11" branch="false"/>
+							</lines>
+						</method>
 						<method name="skip" signature="(I)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="156" hits="15" branch="false"/>
+								<line number="154" hits="15" branch="false"/>
 							</lines>
 						</method>
 						<method name="take" signature="(I)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
@@ -243,153 +243,153 @@
 						</method>
 						<method name="tap" signature="(Lgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="247" hits="1" branch="false"/>
+								<line number="245" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="tap" signature="(Lgroovy/stream/functions/Function;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="256" hits="1" branch="false"/>
+								<line number="254" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="tapEvery" signature="(ILgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="276" hits="2" branch="false"/>
+								<line number="274" hits="2" branch="false"/>
 							</lines>
 						</method>
 						<method name="tapEvery" signature="(ILgroovy/stream/functions/Function;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="288" hits="1" branch="false"/>
+								<line number="286" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="tapEveryWithIndex" signature="(ILgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="336" hits="19" branch="false"/>
+								<line number="334" hits="19" branch="false"/>
 							</lines>
 						</method>
 						<method name="tapEveryWithIndex" signature="(ILgroovy/stream/functions/IndexedFunction;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="348" hits="1" branch="false"/>
+								<line number="346" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="tapWithIndex" signature="(Lgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="307" hits="17" branch="false"/>
+								<line number="305" hits="17" branch="false"/>
 							</lines>
 						</method>
 						<method name="tapWithIndex" signature="(Lgroovy/stream/functions/IndexedFunction;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="316" hits="1" branch="false"/>
+								<line number="314" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="until" signature="(Lgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="444" hits="7" branch="false"/>
+								<line number="442" hits="7" branch="false"/>
 							</lines>
 						</method>
 						<method name="until" signature="(Lgroovy/stream/functions/Predicate;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="455" hits="1" branch="false"/>
+								<line number="453" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="untilWithIndex" signature="(Lgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="474" hits="2" branch="false"/>
+								<line number="472" hits="2" branch="false"/>
 							</lines>
 						</method>
 						<method name="untilWithIndex" signature="(Lgroovy/stream/functions/IndexedPredicate;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="485" hits="1" branch="false"/>
+								<line number="483" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="zip" signature="(Ljava/lang/Iterable;Lgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="598" hits="1" branch="false"/>
+								<line number="596" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="zip" signature="(Ljava/lang/Iterable;Lgroovy/stream/functions/Function2;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="617" hits="1" branch="false"/>
+								<line number="615" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="zip" signature="(Ljava/util/Iterator;Lgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="594" hits="4" branch="false"/>
+								<line number="592" hits="4" branch="false"/>
 							</lines>
 						</method>
 						<method name="zip" signature="(Ljava/util/Iterator;Lgroovy/stream/functions/Function2;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="613" hits="1" branch="false"/>
+								<line number="611" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="zipWithIndex" signature="(Ljava/lang/Iterable;Lgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="646" hits="1" branch="false"/>
+								<line number="644" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="zipWithIndex" signature="(Ljava/lang/Iterable;Lgroovy/stream/functions/IndexedFunction2;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="666" hits="1" branch="false"/>
+								<line number="664" hits="1" branch="false"/>
 							</lines>
 						</method>
 						<method name="zipWithIndex" signature="(Ljava/util/Iterator;Lgroovy/lang/Closure;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="642" hits="2" branch="false"/>
+								<line number="640" hits="2" branch="false"/>
 							</lines>
 						</method>
 						<method name="zipWithIndex" signature="(Ljava/util/Iterator;Lgroovy/stream/functions/IndexedFunction2;)Lgroovy/stream/Stream;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="662" hits="1" branch="false"/>
+								<line number="660" hits="1" branch="false"/>
 							</lines>
 						</method>
 					</methods>
 					<lines>
-						<line number="58" hits="399" branch="false"/>
-						<line number="59" hits="399" branch="false"/>
-						<line number="60" hits="399" branch="false"/>
-						<line number="78" hits="34" branch="false"/>
-						<line number="89" hits="1" branch="false"/>
-						<line number="108" hits="4" branch="false"/>
-						<line number="119" hits="1" branch="false"/>
-						<line number="139" hits="2" branch="false"/>
-						<line number="156" hits="15" branch="false"/>
-						<line number="178" hits="8" branch="false"/>
-						<line number="192" hits="1" branch="false"/>
-						<line number="214" hits="3" branch="false"/>
-						<line number="228" hits="1" branch="false"/>
-						<line number="247" hits="1" branch="false"/>
-						<line number="256" hits="1" branch="false"/>
-						<line number="276" hits="2" branch="false"/>
-						<line number="288" hits="1" branch="false"/>
-						<line number="307" hits="17" branch="false"/>
-						<line number="316" hits="1" branch="false"/>
-						<line number="336" hits="19" branch="false"/>
-						<line number="348" hits="1" branch="false"/>
-						<line number="373" hits="51" branch="false"/>
-						<line number="387" hits="1" branch="false"/>
-						<line number="412" hits="6" branch="false"/>
-						<line number="426" hits="1" branch="false"/>
-						<line number="444" hits="7" branch="false"/>
-						<line number="455" hits="1" branch="false"/>
-						<line number="474" hits="2" branch="false"/>
-						<line number="485" hits="1" branch="false"/>
-						<line number="502" hits="5" branch="false"/>
-						<line number="519" hits="3" branch="false"/>
-						<line number="545" hits="3" branch="false"/>
-						<line number="570" hits="12" branch="false"/>
-						<line number="594" hits="4" branch="false"/>
-						<line number="598" hits="1" branch="false"/>
-						<line number="613" hits="1" branch="false"/>
-						<line number="617" hits="1" branch="false"/>
-						<line number="642" hits="2" branch="false"/>
-						<line number="646" hits="1" branch="false"/>
-						<line number="662" hits="1" branch="false"/>
-						<line number="666" hits="1" branch="false"/>
-						<line number="684" hits="2" branch="false"/>
-						<line number="702" hits="2" branch="false"/>
+						<line number="56" hits="424" branch="false"/>
+						<line number="57" hits="424" branch="false"/>
+						<line number="58" hits="424" branch="false"/>
+						<line number="76" hits="42" branch="false"/>
+						<line number="87" hits="1" branch="false"/>
+						<line number="106" hits="4" branch="false"/>
+						<line number="117" hits="1" branch="false"/>
+						<line number="137" hits="2" branch="false"/>
+						<line number="154" hits="15" branch="false"/>
+						<line number="176" hits="8" branch="false"/>
+						<line number="190" hits="1" branch="false"/>
+						<line number="212" hits="3" branch="false"/>
+						<line number="226" hits="1" branch="false"/>
+						<line number="245" hits="1" branch="false"/>
+						<line number="254" hits="1" branch="false"/>
+						<line number="274" hits="2" branch="false"/>
+						<line number="286" hits="1" branch="false"/>
+						<line number="305" hits="17" branch="false"/>
+						<line number="314" hits="1" branch="false"/>
+						<line number="334" hits="19" branch="false"/>
+						<line number="346" hits="1" branch="false"/>
+						<line number="371" hits="51" branch="false"/>
+						<line number="385" hits="1" branch="false"/>
+						<line number="410" hits="6" branch="false"/>
+						<line number="424" hits="1" branch="false"/>
+						<line number="442" hits="7" branch="false"/>
+						<line number="453" hits="1" branch="false"/>
+						<line number="472" hits="2" branch="false"/>
+						<line number="483" hits="1" branch="false"/>
+						<line number="500" hits="5" branch="false"/>
+						<line number="517" hits="3" branch="false"/>
+						<line number="543" hits="3" branch="false"/>
+						<line number="568" hits="12" branch="false"/>
+						<line number="592" hits="4" branch="false"/>
+						<line number="596" hits="1" branch="false"/>
+						<line number="611" hits="1" branch="false"/>
+						<line number="615" hits="1" branch="false"/>
+						<line number="640" hits="2" branch="false"/>
+						<line number="644" hits="1" branch="false"/>
+						<line number="660" hits="1" branch="false"/>
+						<line number="664" hits="1" branch="false"/>
+						<line number="682" hits="2" branch="false"/>
+						<line number="702" hits="11" branch="false"/>
 						<line number="720" hits="18" branch="false"/>
 						<line number="747" hits="29" branch="false"/>
 						<line number="765" hits="4" branch="false"/>
-						<line number="783" hits="105" branch="false"/>
+						<line number="783" hits="114" branch="false"/>
 						<line number="801" hits="10" branch="false"/>
 						<line number="811" hits="5" branch="false"/>
 						<line number="821" hits="3" branch="false"/>
@@ -405,8 +405,8 @@
 						<line number="993" hits="2" branch="false"/>
 						<line number="1012" hits="2" branch="false"/>
 						<line number="1031" hits="2" branch="false"/>
-						<line number="1035" hits="740" branch="false"/>
-						<line number="1038" hits="913" branch="false"/>
+						<line number="1035" hits="758" branch="false"/>
+						<line number="1038" hits="939" branch="false"/>
 						<line number="1041" hits="1" branch="false"/>
 						<line number="1042" hits="1" branch="false"/>
 						<line number="1047" hits="20" branch="false"/>
@@ -570,30 +570,30 @@
 				</class>
 			</classes>
 		</package>
-		<package name="groovy.stream.iterators" line-rate="0.9891891891891892" branch-rate="0.9761904761904762" complexity="2.108695652173913">
+		<package name="groovy.stream.iterators" line-rate="0.9790575916230366" branch-rate="0.9777777777777777" complexity="2.163265306122449">
 			<classes>
 				<class name="groovy.stream.iterators.AbstractIterator" filename="groovy/stream/iterators/AbstractIterator.java" line-rate="1.0" branch-rate="1.0" complexity="1.8">
 					<methods>
 						<method name="&lt;init&gt;" signature="(Ljava/util/Iterator;)V" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="29" hits="320" branch="false"/>
-								<line number="30" hits="320" branch="false"/>
-								<line number="31" hits="320" branch="false"/>
-								<line number="32" hits="320" branch="false"/>
-								<line number="33" hits="320" branch="false"/>
-								<line number="34" hits="320" branch="false"/>
+								<line number="29" hits="328" branch="false"/>
+								<line number="30" hits="328" branch="false"/>
+								<line number="31" hits="328" branch="false"/>
+								<line number="32" hits="328" branch="false"/>
+								<line number="33" hits="328" branch="false"/>
+								<line number="34" hits="328" branch="false"/>
 							</lines>
 						</method>
 						<method name="hasNext" signature="()Z" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="45" hits="2831" branch="true" condition-coverage="100% (2/2)">
+								<line number="45" hits="2883" branch="true" condition-coverage="100% (2/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="100%"/>
 									</conditions>
 								</line>
-								<line number="46" hits="1544" branch="false"/>
-								<line number="47" hits="1544" branch="false"/>
-								<line number="49" hits="2831" branch="true" condition-coverage="100% (2/2)">
+								<line number="46" hits="1574" branch="false"/>
+								<line number="47" hits="1574" branch="false"/>
+								<line number="49" hits="2883" branch="true" condition-coverage="100% (2/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="100%"/>
 									</conditions>
@@ -602,16 +602,16 @@
 						</method>
 						<method name="next" signature="()Ljava/lang/Object;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="54" hits="1090" branch="false"/>
-								<line number="55" hits="1090" branch="true" condition-coverage="100% (2/2)">
+								<line number="54" hits="1112" branch="false"/>
+								<line number="55" hits="1112" branch="true" condition-coverage="100% (2/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="100%"/>
 									</conditions>
 								</line>
 								<line number="56" hits="19" branch="false"/>
-								<line number="58" hits="1071" branch="false"/>
-								<line number="59" hits="1071" branch="false"/>
-								<line number="60" hits="1071" branch="false"/>
+								<line number="58" hits="1093" branch="false"/>
+								<line number="59" hits="1093" branch="false"/>
+								<line number="60" hits="1093" branch="false"/>
 							</lines>
 						</method>
 						<method name="remove" signature="()V" line-rate="1.0" branch-rate="1.0">
@@ -621,35 +621,35 @@
 						</method>
 					</methods>
 					<lines>
-						<line number="29" hits="320" branch="false"/>
-						<line number="30" hits="320" branch="false"/>
-						<line number="31" hits="320" branch="false"/>
-						<line number="32" hits="320" branch="false"/>
-						<line number="33" hits="320" branch="false"/>
-						<line number="34" hits="320" branch="false"/>
+						<line number="29" hits="328" branch="false"/>
+						<line number="30" hits="328" branch="false"/>
+						<line number="31" hits="328" branch="false"/>
+						<line number="32" hits="328" branch="false"/>
+						<line number="33" hits="328" branch="false"/>
+						<line number="34" hits="328" branch="false"/>
 						<line number="38" hits="22" branch="false"/>
-						<line number="45" hits="2831" branch="true" condition-coverage="100% (2/2)">
+						<line number="45" hits="2883" branch="true" condition-coverage="100% (2/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="100%"/>
 							</conditions>
 						</line>
-						<line number="46" hits="1544" branch="false"/>
-						<line number="47" hits="1544" branch="false"/>
-						<line number="49" hits="2831" branch="true" condition-coverage="100% (2/2)">
+						<line number="46" hits="1574" branch="false"/>
+						<line number="47" hits="1574" branch="false"/>
+						<line number="49" hits="2883" branch="true" condition-coverage="100% (2/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="100%"/>
 							</conditions>
 						</line>
-						<line number="54" hits="1090" branch="false"/>
-						<line number="55" hits="1090" branch="true" condition-coverage="100% (2/2)">
+						<line number="54" hits="1112" branch="false"/>
+						<line number="55" hits="1112" branch="true" condition-coverage="100% (2/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="100%"/>
 							</conditions>
 						</line>
 						<line number="56" hits="19" branch="false"/>
-						<line number="58" hits="1071" branch="false"/>
-						<line number="59" hits="1071" branch="false"/>
-						<line number="60" hits="1071" branch="false"/>
+						<line number="58" hits="1093" branch="false"/>
+						<line number="59" hits="1093" branch="false"/>
+						<line number="60" hits="1093" branch="false"/>
 					</lines>
 				</class>
 				<class name="groovy.stream.iterators.BufferedReaderIterator" filename="groovy/stream/iterators/BufferedReaderIterator.java" line-rate="1.0" branch-rate="1.0" complexity="2.2">
@@ -1032,6 +1032,36 @@
 						<line number="41" hits="26" branch="false"/>
 					</lines>
 				</class>
+				<class name="groovy.stream.iterators.EmptyIterator" filename="groovy/stream/iterators/EmptyIterator.java" line-rate="0.5" branch-rate="1.0" complexity="1.6666666666666667">
+					<methods>
+						<method name="&lt;init&gt;" signature="()V" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="6" hits="3" branch="false"/>
+							</lines>
+						</method>
+						<method name="hasNext" signature="()Z" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="9" hits="3" branch="false"/>
+							</lines>
+						</method>
+						<method name="next" signature="()Ljava/lang/Object;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="14" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="remove" signature="()V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="19" hits="0" branch="false"/>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="6" hits="3" branch="false"/>
+						<line number="9" hits="3" branch="false"/>
+						<line number="14" hits="0" branch="false"/>
+						<line number="19" hits="0" branch="false"/>
+					</lines>
+				</class>
 				<class name="groovy.stream.iterators.EnumerationIterator" filename="groovy/stream/iterators/EnumerationIterator.java" line-rate="1.0" branch-rate="1.0" complexity="1.25">
 					<methods>
 						<method name="&lt;init&gt;" signature="(Ljava/util/Enumeration;)V" line-rate="1.0" branch-rate="1.0">
@@ -1274,7 +1304,7 @@
 						<line number="41" hits="69" branch="false"/>
 					</lines>
 				</class>
-				<class name="groovy.stream.iterators.RepeatingIterator" filename="groovy/stream/iterators/RepeatingIterator.java" line-rate="0.9" branch-rate="0.9285714285714286" complexity="2.6">
+				<class name="groovy.stream.iterators.RepeatingIterator" filename="groovy/stream/iterators/RepeatingIterator.java" line-rate="0.9090909090909091" branch-rate="0.95" complexity="3.4">
 					<methods>
 						<method name="&lt;clinit&gt;" signature="()V" line-rate="1.0" branch-rate="1.0">
 							<lines>
@@ -1289,17 +1319,28 @@
 						</method>
 						<method name="&lt;init&gt;" signature="(Ljava/util/Iterator;Ljava/lang/Integer;)V" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="27" hits="8" branch="false"/>
-								<line number="36" hits="8" branch="false"/>
-								<line number="37" hits="8" branch="false"/>
-								<line number="38" hits="8" branch="false"/>
-								<line number="39" hits="8" branch="false"/>
-								<line number="40" hits="8" branch="false"/>
+								<line number="27" hits="17" branch="false"/>
+								<line number="36" hits="17" branch="false"/>
+								<line number="37" hits="17" branch="true" condition-coverage="100% (4/4)">
+									<conditions>
+										<condition number="0" type="jump" coverage="100%"/>
+										<condition number="1" type="jump" coverage="100%"/>
+									</conditions>
+								</line>
+								<line number="38" hits="1" branch="false"/>
+								<line number="40" hits="16" branch="false"/>
+								<line number="41" hits="16" branch="true" condition-coverage="100% (2/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="100%"/>
+									</conditions>
+								</line>
+								<line number="42" hits="16" branch="false"/>
+								<line number="43" hits="16" branch="false"/>
 							</lines>
 						</method>
 						<method name="hasNext" signature="()Z" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="44" hits="79" branch="true" condition-coverage="100% (6/6)">
+								<line number="47" hits="110" branch="true" condition-coverage="100% (6/6)">
 									<conditions>
 										<condition number="0" type="jump" coverage="100%"/>
 										<condition number="1" type="jump" coverage="100%"/>
@@ -1310,76 +1351,87 @@
 						</method>
 						<method name="next" signature="()Ljava/lang/Object;" line-rate="0.8888888888888888" branch-rate="0.875">
 							<lines>
-								<line number="54" hits="72" branch="true" condition-coverage="100% (2/2)">
+								<line number="57" hits="95" branch="true" condition-coverage="100% (2/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="100%"/>
 									</conditions>
 								</line>
-								<line number="55" hits="20" branch="true" condition-coverage="75% (3/4)">
+								<line number="58" hits="22" branch="true" condition-coverage="75% (3/4)">
 									<conditions>
 										<condition number="0" type="jump" coverage="100%"/>
 										<condition number="1" type="jump" coverage="50%"/>
 									</conditions>
 								</line>
-								<line number="56" hits="20" branch="false"/>
-								<line number="57" hits="20" branch="false"/>
-								<line number="60" hits="0" branch="false"/>
-								<line number="63" hits="72" branch="false"/>
-								<line number="64" hits="72" branch="true" condition-coverage="100% (2/2)">
+								<line number="59" hits="22" branch="false"/>
+								<line number="60" hits="22" branch="false"/>
+								<line number="63" hits="0" branch="false"/>
+								<line number="66" hits="95" branch="false"/>
+								<line number="67" hits="95" branch="true" condition-coverage="100% (2/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="100%"/>
 									</conditions>
 								</line>
-								<line number="65" hits="21" branch="false"/>
-								<line number="67" hits="72" branch="false"/>
+								<line number="68" hits="36" branch="false"/>
+								<line number="70" hits="95" branch="false"/>
 							</lines>
 						</method>
 						<method name="remove" signature="()V" line-rate="0.0" branch-rate="1.0">
 							<lines>
-								<line number="49" hits="0" branch="false"/>
+								<line number="52" hits="0" branch="false"/>
 							</lines>
 						</method>
 					</methods>
 					<lines>
 						<line number="26" hits="1" branch="false"/>
-						<line number="27" hits="8" branch="false"/>
+						<line number="27" hits="17" branch="false"/>
 						<line number="33" hits="3" branch="false"/>
 						<line number="34" hits="3" branch="false"/>
-						<line number="36" hits="8" branch="false"/>
-						<line number="37" hits="8" branch="false"/>
-						<line number="38" hits="8" branch="false"/>
-						<line number="39" hits="8" branch="false"/>
-						<line number="40" hits="8" branch="false"/>
-						<line number="44" hits="79" branch="true" condition-coverage="100% (6/6)">
+						<line number="36" hits="17" branch="false"/>
+						<line number="37" hits="17" branch="true" condition-coverage="100% (4/4)">
+							<conditions>
+								<condition number="0" type="jump" coverage="100%"/>
+								<condition number="1" type="jump" coverage="100%"/>
+							</conditions>
+						</line>
+						<line number="38" hits="1" branch="false"/>
+						<line number="40" hits="16" branch="false"/>
+						<line number="41" hits="16" branch="true" condition-coverage="100% (2/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="100%"/>
+							</conditions>
+						</line>
+						<line number="42" hits="16" branch="false"/>
+						<line number="43" hits="16" branch="false"/>
+						<line number="47" hits="110" branch="true" condition-coverage="100% (6/6)">
 							<conditions>
 								<condition number="0" type="jump" coverage="100%"/>
 								<condition number="1" type="jump" coverage="100%"/>
 								<condition number="2" type="jump" coverage="100%"/>
 							</conditions>
 						</line>
-						<line number="49" hits="0" branch="false"/>
-						<line number="54" hits="72" branch="true" condition-coverage="100% (2/2)">
+						<line number="52" hits="0" branch="false"/>
+						<line number="57" hits="95" branch="true" condition-coverage="100% (2/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="100%"/>
 							</conditions>
 						</line>
-						<line number="55" hits="20" branch="true" condition-coverage="75% (3/4)">
+						<line number="58" hits="22" branch="true" condition-coverage="75% (3/4)">
 							<conditions>
 								<condition number="0" type="jump" coverage="100%"/>
 								<condition number="1" type="jump" coverage="50%"/>
 							</conditions>
 						</line>
-						<line number="56" hits="20" branch="false"/>
-						<line number="57" hits="20" branch="false"/>
-						<line number="60" hits="0" branch="false"/>
-						<line number="63" hits="72" branch="false"/>
-						<line number="64" hits="72" branch="true" condition-coverage="100% (2/2)">
+						<line number="59" hits="22" branch="false"/>
+						<line number="60" hits="22" branch="false"/>
+						<line number="63" hits="0" branch="false"/>
+						<line number="66" hits="95" branch="false"/>
+						<line number="67" hits="95" branch="true" condition-coverage="100% (2/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="100%"/>
 							</conditions>
 						</line>
-						<line number="65" hits="21" branch="false"/>
-						<line number="67" hits="72" branch="false"/>
+						<line number="68" hits="36" branch="false"/>
+						<line number="70" hits="95" branch="false"/>
 					</lines>
 				</class>
 				<class name="groovy.stream.iterators.RepeatingObjectIterator" filename="groovy/stream/iterators/RepeatingObjectIterator.java" line-rate="1.0" branch-rate="1.0" complexity="1.25">
@@ -1496,82 +1548,82 @@
 					<methods>
 						<method name="&lt;init&gt;" signature="(Ljava/util/Iterator;Lgroovy/lang/Closure;Z)V" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="27" hits="52" branch="false"/>
-								<line number="30" hits="52" branch="false"/>
-								<line number="31" hits="52" branch="false"/>
-								<line number="32" hits="52" branch="false"/>
-								<line number="33" hits="52" branch="false"/>
+								<line number="27" hits="60" branch="false"/>
+								<line number="30" hits="60" branch="false"/>
+								<line number="31" hits="60" branch="false"/>
+								<line number="32" hits="60" branch="false"/>
+								<line number="33" hits="60" branch="false"/>
 							</lines>
 						</method>
 						<method name="callFilter" signature="()Z" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="48" hits="287" branch="true" condition-coverage="100% (2/2)">
+								<line number="48" hits="323" branch="true" condition-coverage="100% (2/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="100%"/>
 									</conditions>
 								</line>
-								<line number="49" hits="249" branch="false"/>
+								<line number="49" hits="285" branch="false"/>
 							</lines>
 						</method>
 						<method name="loadNext" signature="()V" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="37" hits="362" branch="true" condition-coverage="100% (2/2)">
+								<line number="37" hits="406" branch="true" condition-coverage="100% (2/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="100%"/>
 									</conditions>
 								</line>
-								<line number="38" hits="322" branch="false"/>
-								<line number="39" hits="322" branch="false"/>
-								<line number="40" hits="322" branch="false"/>
-								<line number="41" hits="322" branch="false"/>
-								<line number="42" hits="322" branch="true" condition-coverage="100% (2/2)">
+								<line number="38" hits="358" branch="false"/>
+								<line number="39" hits="358" branch="false"/>
+								<line number="40" hits="358" branch="false"/>
+								<line number="41" hits="358" branch="false"/>
+								<line number="42" hits="358" branch="true" condition-coverage="100% (2/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="100%"/>
 									</conditions>
 								</line>
-								<line number="43" hits="170" branch="false"/>
-								<line number="44" hits="40" branch="false"/>
-								<line number="45" hits="40" branch="false"/>
+								<line number="43" hits="182" branch="false"/>
+								<line number="44" hits="48" branch="false"/>
+								<line number="45" hits="48" branch="false"/>
 							</lines>
 						</method>
 						<method name="setDelegate" signature="()V" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="53" hits="287" branch="false"/>
-								<line number="54" hits="287" branch="false"/>
+								<line number="53" hits="323" branch="false"/>
+								<line number="54" hits="323" branch="false"/>
 							</lines>
 						</method>
 					</methods>
 					<lines>
-						<line number="27" hits="52" branch="false"/>
-						<line number="30" hits="52" branch="false"/>
-						<line number="31" hits="52" branch="false"/>
-						<line number="32" hits="52" branch="false"/>
-						<line number="33" hits="52" branch="false"/>
-						<line number="37" hits="362" branch="true" condition-coverage="100% (2/2)">
+						<line number="27" hits="60" branch="false"/>
+						<line number="30" hits="60" branch="false"/>
+						<line number="31" hits="60" branch="false"/>
+						<line number="32" hits="60" branch="false"/>
+						<line number="33" hits="60" branch="false"/>
+						<line number="37" hits="406" branch="true" condition-coverage="100% (2/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="100%"/>
 							</conditions>
 						</line>
-						<line number="38" hits="322" branch="false"/>
-						<line number="39" hits="322" branch="false"/>
-						<line number="40" hits="322" branch="false"/>
-						<line number="41" hits="322" branch="false"/>
-						<line number="42" hits="322" branch="true" condition-coverage="100% (2/2)">
+						<line number="38" hits="358" branch="false"/>
+						<line number="39" hits="358" branch="false"/>
+						<line number="40" hits="358" branch="false"/>
+						<line number="41" hits="358" branch="false"/>
+						<line number="42" hits="358" branch="true" condition-coverage="100% (2/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="100%"/>
 							</conditions>
 						</line>
-						<line number="43" hits="170" branch="false"/>
-						<line number="44" hits="40" branch="false"/>
-						<line number="45" hits="40" branch="false"/>
-						<line number="48" hits="287" branch="true" condition-coverage="100% (2/2)">
+						<line number="43" hits="182" branch="false"/>
+						<line number="44" hits="48" branch="false"/>
+						<line number="45" hits="48" branch="false"/>
+						<line number="48" hits="323" branch="true" condition-coverage="100% (2/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="100%"/>
 							</conditions>
 						</line>
-						<line number="49" hits="249" branch="false"/>
-						<line number="53" hits="287" branch="false"/>
-						<line number="54" hits="287" branch="false"/>
+						<line number="49" hits="285" branch="false"/>
+						<line number="53" hits="323" branch="false"/>
+						<line number="54" hits="323" branch="false"/>
 					</lines>
 				</class>
 				<class name="groovy.stream.iterators.groovy.FlatMapIterator" filename="groovy/stream/iterators/groovy/FlatMapIterator.java" line-rate="1.0" branch-rate="1.0" complexity="2.25">
@@ -1947,30 +1999,30 @@
 						</method>
 						<method name="loadNext" signature="()V" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="44" hits="96" branch="true" condition-coverage="100% (2/2)">
+								<line number="44" hits="94" branch="true" condition-coverage="100% (2/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="100%"/>
 									</conditions>
 								</line>
-								<line number="45" hits="85" branch="false"/>
-								<line number="46" hits="85" branch="true" condition-coverage="100% (2/2)">
+								<line number="45" hits="83" branch="false"/>
+								<line number="46" hits="83" branch="true" condition-coverage="100% (2/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="100%"/>
 									</conditions>
 								</line>
-								<line number="47" hits="77" branch="false"/>
-								<line number="48" hits="77" branch="false"/>
-								<line number="49" hits="77" branch="false"/>
-								<line number="50" hits="77" branch="false"/>
+								<line number="47" hits="75" branch="false"/>
+								<line number="48" hits="75" branch="false"/>
+								<line number="49" hits="75" branch="false"/>
+								<line number="50" hits="75" branch="false"/>
 								<line number="52" hits="8" branch="false"/>
-								<line number="54" hits="85" branch="false"/>
+								<line number="54" hits="83" branch="false"/>
 								<line number="56" hits="11" branch="false"/>
-								<line number="58" hits="96" branch="false"/>
+								<line number="58" hits="94" branch="false"/>
 							</lines>
 						</method>
 						<method name="performZip" signature="(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="61" hits="41" branch="true" condition-coverage="100% (2/2)">
+								<line number="61" hits="39" branch="true" condition-coverage="100% (2/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="100%"/>
 									</conditions>
@@ -1988,26 +2040,26 @@
 						<line number="38" hits="25" branch="false"/>
 						<line number="39" hits="25" branch="false"/>
 						<line number="40" hits="25" branch="false"/>
-						<line number="44" hits="96" branch="true" condition-coverage="100% (2/2)">
+						<line number="44" hits="94" branch="true" condition-coverage="100% (2/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="100%"/>
 							</conditions>
 						</line>
-						<line number="45" hits="85" branch="false"/>
-						<line number="46" hits="85" branch="true" condition-coverage="100% (2/2)">
+						<line number="45" hits="83" branch="false"/>
+						<line number="46" hits="83" branch="true" condition-coverage="100% (2/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="100%"/>
 							</conditions>
 						</line>
-						<line number="47" hits="77" branch="false"/>
-						<line number="48" hits="77" branch="false"/>
-						<line number="49" hits="77" branch="false"/>
-						<line number="50" hits="77" branch="false"/>
+						<line number="47" hits="75" branch="false"/>
+						<line number="48" hits="75" branch="false"/>
+						<line number="49" hits="75" branch="false"/>
+						<line number="50" hits="75" branch="false"/>
 						<line number="52" hits="8" branch="false"/>
-						<line number="54" hits="85" branch="false"/>
+						<line number="54" hits="83" branch="false"/>
 						<line number="56" hits="11" branch="false"/>
-						<line number="58" hits="96" branch="false"/>
-						<line number="61" hits="41" branch="true" condition-coverage="100% (2/2)">
+						<line number="58" hits="94" branch="false"/>
+						<line number="61" hits="39" branch="true" condition-coverage="100% (2/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="100%"/>
 							</conditions>
