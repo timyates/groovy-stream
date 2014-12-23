@@ -695,11 +695,11 @@ public class Stream<T> implements Iterator<T> {
      *   assert numbers.repeat(2).collect() == ['alice','bob','alice','bob']
      * </pre>
      *
-     * @param nTimes The number of times to repeat the element in this Stream once it is exhausted.
+     * @param count The number of times to repeat the element in this Stream once it is exhausted.
      * @return A new {@code Stream} wrapping a {@link RepeatingIterator}
      */
-    public Stream<T> repeat(int nTimes) {
-        return new Stream<T>(new RepeatingIterator<T>(this.iterator, nTimes));
+    public Stream<T> repeat(int count) {
+        return new Stream<T>(new RepeatingIterator<T>(this.iterator, count));
     }
 
     /**
