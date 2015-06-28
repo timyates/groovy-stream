@@ -19,6 +19,8 @@ package groovy.stream.iterators.groovy ;
 import groovy.lang.Closure ;
 import groovy.stream.iterators.AbstractIterator ;
 import java.util.Iterator ;
+
+import groovy.stream.iterators.CloseableIterator;
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation ;
 
 public class FilteringIterator<T> extends AbstractIterator<T> {
@@ -26,7 +28,7 @@ public class FilteringIterator<T> extends AbstractIterator<T> {
     private   final boolean withIndex ;
     protected int     index = 0 ;
 
-    public FilteringIterator( Iterator<T> iterator, Closure<Boolean> predicate, boolean withIndex ) {
+    public FilteringIterator( CloseableIterator<T> iterator, Closure<Boolean> predicate, boolean withIndex ) {
         super( iterator ) ;
         this.predicate = predicate ;
         this.withIndex = withIndex ;

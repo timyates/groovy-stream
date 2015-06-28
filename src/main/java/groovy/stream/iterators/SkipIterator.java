@@ -21,7 +21,7 @@ import java.util.Iterator ;
 public class SkipIterator<T> extends AbstractIterator<T> {
     private int     numberToSkip ;
 
-    public SkipIterator( Iterator<T> parentIterator, int numberToSkip ) {
+    public SkipIterator( CloseableIterator<T> parentIterator, int numberToSkip ) {
         super( parentIterator ) ;
         this.numberToSkip = numberToSkip ;
     }

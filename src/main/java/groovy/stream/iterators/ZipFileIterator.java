@@ -14,36 +14,33 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators ;
+package groovy.stream.iterators;
 
-public class LimitedIterator<T> implements CloseableIterator<T> {
-    private final CloseableIterator<T> delegate ;
-    private int limit ;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
-    public LimitedIterator( CloseableIterator<T> delegate, int limit ) {
-        this.delegate = delegate ;
-        this.limit = limit ;
-    }
+public class ZipFileIterator implements CloseableIterator<ZipEntry> {
+    private final ZipFile inputFile;
+    private final Enumeration<? extends ZipEntry> entryEumerator;
 
-    @Override
-    public boolean hasNext() {
-        return delegate.hasNext() && limit > 0 ;
-    }
-
-    @Override
-    public T next() {
-    	T ret = delegate.next() ;
-    	limit-- ;
-    	return ret ;
-    }
-
-    @Override
-    public void remove() {
-        delegate.remove() ;
+    public ZipFileIterator(ZipFile inputFile) {
+        this.inputFile = inputFile;
+        entryEumerator = inputFile.entries();
     }
 
     @Override
     public void close() throws Exception {
-        delegate.close();
+        inputFile.close();
+    }
+
+    @Override
+    public boolean hasNext() {
+        return entryEumerator.hasMoreElements();
+    }
+
+    @Override
+    public ZipEntry next() {
+        return entryEumerator.nextElement();
     }
 }

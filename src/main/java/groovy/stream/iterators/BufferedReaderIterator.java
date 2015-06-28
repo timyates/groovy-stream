@@ -21,7 +21,7 @@ import java.io.IOException ;
 import java.util.Iterator ;
 import java.util.NoSuchElementException ;
 
-public class BufferedReaderIterator implements Iterator<String> {
+public class BufferedReaderIterator implements CloseableIterator<String> {
     private String current ;
     private final BufferedReader reader ;
     private boolean  exhausted ;
@@ -69,5 +69,10 @@ public class BufferedReaderIterator implements Iterator<String> {
     @Override
     public void remove() {
         throw new UnsupportedOperationException( "Remove not supported on BufferedReaderIterator" ) ;
+    }
+
+    @Override
+    public void close() throws Exception {
+        reader.close();
     }
 }

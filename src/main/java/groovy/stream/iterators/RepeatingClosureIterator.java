@@ -19,7 +19,7 @@ package groovy.stream.iterators ;
 import groovy.lang.Closure ;
 import java.util.Iterator ;
 
-public class RepeatingClosureIterator<T> implements Iterator<T> {
+public class RepeatingClosureIterator<T> implements CloseableIterator<T> {
     private final Closure<T> value ;
 
     public RepeatingClosureIterator( Closure<T> value ) {
@@ -39,5 +39,9 @@ public class RepeatingClosureIterator<T> implements Iterator<T> {
     @Override
     public T next() {
         return value.call() ;
+    }
+
+    @Override
+    public void close() throws Exception {
     }
 }

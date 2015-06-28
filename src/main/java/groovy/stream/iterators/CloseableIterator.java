@@ -14,31 +14,9 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators ;
+package groovy.stream.iterators;
 
-public class RepeatingObjectIterator<T> implements CloseableIterator<T> {
-    private final T value ;
+import java.util.Iterator;
 
-    public RepeatingObjectIterator( T value ) {
-        this.value = value ;
-    }
-
-    @Override
-    public boolean hasNext() {
-        return true ;
-    }
-
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException() ;
-    }
-
-    @Override
-    public T next() {
-        return value ;
-    }
-
-    @Override
-    public void close() throws Exception {
-    }
+public interface CloseableIterator<T> extends Iterator<T>, AutoCloseable {
 }

@@ -16,13 +16,16 @@
 
 package groovy.stream.iterators.groovy
 
-class TapIteratorTests extends spock.lang.Specification {
+import groovy.stream.iterators.DelegatingCloseableIterator
+import spock.lang.Specification
+
+class TapIteratorTests extends Specification {
     def inputList = [ 1, 2, null, 4, 5 ]
     def list = []
     TapIterator iter
 
     def setup() {
-        iter = new TapIterator( inputList.iterator(), 1, true, { object, index -> list << [ index, object ] } )
+        iter = new TapIterator(new DelegatingCloseableIterator(inputList.iterator()), 1, true, { object, index -> list << [ index, object ] } )
     }
 
     def "collect should return values"() {

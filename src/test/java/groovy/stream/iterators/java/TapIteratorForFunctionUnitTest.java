@@ -18,6 +18,7 @@ package groovy.stream.iterators.java;
 
 import groovy.stream.functions.Function;
 import groovy.stream.functions.IndexedFunction;
+import groovy.stream.iterators.DelegatingCloseableIterator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,7 +37,7 @@ public class TapIteratorForFunctionUnitTest {
     @Before
     public void setUp() {
         tapped = new ArrayList<String>() ;
-        iter = new TapIteratorForFunction<Integer>( list.iterator(), new Function<Integer,Void>() {
+        iter = new TapIteratorForFunction<Integer>( new DelegatingCloseableIterator<Integer>(list.iterator()), new Function<Integer,Void>() {
             @Override
             public Void call( Integer value ) {
                 tapped.add( String.format( "Tap %d", value ) ) ;
@@ -47,7 +48,7 @@ public class TapIteratorForFunctionUnitTest {
 
     @Test
     public void checkWithEveryParameter() {
-        TapIteratorForFunction<Integer> iter = new TapIteratorForFunction<Integer>( list.iterator(), 2, new Function<Integer,Void>() {
+        TapIteratorForFunction<Integer> iter = new TapIteratorForFunction<Integer>( new DelegatingCloseableIterator<Integer>(list.iterator()), 2, new Function<Integer,Void>() {
             @Override
             public Void call( Integer value ) {
                 tapped.add( String.format( "Tap %d", value ) ) ;

@@ -16,13 +16,15 @@
 
 package groovy.stream.iterators.groovy
 
+import groovy.stream.iterators.DelegatingCloseableIterator
+
 class UntilIteratorTests extends spock.lang.Specification {
 
     def list  = [ 1, 2, null, 4, 5 ]
     UntilIterator iter
 
     def setup() {
-        iter = new UntilIterator( list.iterator(), { it -> it > 3 }, false )
+        iter = new UntilIterator( new DelegatingCloseableIterator(list.iterator()), { it -> it > 3 }, false )
     }
 
     def "collect should return values"() {
@@ -56,7 +58,7 @@ class UntilIteratorTests extends spock.lang.Specification {
 
     def "Test UntilIterator which never passes predicate"() {
         when:
-            def iter = new UntilIterator( list.iterator(), { it -> it == 'NOTFOUND' }, false )
+            def iter = new UntilIterator( new DelegatingCloseableIterator(list.iterator()), { it -> it == 'NOTFOUND' }, false )
             def result = iter.collect()
             iter.next()
         then:

@@ -17,6 +17,7 @@
 package groovy.stream.iterators.java ;
 
 import groovy.stream.functions.IndexedFunction ;
+import groovy.stream.iterators.CloseableIterator;
 import groovy.stream.iterators.groovy.TapIterator;
 
 import java.util.Iterator;
@@ -24,11 +25,11 @@ import java.util.Iterator;
 public class TapIteratorForIndexedFunction<T> extends TapIterator<T> {
     private final IndexedFunction<T,Void> function ;
 
-    public TapIteratorForIndexedFunction( Iterator<T> iterator, IndexedFunction<T,Void> function ) {
+    public TapIteratorForIndexedFunction( CloseableIterator<T> iterator, IndexedFunction<T,Void> function ) {
         this( iterator, 1, function ) ;
     }
 
-    public TapIteratorForIndexedFunction( Iterator<T> iterator, int every, IndexedFunction<T,Void> function ) {
+    public TapIteratorForIndexedFunction( CloseableIterator<T> iterator, int every, IndexedFunction<T,Void> function ) {
         super( iterator, every, true, null ) ;
         this.function = function ;
     }

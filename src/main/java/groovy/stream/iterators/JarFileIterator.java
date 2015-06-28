@@ -14,36 +14,33 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators ;
+package groovy.stream.iterators;
 
-public class LimitedIterator<T> implements CloseableIterator<T> {
-    private final CloseableIterator<T> delegate ;
-    private int limit ;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
-    public LimitedIterator( CloseableIterator<T> delegate, int limit ) {
-        this.delegate = delegate ;
-        this.limit = limit ;
-    }
+public class JarFileIterator implements CloseableIterator<JarEntry> {
+    private final JarFile inputFile;
+    private final Enumeration<? extends JarEntry> entryEumerator;
 
-    @Override
-    public boolean hasNext() {
-        return delegate.hasNext() && limit > 0 ;
-    }
-
-    @Override
-    public T next() {
-    	T ret = delegate.next() ;
-    	limit-- ;
-    	return ret ;
-    }
-
-    @Override
-    public void remove() {
-        delegate.remove() ;
+    public JarFileIterator(JarFile inputFile) {
+        this.inputFile = inputFile;
+        entryEumerator = inputFile.entries();
     }
 
     @Override
     public void close() throws Exception {
-        delegate.close();
+        inputFile.close();
+    }
+
+    @Override
+    public boolean hasNext() {
+        return entryEumerator.hasMoreElements();
+    }
+
+    @Override
+    public JarEntry next() {
+        return entryEumerator.nextElement();
     }
 }

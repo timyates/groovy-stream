@@ -18,6 +18,8 @@ package groovy.stream.iterators.groovy ;
 
 import groovy.lang.Closure ;
 import groovy.stream.iterators.AbstractIterator ;
+import groovy.stream.iterators.CloseableIterator;
+
 import java.util.Iterator ;
 import java.util.NoSuchElementException ;
 
@@ -28,7 +30,7 @@ public class TapIterator<T> extends AbstractIterator<T> {
 
     protected int     index ;
 
-    public TapIterator( Iterator<T> parent, int every, boolean withIndex, Closure<Void> output ) {
+    public TapIterator( CloseableIterator<T> parent, int every, boolean withIndex, Closure<Void> output ) {
         super( parent ) ;
         this.every = every ;
         this.index = 0 ;

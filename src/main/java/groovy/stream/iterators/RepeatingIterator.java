@@ -22,18 +22,18 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
-public class RepeatingIterator<T> implements Iterator<T> {
+public class RepeatingIterator<T> implements CloseableIterator<T> {
     private static final Integer FOREVER = -65536;
     private final Queue<T> queue = new LinkedList<T>();
     private boolean repeating;
     private Integer nRepeats;
-    private Iterator<T> current;
+    private CloseableIterator<T> current;
 
-    public RepeatingIterator(Iterator<T> parent) {
+    public RepeatingIterator(CloseableIterator<T> parent) {
         this(parent, FOREVER);
     }
 
-    public RepeatingIterator(Iterator<T> parent, Integer nRepeats) {
+    public RepeatingIterator(CloseableIterator<T> parent, Integer nRepeats) {
         if(nRepeats < 0 && !nRepeats.equals(FOREVER)) {
             throw new IllegalArgumentException("Cannot repeat a negative number of times");
         }
@@ -57,7 +57,7 @@ public class RepeatingIterator<T> implements Iterator<T> {
         if (!current.hasNext()) {
             if (nRepeats == FOREVER || nRepeats-- > 1) {
                 this.repeating = true;
-                current = queue.iterator();
+                current = new DelegatingCloseableIterator<T>(queue.iterator());
             }
             else {
                 throw new NoSuchElementException("RepeatingIterator has been exhausted and contains no more elements");
@@ -68,5 +68,10 @@ public class RepeatingIterator<T> implements Iterator<T> {
             queue.offer(ret);
         }
         return ret;
+    }
+
+    @Override
+    public void close() throws Exception {
+        current.close();
     }
 }

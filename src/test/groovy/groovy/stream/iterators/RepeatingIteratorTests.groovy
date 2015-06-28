@@ -21,7 +21,7 @@ import spock.lang.Specification
 class RepeatingIteratorTests extends Specification {
     def "Check empty repeat (no repeat)"() {
         setup:
-            def iter = new RepeatingIterator([ 1, 2, null ].iterator(), 0)
+            def iter = new RepeatingIterator(new DelegatingCloseableIterator([ 1, 2, null ].iterator()), 0)
         when:
             def result = iter.collect()
         then:
@@ -30,7 +30,7 @@ class RepeatingIteratorTests extends Specification {
 
     def "Check single repeat"() {
         setup:
-            def iter = new RepeatingIterator([ 1, 2, null ].iterator(), 1)
+            def iter = new RepeatingIterator(new DelegatingCloseableIterator([ 1, 2, null ].iterator()), 1)
         when:
             def result = iter.collect()
         then:
@@ -39,7 +39,7 @@ class RepeatingIteratorTests extends Specification {
 
     def "Check double repeat"() {
         setup:
-            def iter = new RepeatingIterator([ 1, 2, null ].iterator(), 2)
+            def iter = new RepeatingIterator(new DelegatingCloseableIterator([ 1, 2, null ].iterator()), 2)
         when:
             def result = iter.collect()
         then:
@@ -48,7 +48,7 @@ class RepeatingIteratorTests extends Specification {
 
     def "Check endless repeat"() {
         setup:
-            def iter = new RepeatingIterator([ 1, 2, null ].iterator())
+            def iter = new RepeatingIterator(new DelegatingCloseableIterator([ 1, 2, null ].iterator()))
         when:
             // How to check infinity? Let's go with 20 as a placeholder for infinity ;)
             def result = iter.take(20).collect()

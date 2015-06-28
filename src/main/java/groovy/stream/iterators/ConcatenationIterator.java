@@ -19,10 +19,10 @@ package groovy.stream.iterators ;
 import java.util.Iterator ;
 
 public class ConcatenationIterator<T> extends AbstractIterator<T> {
-    private final Iterator<? extends T> last ;
+    private final CloseableIterator<? extends T> last ;
 
-    public ConcatenationIterator( Iterator<T> first,
-                                  Iterator<? extends T> last ) {
+    public ConcatenationIterator( CloseableIterator<T> first,
+                                  CloseableIterator<? extends T> last ) {
         super( first ) ;
         this.last = last ;
     }
@@ -38,5 +38,11 @@ public class ConcatenationIterator<T> extends AbstractIterator<T> {
         else {
             current = last.next() ;
         }
+    }
+
+    @Override
+    public void close() throws Exception {
+        super.close();
+        last.close();
     }
 }

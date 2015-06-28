@@ -17,6 +17,7 @@
 package groovy.stream.iterators.java ;
 
 import groovy.stream.functions.IndexedPredicate ;
+import groovy.stream.iterators.CloseableIterator;
 import groovy.stream.iterators.groovy.FilteringIterator ;
 
 import java.util.Iterator ;
@@ -24,7 +25,7 @@ import java.util.Iterator ;
 public class FilteringIteratorForIndexedPredicate<T> extends FilteringIterator<T> {
     private final IndexedPredicate<T> predicateFn ;
 
-    public FilteringIteratorForIndexedPredicate( Iterator<T> iterator, IndexedPredicate<T> predicate ) {
+    public FilteringIteratorForIndexedPredicate( CloseableIterator<T> iterator, IndexedPredicate<T> predicate ) {
         super( iterator, null, true ) ;
         this.predicateFn = predicate ;
     }

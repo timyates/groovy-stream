@@ -14,36 +14,32 @@
  * limitations under the License.
  */
 
-package groovy.stream.iterators ;
+package groovy.stream.iterators;
 
-public class LimitedIterator<T> implements CloseableIterator<T> {
-    private final CloseableIterator<T> delegate ;
-    private int limit ;
+import java.util.Iterator;
 
-    public LimitedIterator( CloseableIterator<T> delegate, int limit ) {
-        this.delegate = delegate ;
-        this.limit = limit ;
+public class DelegatingCloseableIterator<T> implements CloseableIterator<T> {
+    private final Iterator<? extends T> delegate;
+
+    public DelegatingCloseableIterator(Iterator<? extends T> delegate) {
+        this.delegate = delegate;
+    }
+    @Override
+    public void close() throws Exception {
     }
 
     @Override
     public boolean hasNext() {
-        return delegate.hasNext() && limit > 0 ;
+        return delegate.hasNext();
     }
 
     @Override
     public T next() {
-    	T ret = delegate.next() ;
-    	limit-- ;
-    	return ret ;
+        return delegate.next();
     }
 
     @Override
     public void remove() {
-        delegate.remove() ;
-    }
-
-    @Override
-    public void close() throws Exception {
-        delegate.close();
+        delegate.remove();
     }
 }

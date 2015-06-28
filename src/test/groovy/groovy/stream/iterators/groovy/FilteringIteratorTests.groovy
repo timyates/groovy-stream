@@ -16,13 +16,15 @@
 
 package groovy.stream.iterators.groovy
 
+import groovy.stream.iterators.DelegatingCloseableIterator
+
 class FilteringIteratorTests extends spock.lang.Specification {
 
     def list = [ 1, 2, null, 4, 5 ]
     FilteringIterator iter
 
     def setup() {
-        iter = new FilteringIterator( list.iterator(), { it -> ( it ?: 0 ) % 2 }, false )
+        iter = new FilteringIterator( new DelegatingCloseableIterator(list.iterator()), { it -> ( it ?: 0 ) % 2 }, false )
     }
 
     def "collect should return values"() {

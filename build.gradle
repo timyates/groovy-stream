@@ -36,8 +36,13 @@ repositories {
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
-    compile     'org.codehaus.groovy:groovy:2.3.8'
-    testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+    compile     'org.codehaus.groovy:groovy:2.4.3'
+    testCompile 'org.codehaus.groovy:groovy-test:2.4.3'
+    testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
+        exclude(group: 'org.codehaus.groovy', module: 'groovy-all')
+    }
+    testRuntime "cglib:cglib-nodep:3.1"          // allows mocking of classes (in addition to interfaces)
+    testRuntime "org.objenesis:objenesis:2.1"    // allows mocking of classes without default constructor (together with CGLIB)
     testCompile "junit:junit:4.11"
     testCompile( "org.apache.ant:ant-junit:1.9.2" ) {
         exclude(group: 'junit', module: 'junit')

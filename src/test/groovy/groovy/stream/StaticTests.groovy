@@ -29,7 +29,7 @@ class StaticTests extends spock.lang.Specification {
     private Collection<Integer> generateOdd() {
         Stream.from( [ x:1..3, y:1..3 ] )
               .map { Map<String,Integer> it -> it.x + it.y }
-              .filter { Integer it -> it % 2 }
+              .filter { Integer it -> it % 2 == 1 }
               .collect()
     }
 
@@ -37,7 +37,7 @@ class StaticTests extends spock.lang.Specification {
     private Collection<Integer> generateOddTill5() {
         Stream.from( [ x:1..3, y:1..3 ] )
               .map { Map<String,Integer> it -> it.x + it.y }
-              .filter { Integer it -> it % 2 }
+              .filter { Integer it -> it % 2 == 1 }
               .until { Integer it -> it == 5 }
               .collect()
     }

@@ -20,6 +20,7 @@ import groovy.lang.Closure ;
 import groovy.stream.iterators.AbstractIterator ;
 import java.util.Iterator ;
 
+import groovy.stream.iterators.CloseableIterator;
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation ;
 
 public class UntilIterator<T> extends AbstractIterator<T> {
@@ -27,7 +28,7 @@ public class UntilIterator<T> extends AbstractIterator<T> {
     private   final boolean          withIndex ;
     protected int     index = 0 ;
 
-    public UntilIterator( Iterator<T> iterator, Closure<Boolean> predicate, boolean withIndex ) {
+    public UntilIterator( CloseableIterator<T> iterator, Closure<Boolean> predicate, boolean withIndex ) {
         super( iterator ) ;
         this.predicate = predicate ;
         this.withIndex = withIndex ;

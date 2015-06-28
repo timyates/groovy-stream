@@ -17,6 +17,7 @@
 package groovy.stream.iterators.java ;
 
 import groovy.stream.functions.* ;
+import groovy.stream.iterators.DelegatingCloseableIterator;
 import org.junit.* ;
 import static org.junit.Assert.* ;
 import java.util.* ;
@@ -27,7 +28,7 @@ public class FilteringIteratorForPredicateUnitTests {
 
     @Before
     public void setUp() {
-        iter = new FilteringIteratorForPredicate<Integer>( list.iterator(), new Predicate<Integer>() {
+        iter = new FilteringIteratorForPredicate<Integer>( new DelegatingCloseableIterator<Integer>(list.iterator()), new Predicate<Integer>() {
             @Override
             public boolean call( Integer i ) {
                 return i != null && i % 2 == 1;

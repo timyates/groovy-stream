@@ -22,7 +22,7 @@ class SkipIteratorTests extends spock.lang.Specification {
     SkipIterator iter
 
     def setup() {
-        iter = new SkipIterator( list.iterator(), 2 )
+        iter = new SkipIterator( new DelegatingCloseableIterator(list.iterator()), 2 )
     }
 
     def "collect should return values"() {

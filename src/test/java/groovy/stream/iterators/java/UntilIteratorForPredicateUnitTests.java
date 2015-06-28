@@ -17,6 +17,7 @@
 package groovy.stream.iterators.java ;
 
 import groovy.stream.functions.* ;
+import groovy.stream.iterators.DelegatingCloseableIterator;
 import org.junit.* ;
 import static org.junit.Assert.* ;
 import java.util.* ;
@@ -27,7 +28,7 @@ public class UntilIteratorForPredicateUnitTests {
 
     @Before
     public void setUp() {
-        iter = new UntilIteratorForPredicate<Integer>( list.iterator(), new Predicate<Integer>() {
+        iter = new UntilIteratorForPredicate<Integer>( new DelegatingCloseableIterator<Integer>(list.iterator()), new Predicate<Integer>() {
             @Override
             public boolean call( Integer i ) {
                 return i == null ;

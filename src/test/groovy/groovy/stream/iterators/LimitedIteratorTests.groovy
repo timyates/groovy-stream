@@ -22,7 +22,7 @@ class LimitedIteratorTests extends spock.lang.Specification {
     LimitedIterator iter
 
     def setup() {
-        iter = new LimitedIterator( list.iterator(), 3 )
+        iter = new LimitedIterator( new DelegatingCloseableIterator(list.iterator()), 3 )
     }
 
     def "collect should return values"() {

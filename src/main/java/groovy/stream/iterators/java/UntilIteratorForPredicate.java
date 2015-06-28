@@ -17,6 +17,7 @@
 package groovy.stream.iterators.java ;
 
 import groovy.stream.functions.Predicate ;
+import groovy.stream.iterators.CloseableIterator;
 import groovy.stream.iterators.groovy.UntilIterator ;
 
 import java.util.Iterator ;
@@ -24,7 +25,7 @@ import java.util.Iterator ;
 public class UntilIteratorForPredicate<T> extends UntilIterator<T> {
     private final Predicate<T> predicateFn ;
 
-    public UntilIteratorForPredicate( Iterator<T> iterator, Predicate<T> predicateFn ) {
+    public UntilIteratorForPredicate( CloseableIterator<T> iterator, Predicate<T> predicateFn ) {
         super( iterator, null, false ) ;
         this.predicateFn = predicateFn ;
     }

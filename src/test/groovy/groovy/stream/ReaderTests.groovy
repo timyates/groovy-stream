@@ -71,4 +71,20 @@ class ReaderTests extends spock.lang.Specification {
                   .map { it.join() }
                   .collect() == [ 'CDEF', 'GHI' ]
     }
+
+    def "Check the reader is closed if the Stream is closed"() {
+        setup:
+            def reader = Mock(BufferedReader)
+
+        when:
+            def s = Stream.from(reader)
+            def result = s.map { "Woo$it" }.collect()
+            s.close()
+
+        then:
+            (1.._) * reader.readLine() >>> ['A', 'B', 'C', null]
+            1      * reader.close()
+            result == ['WooA', 'WooB', 'WooC']
+
+    }
 }

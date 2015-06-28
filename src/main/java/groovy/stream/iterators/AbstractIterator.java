@@ -19,14 +19,14 @@ package groovy.stream.iterators ;
 import java.util.Iterator ;
 import java.util.NoSuchElementException ;
 
-public abstract class AbstractIterator<T> implements Iterator<T> {
-    protected final Iterator<T>   iterator ;
+public abstract class AbstractIterator<T> implements CloseableIterator<T> {
+    protected final CloseableIterator<T>   iterator ;
 
     protected T       current ;
     protected boolean loaded ;
     protected boolean exhausted ;
 
-    public AbstractIterator( Iterator<T> parentIterator ) {
+    public AbstractIterator( CloseableIterator<T> parentIterator ) {
         this.iterator = parentIterator ;
         this.loaded = false ;
         this.current = null ;
@@ -58,5 +58,10 @@ public abstract class AbstractIterator<T> implements Iterator<T> {
         T ret = current ;
         loaded = false ;
         return ret ;
+    }
+
+    @Override
+    public void close() throws Exception {
+        iterator.close();
     }
 }

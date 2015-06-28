@@ -51,9 +51,9 @@ import java.util.zip.ZipFile ;
  * @param <T> the type of each element returned from the Stream.
  */
 public class Stream<T> implements Iterator<T> {
-    private final Iterator<T> iterator ;
+    private final CloseableIterator<T> iterator ;
 
-    private Stream( Iterator<T> iterator ) {
+    private Stream( CloseableIterator<T> iterator ) {
         this.iterator = iterator ;
     }
 
@@ -134,7 +134,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping a {@link ConcatenationIterator}
      */
     public Stream<T> concat( Iterator<? extends T> other ) {
-        return new Stream<T>( new ConcatenationIterator<T>( iterator, other ) ) ;
+        return new Stream<T>( new ConcatenationIterator<T>( iterator, new DelegatingCloseableIterator<T>(other) ) ) ;
     }
 
     /**
@@ -780,7 +780,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping the {@code iterable.iterator()}.
      */
     public static <T> Stream<T> from( Iterable<T> iterable ) {
-        return new Stream<T>( iterable.iterator() ) ;
+        return new Stream<T>( new DelegatingCloseableIterator<T>(iterable.iterator()) ) ;
     }
 
     /**
@@ -798,7 +798,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping the iterator.
      */
     public static <T> Stream<T> from( Iterator<T> iterator ) {
-        return new Stream<T>( iterator ) ;
+        return new Stream<T>( new DelegatingCloseableIterator<T>(iterator) ) ;
     }
 
     /**
@@ -818,7 +818,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping an {@link EnumerationIterator}.
      */
     public static Stream<ZipEntry> from( ZipFile file ) {
-        return new Stream<ZipEntry>( new EnumerationIterator<ZipEntry>( file.entries() ) ) ;
+        return new Stream<ZipEntry>( new ZipFileIterator(file) ) ;
     }
 
     /**
@@ -828,7 +828,7 @@ public class Stream<T> implements Iterator<T> {
      * @return A new {@code Stream} wrapping an {@link EnumerationIterator}.
      */
     public static Stream<JarEntry> from( JarFile file ) {
-        return new Stream<JarEntry>( new EnumerationIterator<JarEntry>( file.entries() ) ) ;
+        return new Stream<JarEntry>( new JarFileIterator(file) ) ;
     }
 
     /**
@@ -876,7 +876,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static <T> Stream<T> from( T[] array ) {
-        return new Stream<T>( primitiveArrayToList( array ).iterator() ) ;
+        return new Stream<T>( new DelegatingCloseableIterator<T>(primitiveArrayToList( array ).iterator()) ) ;
     }
 
     /**
@@ -895,7 +895,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static Stream<Byte> from( byte[] array ) {
-        return new Stream<Byte>(      primitiveArrayToList( array ).iterator() ) ;
+        return new Stream<Byte>(      new DelegatingCloseableIterator<Byte>(primitiveArrayToList( array ).iterator()) ) ;
     }
 
     /**
@@ -914,7 +914,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static Stream<Character> from( char[] array ) {
-        return new Stream<Character>( primitiveArrayToList( array ).iterator() ) ;
+        return new Stream<Character>( new DelegatingCloseableIterator<Character>(primitiveArrayToList( array ).iterator()) ) ;
     }
 
     /**
@@ -933,7 +933,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static Stream<Short> from( short[] array ) {
-        return new Stream<Short>( primitiveArrayToList( array ).iterator() ) ;
+        return new Stream<Short>( new DelegatingCloseableIterator<Short>(primitiveArrayToList( array ).iterator()) ) ;
     }
 
     /**
@@ -952,7 +952,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static Stream<Integer> from( int[] array ) {
-        return new Stream<Integer>( primitiveArrayToList( array ).iterator() ) ;
+        return new Stream<Integer>( new DelegatingCloseableIterator<Integer>(primitiveArrayToList( array ).iterator()) ) ;
     }
 
     /**
@@ -971,7 +971,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static Stream<Long> from( long[] array ) {
-        return new Stream<Long>( primitiveArrayToList( array ).iterator() ) ;
+        return new Stream<Long>( new DelegatingCloseableIterator<Long>(primitiveArrayToList( array ).iterator()) ) ;
     }
 
     /**
@@ -990,7 +990,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static Stream<Float> from( float[] array ) {
-        return new Stream<Float>( primitiveArrayToList( array ).iterator() ) ;
+        return new Stream<Float>( new DelegatingCloseableIterator<Float>(primitiveArrayToList( array ).iterator()) ) ;
     }
 
     /**
@@ -1009,7 +1009,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static Stream<Double> from( double[] array ) {
-        return new Stream<Double>( primitiveArrayToList( array ).iterator() ) ;
+        return new Stream<Double>( new DelegatingCloseableIterator<Double>(primitiveArrayToList( array ).iterator()) ) ;
     }
 
     /**
@@ -1028,7 +1028,7 @@ public class Stream<T> implements Iterator<T> {
      */
     @SuppressWarnings("unchecked")
     public static Stream<Boolean> from( boolean[] array ) {
-        return new Stream<Boolean>( primitiveArrayToList( array ).iterator() ) ;
+        return new Stream<Boolean>( new DelegatingCloseableIterator<Boolean>(primitiveArrayToList( array ).iterator()) ) ;
     }
 
     @Override public T next() {
@@ -1050,5 +1050,9 @@ public class Stream<T> implements Iterator<T> {
             list.add( Array.get( array, i ) ) ;
         }
         return list ;
+    }
+
+    public void close() throws Exception {
+        iterator.close();
     }
 }

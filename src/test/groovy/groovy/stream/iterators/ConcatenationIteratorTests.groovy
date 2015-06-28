@@ -23,7 +23,7 @@ class ConcatenationIteratorTests extends spock.lang.Specification {
     ConcatenationIterator iter
 
     def setup() {
-        iter = new ConcatenationIterator( list.iterator(), list2.iterator() )
+        iter = new ConcatenationIterator(new DelegatingCloseableIterator(list.iterator()), new DelegatingCloseableIterator(list2.iterator()) )
     }
 
     def "collect should return values"() {
