@@ -44,7 +44,7 @@ public class RepeatingIterator<T> implements Iterator<T> {
 
     @Override
     public boolean hasNext() {
-        return current.hasNext() || nRepeats == FOREVER || nRepeats > 1;
+        return nRepeats == FOREVER || nRepeats > 1 || current.hasNext();
     }
 
     @Override
