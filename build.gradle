@@ -1,26 +1,25 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url 'http://dl.bintray.com/content/noamt/gradle-plugins' }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.3'
-        classpath 'org._10ne.gradle:rest-gradle-plugin:0.1.1'
-        classpath 'net.saliman:gradle-cobertura-plugin:2.0.0' // coveralls plugin depends on cobertura plugin
-        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:0.2.1'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+        classpath "net.saliman:gradle-cobertura-plugin:2.5.4"
+        classpath "org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.2"
     }
 }
 
 apply plugin: 'groovy'
-apply plugin: 'bintray'
+apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
-apply plugin: 'idea'
-apply plugin: 'rest'
-apply plugin: 'cobertura'
-apply plugin: 'coveralls'
+apply plugin: "net.saliman.cobertura"
+apply plugin: "com.github.kt3k.coveralls"
 
 group               = 'com.bloidonia'
-version             = '0.9.0'
+version             = '0.9.1'
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
@@ -47,13 +46,15 @@ dependencies {
 
 def metaServices = new File( 'src/main/groovy/META-INF/services' )
 
-task generateModule << {
-    metaServices.mkdirs()
-    new File( metaServices, 'org.codehaus.groovy.runtime.ExtensionModule' ).withWriter { w ->
-        w.writeLine 'moduleName=groovy-stream'
-        w.writeLine "moduleVersion=$version"
-        w.writeLine 'extensionClasses=groovy.stream.StreamExtension'
-        w.writeLine 'staticExtensionClasses='
+task generateModule() {
+    doLast {
+        metaServices.mkdirs()
+        new File( metaServices, 'org.codehaus.groovy.runtime.ExtensionModule' ).withWriter { w ->
+            w.writeLine 'moduleName=groovy-stream'
+            w.writeLine "moduleVersion=$version"
+            w.writeLine 'extensionClasses=groovy.stream.StreamExtension'
+            w.writeLine 'staticExtensionClasses='
+        }
     }
 }
 
@@ -183,17 +184,15 @@ bintray {
         desc = 'A collection of classes to give a fluent builder for Streams (Lazy Groovy Generators).'
         licenses = ['Apache-2.0']
         labels = ['groovy','lazy','iterators','stream']
+        version {
+            gpg {
+                sign = true
+                passphrase = keyPhrase
+            }
+        }
     }
     dryRun = false
 }
 
 assemble.dependsOn( test )
 bintrayUpload.dependsOn( assemble )
-
-task push( type:org._10ne.gradle.rest.RestTask, dependsOn: bintrayUpload ) {
-    description 'Test, Assemble, Push to bintray, and sign it.'
-    httpMethod = 'post'
-    uri = "https://api.bintray.com/gpg/timyates/groovy-stream/groovy-stream/versions/$version?passphrase=$keyPhrase"
-    username = bintrayUsername
-    password = bintrayKey
-}

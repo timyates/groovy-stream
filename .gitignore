@@ -11,3 +11,7 @@ out
 docs/output
 docs/assets/javadoc
 docs/assets/coverage
+.classpath
+.project
+.settings/
+.vscode/
